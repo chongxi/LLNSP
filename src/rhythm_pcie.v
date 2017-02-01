@@ -159,16 +159,6 @@ module rhythm_pcie (
   reg [3:0] aux_cmd_bank_2_A, aux_cmd_bank_2_B, aux_cmd_bank_2_C, aux_cmd_bank_2_D;
   reg [3:0] aux_cmd_bank_3_A, aux_cmd_bank_3_B, aux_cmd_bank_3_C, aux_cmd_bank_3_D;
 
-  // wire [ 4:0] DAC_channel_sel_1, DAC_channel_sel_2, DAC_channel_sel_3, DAC_channel_sel_4;
-  // wire [ 4:0] DAC_channel_sel_5, DAC_channel_sel_6, DAC_channel_sel_7, DAC_channel_sel_8;
-  // wire [ 4:0] DAC_stream_sel_1, DAC_stream_sel_2, DAC_stream_sel_3, DAC_stream_sel_4;
-  // wire [ 4:0] DAC_stream_sel_5, DAC_stream_sel_6, DAC_stream_sel_7, DAC_stream_sel_8;
-  // reg  [15:0] DAC_pre_register_1, DAC_pre_register_2, DAC_pre_register_3, DAC_pre_register_4;
-  // reg  [15:0] DAC_pre_register_5, DAC_pre_register_6, DAC_pre_register_7, DAC_pre_register_8;
-  // reg  [15:0] DAC_register_1, DAC_register_2, DAC_register_3, DAC_register_4;
-  // reg  [15:0] DAC_register_5, DAC_register_6, DAC_register_7, DAC_register_8;
-  // reg  [15:0] DAC_manual        ;
-
   reg       external_fast_settle_enable  = 1'b0                                  ;
   reg [3:0] external_fast_settle_channel = 4'b0                                  ;
   reg       external_fast_settle         = 1'b0, external_fast_settle_prev = 1'b0;
@@ -191,23 +181,6 @@ module rhythm_pcie (
   assign data_stream_ADC_7 = 16'b0;
   assign data_stream_ADC_8 = 16'b0;
   assign data_stream_ADC_8 = 16'b0;
-  // assign DAC_channel_sel_1 = 4'b0;
-  // assign DAC_channel_sel_2 = 4'b0;
-  // assign DAC_channel_sel_3 = 4'b0;
-  // assign DAC_channel_sel_4 = 4'b0;
-  // assign DAC_channel_sel_5 = 4'b0;
-  // assign DAC_channel_sel_6 = 4'b0;
-  // assign DAC_channel_sel_7 = 4'b0;
-  // assign DAC_channel_sel_8 = 4'b0;
-  // assign DAC_stream_sel_1  = 4'b0;
-  // assign DAC_stream_sel_2  = 4'b0;
-  // assign DAC_stream_sel_3  = 4'b0;
-  // assign DAC_stream_sel_4  = 4'b0;
-  // assign DAC_stream_sel_5  = 4'b0;
-  // assign DAC_stream_sel_6  = 4'b0;
-  // assign DAC_stream_sel_7  = 4'b0;
-  // assign DAC_stream_sel_8  = 4'b0;
-
 
   //Xillybus stuff
   // Clock and quiesce
