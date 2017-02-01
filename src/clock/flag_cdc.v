@@ -5,8 +5,8 @@
 // 
 // Create Date: 29.04.2016 06:36:17
 // Design Name: 
-// Module Name: flag_cdc
-// Project Name: 
+// Module Name: flag_cdc, bus_cdc
+// Project Name: cross clock domain
 // Target Devices: 
 // Tool Versions: 
 // Description: 
@@ -15,7 +15,7 @@
 // 
 // Revision:
 // Revision 0.01 - File Created
-// Additional Comments:
+// Additional Comments:  https://fpga4fun.com/CrossClockDomain2.html
 // 
 //////////////////////////////////////////////////////////////////////////////////
 

@@ -159,16 +159,15 @@ module rhythm_pcie (
   reg [3:0] aux_cmd_bank_2_A, aux_cmd_bank_2_B, aux_cmd_bank_2_C, aux_cmd_bank_2_D;
   reg [3:0] aux_cmd_bank_3_A, aux_cmd_bank_3_B, aux_cmd_bank_3_C, aux_cmd_bank_3_D;
 
-  wire [ 4:0] DAC_channel_sel_1, DAC_channel_sel_2, DAC_channel_sel_3, DAC_channel_sel_4;
-  wire [ 4:0] DAC_channel_sel_5, DAC_channel_sel_6, DAC_channel_sel_7, DAC_channel_sel_8;
-  wire [ 4:0] DAC_stream_sel_1, DAC_stream_sel_2, DAC_stream_sel_3, DAC_stream_sel_4;
-  wire [ 4:0] DAC_stream_sel_5, DAC_stream_sel_6, DAC_stream_sel_7, DAC_stream_sel_8;
-  reg  [15:0] DAC_pre_register_1, DAC_pre_register_2, DAC_pre_register_3, DAC_pre_register_4;
-  reg  [15:0] DAC_pre_register_5, DAC_pre_register_6, DAC_pre_register_7, DAC_pre_register_8;
-  reg  [15:0] DAC_register_1, DAC_register_2, DAC_register_3, DAC_register_4;
-  reg  [15:0] DAC_register_5, DAC_register_6, DAC_register_7, DAC_register_8;
-
-  reg  [15:0] DAC_manual        ;
+  // wire [ 4:0] DAC_channel_sel_1, DAC_channel_sel_2, DAC_channel_sel_3, DAC_channel_sel_4;
+  // wire [ 4:0] DAC_channel_sel_5, DAC_channel_sel_6, DAC_channel_sel_7, DAC_channel_sel_8;
+  // wire [ 4:0] DAC_stream_sel_1, DAC_stream_sel_2, DAC_stream_sel_3, DAC_stream_sel_4;
+  // wire [ 4:0] DAC_stream_sel_5, DAC_stream_sel_6, DAC_stream_sel_7, DAC_stream_sel_8;
+  // reg  [15:0] DAC_pre_register_1, DAC_pre_register_2, DAC_pre_register_3, DAC_pre_register_4;
+  // reg  [15:0] DAC_pre_register_5, DAC_pre_register_6, DAC_pre_register_7, DAC_pre_register_8;
+  // reg  [15:0] DAC_register_1, DAC_register_2, DAC_register_3, DAC_register_4;
+  // reg  [15:0] DAC_register_5, DAC_register_6, DAC_register_7, DAC_register_8;
+  // reg  [15:0] DAC_manual        ;
 
   reg       external_fast_settle_enable  = 1'b0                                  ;
   reg [3:0] external_fast_settle_channel = 4'b0                                  ;
@@ -192,22 +191,22 @@ module rhythm_pcie (
   assign data_stream_ADC_7 = 16'b0;
   assign data_stream_ADC_8 = 16'b0;
   assign data_stream_ADC_8 = 16'b0;
-  assign DAC_channel_sel_1 = 4'b0;
-  assign DAC_channel_sel_2 = 4'b0;
-  assign DAC_channel_sel_3 = 4'b0;
-  assign DAC_channel_sel_4 = 4'b0;
-  assign DAC_channel_sel_5 = 4'b0;
-  assign DAC_channel_sel_6 = 4'b0;
-  assign DAC_channel_sel_7 = 4'b0;
-  assign DAC_channel_sel_8 = 4'b0;
-  assign DAC_stream_sel_1  = 4'b0;
-  assign DAC_stream_sel_2  = 4'b0;
-  assign DAC_stream_sel_3  = 4'b0;
-  assign DAC_stream_sel_4  = 4'b0;
-  assign DAC_stream_sel_5  = 4'b0;
-  assign DAC_stream_sel_6  = 4'b0;
-  assign DAC_stream_sel_7  = 4'b0;
-  assign DAC_stream_sel_8  = 4'b0;
+  // assign DAC_channel_sel_1 = 4'b0;
+  // assign DAC_channel_sel_2 = 4'b0;
+  // assign DAC_channel_sel_3 = 4'b0;
+  // assign DAC_channel_sel_4 = 4'b0;
+  // assign DAC_channel_sel_5 = 4'b0;
+  // assign DAC_channel_sel_6 = 4'b0;
+  // assign DAC_channel_sel_7 = 4'b0;
+  // assign DAC_channel_sel_8 = 4'b0;
+  // assign DAC_stream_sel_1  = 4'b0;
+  // assign DAC_stream_sel_2  = 4'b0;
+  // assign DAC_stream_sel_3  = 4'b0;
+  // assign DAC_stream_sel_4  = 4'b0;
+  // assign DAC_stream_sel_5  = 4'b0;
+  // assign DAC_stream_sel_6  = 4'b0;
+  // assign DAC_stream_sel_7  = 4'b0;
+  // assign DAC_stream_sel_8  = 4'b0;
 
 
   //Xillybus stuff
@@ -558,8 +557,9 @@ module rhythm_pcie (
     .locked       (dataclk_locked  ),
     .clk_out      (dataclk         )
   );
-      
+  
   wire unused_spi_cdc;
+
   flag_cdc SPI_cdc (
     .clkA(bus_clk          ),
     .clkB(dataclk          ),
@@ -595,26 +595,26 @@ module rhythm_pcie (
      assign user_w_auxcmd1_membank_16_full = 1'b0;
 
   
-      wire external_fast_settle_rising_edge, external_fast_settle_falling_edge;
-      assign external_fast_settle_rising_edge = external_fast_settle_prev == 1'b0 && external_fast_settle == 1'b1;
-      assign external_fast_settle_falling_edge = external_fast_settle_prev == 1'b1 && external_fast_settle == 1'b0;
+  wire external_fast_settle_rising_edge, external_fast_settle_falling_edge;
+  assign external_fast_settle_rising_edge = external_fast_settle_prev == 1'b0 && external_fast_settle == 1'b1;
+  assign external_fast_settle_falling_edge = external_fast_settle_prev == 1'b1 && external_fast_settle == 1'b0;
       
-      // If the user has enabled external fast settling of amplifiers, inject commands to set fast settle
-      // (bit D[5] in RAM Register 0) on a rising edge and reset fast settle on a falling edge of the control
-      // signal.  We only inject commands in the auxcmd1 slot, since this is typically used only for setting
-      // impedance test waveforms.
-      always @(*) begin
-          if (external_fast_settle_enable == 1'b0)
-              RAM_data_out_1 <= RAM_data_out_1_pre; // If external fast settle is disabled, pass command from RAM
-          else if (external_fast_settle_rising_edge)
-              RAM_data_out_1 <= 16'h80fe; // Send WRITE(0, 254) command to set fast settle when rising edge detected.
-          else if (external_fast_settle_falling_edge)
-              RAM_data_out_1 <= 16'h80de; // Send WRITE(0, 222) command to reset fast settle when falling edge detected.
-          else if (RAM_data_out_1_pre[15:8] == 8'h80)
-              // If the user tries to write to Register 0, override it with the external fast settle value.
-              RAM_data_out_1 <= { RAM_data_out_1_pre[15:6], external_fast_settle, RAM_data_out_1_pre[4:0] };
-          else RAM_data_out_1 <= RAM_data_out_1_pre; // Otherwise pass command from RAM.
-      end
+  // If the user has enabled external fast settling of amplifiers, inject commands to set fast settle
+  // (bit D[5] in RAM Register 0) on a rising edge and reset fast settle on a falling edge of the control
+  // signal.  We only inject commands in the auxcmd1 slot, since this is typically used only for setting
+  // impedance test waveforms.
+  always @(*) begin
+    if (external_fast_settle_enable == 1'b0)
+        RAM_data_out_1 <= RAM_data_out_1_pre; // If external fast settle is disabled, pass command from RAM
+    else if (external_fast_settle_rising_edge)
+        RAM_data_out_1 <= 16'h80fe; // Send WRITE(0, 254) command to set fast settle when rising edge detected.
+    else if (external_fast_settle_falling_edge)
+        RAM_data_out_1 <= 16'h80de; // Send WRITE(0, 222) command to reset fast settle when falling edge detected.
+    else if (RAM_data_out_1_pre[15:8] == 8'h80)
+        // If the user tries to write to Register 0, override it with the external fast settle value.
+        RAM_data_out_1 <= { RAM_data_out_1_pre[15:6], external_fast_settle, RAM_data_out_1_pre[4:0] };
+    else RAM_data_out_1 <= RAM_data_out_1_pre; // Otherwise pass command from RAM.
+  end
   
     RAM_bank RAM_bank_2(
       .clka(bus_clk),
@@ -851,14 +851,14 @@ module rhythm_pcie (
                           data_stream_15_sel <= data_stream_15_sel_in;
                           data_stream_16_sel <= data_stream_16_sel_in;
                           
-                          DAC_pre_register_1 <= 16'h8000;        // set DACs to midrange, initially, to avoid loud 'pop' in audio at start
-                          DAC_pre_register_2 <= 16'h8000;
-                          DAC_pre_register_3 <= 16'h8000;
-                          DAC_pre_register_4 <= 16'h8000;
-                          DAC_pre_register_5 <= 16'h8000;
-                          DAC_pre_register_6 <= 16'h8000;
-                          DAC_pre_register_7 <= 16'h8000;
-                          DAC_pre_register_8 <= 16'h8000;
+                          // DAC_pre_register_1 <= 16'h8000;        // set DACs to midrange, initially, to avoid loud 'pop' in audio at start
+                          // DAC_pre_register_2 <= 16'h8000;
+                          // DAC_pre_register_3 <= 16'h8000;
+                          // DAC_pre_register_4 <= 16'h8000;
+                          // DAC_pre_register_5 <= 16'h8000;
+                          // DAC_pre_register_6 <= 16'h8000;
+                          // DAC_pre_register_7 <= 16'h8000;
+                          // DAC_pre_register_8 <= 16'h8000;
                           
                           SPI_running <= 1'b0;
                           
@@ -899,16 +899,16 @@ module rhythm_pcie (
                               external_digout_D <= external_digout_enable_D ? TTL_in[external_digout_channel_D] : 0;                        
                           end
       
-                          if (channel == 0) begin                // update all DAC registers simultaneously
-                              DAC_register_1 <= DAC_pre_register_1;
-                              DAC_register_2 <= DAC_pre_register_2;
-                              DAC_register_3 <= DAC_pre_register_3;
-                              DAC_register_4 <= DAC_pre_register_4;
-                              DAC_register_5 <= DAC_pre_register_5;
-                              DAC_register_6 <= DAC_pre_register_6;
-                              DAC_register_7 <= DAC_pre_register_7;
-                              DAC_register_8 <= DAC_pre_register_8;
-                          end
+                          // if (channel == 0) begin                // update all DAC registers simultaneously
+                          //     DAC_register_1 <= DAC_pre_register_1;
+                          //     DAC_register_2 <= DAC_pre_register_2;
+                          //     DAC_register_3 <= DAC_pre_register_3;
+                          //     DAC_register_4 <= DAC_pre_register_4;
+                          //     DAC_register_5 <= DAC_pre_register_5;
+                          //     DAC_register_6 <= DAC_pre_register_6;
+                          //     DAC_register_7 <= DAC_pre_register_7;
+                          //     DAC_register_8 <= DAC_pre_register_8;
+                          // end
       
                           MOSI_A <= MOSI_cmd_A[15];
                           MOSI_B <= MOSI_cmd_B[15];
@@ -1980,182 +1980,182 @@ module rhythm_pcie (
                           end
                           
                           // Route selected samples to DAC outputs
-                          if (channel_MISO == DAC_channel_sel_1) begin
-                              case (DAC_stream_sel_1)
-                                  0: DAC_pre_register_1 <= data_stream_1;
-                                  1: DAC_pre_register_1 <= data_stream_2;
-                                  2: DAC_pre_register_1 <= data_stream_3;
-                                  3: DAC_pre_register_1 <= data_stream_4;
-                                  4: DAC_pre_register_1 <= data_stream_5;
-                                  5: DAC_pre_register_1 <= data_stream_6;
-                                  6: DAC_pre_register_1 <= data_stream_7;
-                                  7: DAC_pre_register_1 <= data_stream_8;
-                                  8: DAC_pre_register_1 <= data_stream_9;
-                                  9: DAC_pre_register_1 <= data_stream_10;
-                                  10: DAC_pre_register_1 <= data_stream_11;
-                                  11: DAC_pre_register_1 <= data_stream_12;
-                                  12: DAC_pre_register_1 <= data_stream_13;
-                                  13: DAC_pre_register_1 <= data_stream_14;
-                                  14: DAC_pre_register_1 <= data_stream_15;
-                                  15: DAC_pre_register_1 <= data_stream_16;
-                                  16: DAC_pre_register_1 <= DAC_manual;
-                                  default: DAC_pre_register_1 <= 16'b0;
-                              endcase
-                          end
-                          if (channel_MISO == DAC_channel_sel_2) begin
-                              case (DAC_stream_sel_2)
-                                  0: DAC_pre_register_2 <= data_stream_1;
-                                  1: DAC_pre_register_2 <= data_stream_2;
-                                  2: DAC_pre_register_2 <= data_stream_3;
-                                  3: DAC_pre_register_2 <= data_stream_4;
-                                  4: DAC_pre_register_2 <= data_stream_5;
-                                  5: DAC_pre_register_2 <= data_stream_6;
-                                  6: DAC_pre_register_2 <= data_stream_7;
-                                  7: DAC_pre_register_2 <= data_stream_8;
-                                  8: DAC_pre_register_2 <= data_stream_9;
-                                  9: DAC_pre_register_2 <= data_stream_10;
-                                  10: DAC_pre_register_2 <= data_stream_11;
-                                  11: DAC_pre_register_2 <= data_stream_12;
-                                  12: DAC_pre_register_2 <= data_stream_13;
-                                  13: DAC_pre_register_2 <= data_stream_14;
-                                  14: DAC_pre_register_2 <= data_stream_15;
-                                  15: DAC_pre_register_2 <= data_stream_16;
-                                  16: DAC_pre_register_2 <= DAC_manual;
-                                  default: DAC_pre_register_2 <= 16'b0;
-                              endcase
-                          end
-                          if (channel_MISO == DAC_channel_sel_3) begin
-                              case (DAC_stream_sel_3)
-                                  0: DAC_pre_register_3 <= data_stream_1;
-                                  1: DAC_pre_register_3 <= data_stream_2;
-                                  2: DAC_pre_register_3 <= data_stream_3;
-                                  3: DAC_pre_register_3 <= data_stream_4;
-                                  4: DAC_pre_register_3 <= data_stream_5;
-                                  5: DAC_pre_register_3 <= data_stream_6;
-                                  6: DAC_pre_register_3 <= data_stream_7;
-                                  7: DAC_pre_register_3 <= data_stream_8;
-                                  8: DAC_pre_register_3 <= data_stream_9;
-                                  9: DAC_pre_register_3 <= data_stream_10;
-                                  10: DAC_pre_register_3 <= data_stream_11;
-                                  11: DAC_pre_register_3 <= data_stream_12;
-                                  12: DAC_pre_register_3 <= data_stream_13;
-                                  13: DAC_pre_register_3 <= data_stream_14;
-                                  14: DAC_pre_register_3 <= data_stream_15;
-                                  15: DAC_pre_register_3 <= data_stream_16;
-                                  16: DAC_pre_register_3 <= DAC_manual;
-                                  default: DAC_pre_register_3 <= 16'b0;
-                              endcase
-                          end
-                          if (channel_MISO == DAC_channel_sel_4) begin
-                              case (DAC_stream_sel_4)
-                                  0: DAC_pre_register_4 <= data_stream_1;
-                                  1: DAC_pre_register_4 <= data_stream_2;
-                                  2: DAC_pre_register_4 <= data_stream_3;
-                                  3: DAC_pre_register_4 <= data_stream_4;
-                                  4: DAC_pre_register_4 <= data_stream_5;
-                                  5: DAC_pre_register_4 <= data_stream_6;
-                                  6: DAC_pre_register_4 <= data_stream_7;
-                                  7: DAC_pre_register_4 <= data_stream_8;
-                                  8: DAC_pre_register_4 <= data_stream_9;
-                                  9: DAC_pre_register_4 <= data_stream_10;
-                                  10: DAC_pre_register_4 <= data_stream_11;
-                                  11: DAC_pre_register_4 <= data_stream_12;
-                                  12: DAC_pre_register_4 <= data_stream_13;
-                                  13: DAC_pre_register_4 <= data_stream_14;
-                                  14: DAC_pre_register_4 <= data_stream_15;
-                                  15: DAC_pre_register_4 <= data_stream_16;
-                                  16: DAC_pre_register_4 <= DAC_manual;
-                                  default: DAC_pre_register_4 <= 16'b0;
-                              endcase
-                          end
-                          if (channel_MISO == DAC_channel_sel_5) begin
-                              case (DAC_stream_sel_5)
-                                  0: DAC_pre_register_5 <= data_stream_1;
-                                  1: DAC_pre_register_5 <= data_stream_2;
-                                  2: DAC_pre_register_5 <= data_stream_3;
-                                  3: DAC_pre_register_5 <= data_stream_4;
-                                  4: DAC_pre_register_5 <= data_stream_5;
-                                  5: DAC_pre_register_5 <= data_stream_6;
-                                  6: DAC_pre_register_5 <= data_stream_7;
-                                  7: DAC_pre_register_5 <= data_stream_8;
-                                  8: DAC_pre_register_5 <= data_stream_9;
-                                  9: DAC_pre_register_5 <= data_stream_10;
-                                  10: DAC_pre_register_5 <= data_stream_11;
-                                  11: DAC_pre_register_5 <= data_stream_12;
-                                  12: DAC_pre_register_5 <= data_stream_13;
-                                  13: DAC_pre_register_5 <= data_stream_14;
-                                  14: DAC_pre_register_5 <= data_stream_15;
-                                  15: DAC_pre_register_5 <= data_stream_16;
-                                  16: DAC_pre_register_5 <= DAC_manual;
-                                  default: DAC_pre_register_5 <= 16'b0;
-                              endcase
-                          end
-                          if (channel_MISO == DAC_channel_sel_6) begin
-                              case (DAC_stream_sel_6)
-                                  0: DAC_pre_register_6 <= data_stream_1;
-                                  1: DAC_pre_register_6 <= data_stream_2;
-                                  2: DAC_pre_register_6 <= data_stream_3;
-                                  3: DAC_pre_register_6 <= data_stream_4;
-                                  4: DAC_pre_register_6 <= data_stream_5;
-                                  5: DAC_pre_register_6 <= data_stream_6;
-                                  6: DAC_pre_register_6 <= data_stream_7;
-                                  7: DAC_pre_register_6 <= data_stream_8;
-                                  8: DAC_pre_register_6 <= data_stream_9;
-                                  9: DAC_pre_register_6 <= data_stream_10;
-                                  10: DAC_pre_register_6 <= data_stream_11;
-                                  11: DAC_pre_register_6 <= data_stream_12;
-                                  12: DAC_pre_register_6 <= data_stream_13;
-                                  13: DAC_pre_register_6 <= data_stream_14;
-                                  14: DAC_pre_register_6 <= data_stream_15;
-                                  15: DAC_pre_register_6 <= data_stream_16;
-                                  16: DAC_pre_register_6 <= DAC_manual;
-                                  default: DAC_pre_register_6 <= 16'b0;
-                              endcase
-                          end
-                          if (channel_MISO == DAC_channel_sel_7) begin
-                              case (DAC_stream_sel_7)
-                                  0: DAC_pre_register_7 <= data_stream_1;
-                                  1: DAC_pre_register_7 <= data_stream_2;
-                                  2: DAC_pre_register_7 <= data_stream_3;
-                                  3: DAC_pre_register_7 <= data_stream_4;
-                                  4: DAC_pre_register_7 <= data_stream_5;
-                                  5: DAC_pre_register_7 <= data_stream_6;
-                                  6: DAC_pre_register_7 <= data_stream_7;
-                                  7: DAC_pre_register_7 <= data_stream_8;
-                                  8: DAC_pre_register_7 <= data_stream_9;
-                                  9: DAC_pre_register_7 <= data_stream_10;
-                                  10: DAC_pre_register_7 <= data_stream_11;
-                                  11: DAC_pre_register_7 <= data_stream_12;
-                                  12: DAC_pre_register_7 <= data_stream_13;
-                                  13: DAC_pre_register_7 <= data_stream_14;
-                                  14: DAC_pre_register_7 <= data_stream_15;
-                                  15: DAC_pre_register_7 <= data_stream_16;
-                                  16: DAC_pre_register_7 <= DAC_manual;
-                                  default: DAC_pre_register_7 <= 16'b0;
-                              endcase
-                          end
-                          if (channel_MISO == DAC_channel_sel_8) begin
-                              case (DAC_stream_sel_8)
-                                  0: DAC_pre_register_8 <= data_stream_1;
-                                  1: DAC_pre_register_8 <= data_stream_2;
-                                  2: DAC_pre_register_8 <= data_stream_3;
-                                  3: DAC_pre_register_8 <= data_stream_4;
-                                  4: DAC_pre_register_8 <= data_stream_5;
-                                  5: DAC_pre_register_8 <= data_stream_6;
-                                  6: DAC_pre_register_8 <= data_stream_7;
-                                  7: DAC_pre_register_8 <= data_stream_8;
-                                  8: DAC_pre_register_8 <= data_stream_9;
-                                  9: DAC_pre_register_8 <= data_stream_10;
-                                  10: DAC_pre_register_8 <= data_stream_11;
-                                  11: DAC_pre_register_8 <= data_stream_12;
-                                  12: DAC_pre_register_8 <= data_stream_13;
-                                  13: DAC_pre_register_8 <= data_stream_14;
-                                  14: DAC_pre_register_8 <= data_stream_15;
-                                  15: DAC_pre_register_8 <= data_stream_16;
-                                  16: DAC_pre_register_8 <= DAC_manual;
-                                  default: DAC_pre_register_8 <= 16'b0;
-                              endcase
-                          end                    
+                          // if (channel_MISO == DAC_channel_sel_1) begin
+                          //     case (DAC_stream_sel_1)
+                          //         0: DAC_pre_register_1 <= data_stream_1;
+                          //         1: DAC_pre_register_1 <= data_stream_2;
+                          //         2: DAC_pre_register_1 <= data_stream_3;
+                          //         3: DAC_pre_register_1 <= data_stream_4;
+                          //         4: DAC_pre_register_1 <= data_stream_5;
+                          //         5: DAC_pre_register_1 <= data_stream_6;
+                          //         6: DAC_pre_register_1 <= data_stream_7;
+                          //         7: DAC_pre_register_1 <= data_stream_8;
+                          //         8: DAC_pre_register_1 <= data_stream_9;
+                          //         9: DAC_pre_register_1 <= data_stream_10;
+                          //         10: DAC_pre_register_1 <= data_stream_11;
+                          //         11: DAC_pre_register_1 <= data_stream_12;
+                          //         12: DAC_pre_register_1 <= data_stream_13;
+                          //         13: DAC_pre_register_1 <= data_stream_14;
+                          //         14: DAC_pre_register_1 <= data_stream_15;
+                          //         15: DAC_pre_register_1 <= data_stream_16;
+                          //         16: DAC_pre_register_1 <= DAC_manual;
+                          //         default: DAC_pre_register_1 <= 16'b0;
+                          //     endcase
+                          // end
+                          // if (channel_MISO == DAC_channel_sel_2) begin
+                          //     case (DAC_stream_sel_2)
+                          //         0: DAC_pre_register_2 <= data_stream_1;
+                          //         1: DAC_pre_register_2 <= data_stream_2;
+                          //         2: DAC_pre_register_2 <= data_stream_3;
+                          //         3: DAC_pre_register_2 <= data_stream_4;
+                          //         4: DAC_pre_register_2 <= data_stream_5;
+                          //         5: DAC_pre_register_2 <= data_stream_6;
+                          //         6: DAC_pre_register_2 <= data_stream_7;
+                          //         7: DAC_pre_register_2 <= data_stream_8;
+                          //         8: DAC_pre_register_2 <= data_stream_9;
+                          //         9: DAC_pre_register_2 <= data_stream_10;
+                          //         10: DAC_pre_register_2 <= data_stream_11;
+                          //         11: DAC_pre_register_2 <= data_stream_12;
+                          //         12: DAC_pre_register_2 <= data_stream_13;
+                          //         13: DAC_pre_register_2 <= data_stream_14;
+                          //         14: DAC_pre_register_2 <= data_stream_15;
+                          //         15: DAC_pre_register_2 <= data_stream_16;
+                          //         16: DAC_pre_register_2 <= DAC_manual;
+                          //         default: DAC_pre_register_2 <= 16'b0;
+                          //     endcase
+                          // end
+                          // if (channel_MISO == DAC_channel_sel_3) begin
+                          //     case (DAC_stream_sel_3)
+                          //         0: DAC_pre_register_3 <= data_stream_1;
+                          //         1: DAC_pre_register_3 <= data_stream_2;
+                          //         2: DAC_pre_register_3 <= data_stream_3;
+                          //         3: DAC_pre_register_3 <= data_stream_4;
+                          //         4: DAC_pre_register_3 <= data_stream_5;
+                          //         5: DAC_pre_register_3 <= data_stream_6;
+                          //         6: DAC_pre_register_3 <= data_stream_7;
+                          //         7: DAC_pre_register_3 <= data_stream_8;
+                          //         8: DAC_pre_register_3 <= data_stream_9;
+                          //         9: DAC_pre_register_3 <= data_stream_10;
+                          //         10: DAC_pre_register_3 <= data_stream_11;
+                          //         11: DAC_pre_register_3 <= data_stream_12;
+                          //         12: DAC_pre_register_3 <= data_stream_13;
+                          //         13: DAC_pre_register_3 <= data_stream_14;
+                          //         14: DAC_pre_register_3 <= data_stream_15;
+                          //         15: DAC_pre_register_3 <= data_stream_16;
+                          //         16: DAC_pre_register_3 <= DAC_manual;
+                          //         default: DAC_pre_register_3 <= 16'b0;
+                          //     endcase
+                          // end
+                          // if (channel_MISO == DAC_channel_sel_4) begin
+                          //     case (DAC_stream_sel_4)
+                          //         0: DAC_pre_register_4 <= data_stream_1;
+                          //         1: DAC_pre_register_4 <= data_stream_2;
+                          //         2: DAC_pre_register_4 <= data_stream_3;
+                          //         3: DAC_pre_register_4 <= data_stream_4;
+                          //         4: DAC_pre_register_4 <= data_stream_5;
+                          //         5: DAC_pre_register_4 <= data_stream_6;
+                          //         6: DAC_pre_register_4 <= data_stream_7;
+                          //         7: DAC_pre_register_4 <= data_stream_8;
+                          //         8: DAC_pre_register_4 <= data_stream_9;
+                          //         9: DAC_pre_register_4 <= data_stream_10;
+                          //         10: DAC_pre_register_4 <= data_stream_11;
+                          //         11: DAC_pre_register_4 <= data_stream_12;
+                          //         12: DAC_pre_register_4 <= data_stream_13;
+                          //         13: DAC_pre_register_4 <= data_stream_14;
+                          //         14: DAC_pre_register_4 <= data_stream_15;
+                          //         15: DAC_pre_register_4 <= data_stream_16;
+                          //         16: DAC_pre_register_4 <= DAC_manual;
+                          //         default: DAC_pre_register_4 <= 16'b0;
+                          //     endcase
+                          // end
+                          // if (channel_MISO == DAC_channel_sel_5) begin
+                          //     case (DAC_stream_sel_5)
+                          //         0: DAC_pre_register_5 <= data_stream_1;
+                          //         1: DAC_pre_register_5 <= data_stream_2;
+                          //         2: DAC_pre_register_5 <= data_stream_3;
+                          //         3: DAC_pre_register_5 <= data_stream_4;
+                          //         4: DAC_pre_register_5 <= data_stream_5;
+                          //         5: DAC_pre_register_5 <= data_stream_6;
+                          //         6: DAC_pre_register_5 <= data_stream_7;
+                          //         7: DAC_pre_register_5 <= data_stream_8;
+                          //         8: DAC_pre_register_5 <= data_stream_9;
+                          //         9: DAC_pre_register_5 <= data_stream_10;
+                          //         10: DAC_pre_register_5 <= data_stream_11;
+                          //         11: DAC_pre_register_5 <= data_stream_12;
+                          //         12: DAC_pre_register_5 <= data_stream_13;
+                          //         13: DAC_pre_register_5 <= data_stream_14;
+                          //         14: DAC_pre_register_5 <= data_stream_15;
+                          //         15: DAC_pre_register_5 <= data_stream_16;
+                          //         16: DAC_pre_register_5 <= DAC_manual;
+                          //         default: DAC_pre_register_5 <= 16'b0;
+                          //     endcase
+                          // end
+                          // if (channel_MISO == DAC_channel_sel_6) begin
+                          //     case (DAC_stream_sel_6)
+                          //         0: DAC_pre_register_6 <= data_stream_1;
+                          //         1: DAC_pre_register_6 <= data_stream_2;
+                          //         2: DAC_pre_register_6 <= data_stream_3;
+                          //         3: DAC_pre_register_6 <= data_stream_4;
+                          //         4: DAC_pre_register_6 <= data_stream_5;
+                          //         5: DAC_pre_register_6 <= data_stream_6;
+                          //         6: DAC_pre_register_6 <= data_stream_7;
+                          //         7: DAC_pre_register_6 <= data_stream_8;
+                          //         8: DAC_pre_register_6 <= data_stream_9;
+                          //         9: DAC_pre_register_6 <= data_stream_10;
+                          //         10: DAC_pre_register_6 <= data_stream_11;
+                          //         11: DAC_pre_register_6 <= data_stream_12;
+                          //         12: DAC_pre_register_6 <= data_stream_13;
+                          //         13: DAC_pre_register_6 <= data_stream_14;
+                          //         14: DAC_pre_register_6 <= data_stream_15;
+                          //         15: DAC_pre_register_6 <= data_stream_16;
+                          //         16: DAC_pre_register_6 <= DAC_manual;
+                          //         default: DAC_pre_register_6 <= 16'b0;
+                          //     endcase
+                          // end
+                          // if (channel_MISO == DAC_channel_sel_7) begin
+                          //     case (DAC_stream_sel_7)
+                          //         0: DAC_pre_register_7 <= data_stream_1;
+                          //         1: DAC_pre_register_7 <= data_stream_2;
+                          //         2: DAC_pre_register_7 <= data_stream_3;
+                          //         3: DAC_pre_register_7 <= data_stream_4;
+                          //         4: DAC_pre_register_7 <= data_stream_5;
+                          //         5: DAC_pre_register_7 <= data_stream_6;
+                          //         6: DAC_pre_register_7 <= data_stream_7;
+                          //         7: DAC_pre_register_7 <= data_stream_8;
+                          //         8: DAC_pre_register_7 <= data_stream_9;
+                          //         9: DAC_pre_register_7 <= data_stream_10;
+                          //         10: DAC_pre_register_7 <= data_stream_11;
+                          //         11: DAC_pre_register_7 <= data_stream_12;
+                          //         12: DAC_pre_register_7 <= data_stream_13;
+                          //         13: DAC_pre_register_7 <= data_stream_14;
+                          //         14: DAC_pre_register_7 <= data_stream_15;
+                          //         15: DAC_pre_register_7 <= data_stream_16;
+                          //         16: DAC_pre_register_7 <= DAC_manual;
+                          //         default: DAC_pre_register_7 <= 16'b0;
+                          //     endcase
+                          // end
+                          // if (channel_MISO == DAC_channel_sel_8) begin
+                          //     case (DAC_stream_sel_8)
+                          //         0: DAC_pre_register_8 <= data_stream_1;
+                          //         1: DAC_pre_register_8 <= data_stream_2;
+                          //         2: DAC_pre_register_8 <= data_stream_3;
+                          //         3: DAC_pre_register_8 <= data_stream_4;
+                          //         4: DAC_pre_register_8 <= data_stream_5;
+                          //         5: DAC_pre_register_8 <= data_stream_6;
+                          //         6: DAC_pre_register_8 <= data_stream_7;
+                          //         7: DAC_pre_register_8 <= data_stream_8;
+                          //         8: DAC_pre_register_8 <= data_stream_9;
+                          //         9: DAC_pre_register_8 <= data_stream_10;
+                          //         10: DAC_pre_register_8 <= data_stream_11;
+                          //         11: DAC_pre_register_8 <= data_stream_12;
+                          //         12: DAC_pre_register_8 <= data_stream_13;
+                          //         13: DAC_pre_register_8 <= data_stream_14;
+                          //         14: DAC_pre_register_8 <= data_stream_15;
+                          //         15: DAC_pre_register_8 <= data_stream_16;
+                          //         16: DAC_pre_register_8 <= DAC_manual;
+                          //         default: DAC_pre_register_8 <= 16'b0;
+                          //     endcase
+                          // end                    
                           if (channel == 0) begin
                               timestamp <= timestamp + 1;
                           end
