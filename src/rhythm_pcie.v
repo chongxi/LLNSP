@@ -855,16 +855,7 @@ MOSI_command_selector_4x MOSI_command_generator (
                           data_stream_14_sel <= data_stream_14_sel_in;
                           data_stream_15_sel <= data_stream_15_sel_in;
                           data_stream_16_sel <= data_stream_16_sel_in;
-                          
-                          // DAC_pre_register_1 <= 16'h8000;        // set DACs to midrange, initially, to avoid loud 'pop' in audio at start
-                          // DAC_pre_register_2 <= 16'h8000;
-                          // DAC_pre_register_3 <= 16'h8000;
-                          // DAC_pre_register_4 <= 16'h8000;
-                          // DAC_pre_register_5 <= 16'h8000;
-                          // DAC_pre_register_6 <= 16'h8000;
-                          // DAC_pre_register_7 <= 16'h8000;
-                          // DAC_pre_register_8 <= 16'h8000;
-                          
+
                           SPI_running <= 1'b0;
                           
                           max_timestep <= max_timestep_dataclk;
@@ -903,17 +894,6 @@ MOSI_command_selector_4x MOSI_command_generator (
                               external_digout_C <= external_digout_enable_C ? TTL_in[external_digout_channel_C] : 0;
                               external_digout_D <= external_digout_enable_D ? TTL_in[external_digout_channel_D] : 0;                        
                           end
-      
-                          // if (channel == 0) begin                // update all DAC registers simultaneously
-                          //     DAC_register_1 <= DAC_pre_register_1;
-                          //     DAC_register_2 <= DAC_pre_register_2;
-                          //     DAC_register_3 <= DAC_pre_register_3;
-                          //     DAC_register_4 <= DAC_pre_register_4;
-                          //     DAC_register_5 <= DAC_pre_register_5;
-                          //     DAC_register_6 <= DAC_pre_register_6;
-                          //     DAC_register_7 <= DAC_pre_register_7;
-                          //     DAC_register_8 <= DAC_pre_register_8;
-                          // end
       
                           MOSI_A <= MOSI_cmd_A[15];
                           MOSI_B <= MOSI_cmd_B[15];
@@ -1983,184 +1963,7 @@ MOSI_command_selector_4x MOSI_command_generator (
                                   aux_cmd_index_3 <= aux_cmd_index_3 + 1;
                               end
                           end
-                          
-                          // Route selected samples to DAC outputs
-                          // if (channel_MISO == DAC_channel_sel_1) begin
-                          //     case (DAC_stream_sel_1)
-                          //         0: DAC_pre_register_1 <= data_stream_1;
-                          //         1: DAC_pre_register_1 <= data_stream_2;
-                          //         2: DAC_pre_register_1 <= data_stream_3;
-                          //         3: DAC_pre_register_1 <= data_stream_4;
-                          //         4: DAC_pre_register_1 <= data_stream_5;
-                          //         5: DAC_pre_register_1 <= data_stream_6;
-                          //         6: DAC_pre_register_1 <= data_stream_7;
-                          //         7: DAC_pre_register_1 <= data_stream_8;
-                          //         8: DAC_pre_register_1 <= data_stream_9;
-                          //         9: DAC_pre_register_1 <= data_stream_10;
-                          //         10: DAC_pre_register_1 <= data_stream_11;
-                          //         11: DAC_pre_register_1 <= data_stream_12;
-                          //         12: DAC_pre_register_1 <= data_stream_13;
-                          //         13: DAC_pre_register_1 <= data_stream_14;
-                          //         14: DAC_pre_register_1 <= data_stream_15;
-                          //         15: DAC_pre_register_1 <= data_stream_16;
-                          //         16: DAC_pre_register_1 <= DAC_manual;
-                          //         default: DAC_pre_register_1 <= 16'b0;
-                          //     endcase
-                          // end
-                          // if (channel_MISO == DAC_channel_sel_2) begin
-                          //     case (DAC_stream_sel_2)
-                          //         0: DAC_pre_register_2 <= data_stream_1;
-                          //         1: DAC_pre_register_2 <= data_stream_2;
-                          //         2: DAC_pre_register_2 <= data_stream_3;
-                          //         3: DAC_pre_register_2 <= data_stream_4;
-                          //         4: DAC_pre_register_2 <= data_stream_5;
-                          //         5: DAC_pre_register_2 <= data_stream_6;
-                          //         6: DAC_pre_register_2 <= data_stream_7;
-                          //         7: DAC_pre_register_2 <= data_stream_8;
-                          //         8: DAC_pre_register_2 <= data_stream_9;
-                          //         9: DAC_pre_register_2 <= data_stream_10;
-                          //         10: DAC_pre_register_2 <= data_stream_11;
-                          //         11: DAC_pre_register_2 <= data_stream_12;
-                          //         12: DAC_pre_register_2 <= data_stream_13;
-                          //         13: DAC_pre_register_2 <= data_stream_14;
-                          //         14: DAC_pre_register_2 <= data_stream_15;
-                          //         15: DAC_pre_register_2 <= data_stream_16;
-                          //         16: DAC_pre_register_2 <= DAC_manual;
-                          //         default: DAC_pre_register_2 <= 16'b0;
-                          //     endcase
-                          // end
-                          // if (channel_MISO == DAC_channel_sel_3) begin
-                          //     case (DAC_stream_sel_3)
-                          //         0: DAC_pre_register_3 <= data_stream_1;
-                          //         1: DAC_pre_register_3 <= data_stream_2;
-                          //         2: DAC_pre_register_3 <= data_stream_3;
-                          //         3: DAC_pre_register_3 <= data_stream_4;
-                          //         4: DAC_pre_register_3 <= data_stream_5;
-                          //         5: DAC_pre_register_3 <= data_stream_6;
-                          //         6: DAC_pre_register_3 <= data_stream_7;
-                          //         7: DAC_pre_register_3 <= data_stream_8;
-                          //         8: DAC_pre_register_3 <= data_stream_9;
-                          //         9: DAC_pre_register_3 <= data_stream_10;
-                          //         10: DAC_pre_register_3 <= data_stream_11;
-                          //         11: DAC_pre_register_3 <= data_stream_12;
-                          //         12: DAC_pre_register_3 <= data_stream_13;
-                          //         13: DAC_pre_register_3 <= data_stream_14;
-                          //         14: DAC_pre_register_3 <= data_stream_15;
-                          //         15: DAC_pre_register_3 <= data_stream_16;
-                          //         16: DAC_pre_register_3 <= DAC_manual;
-                          //         default: DAC_pre_register_3 <= 16'b0;
-                          //     endcase
-                          // end
-                          // if (channel_MISO == DAC_channel_sel_4) begin
-                          //     case (DAC_stream_sel_4)
-                          //         0: DAC_pre_register_4 <= data_stream_1;
-                          //         1: DAC_pre_register_4 <= data_stream_2;
-                          //         2: DAC_pre_register_4 <= data_stream_3;
-                          //         3: DAC_pre_register_4 <= data_stream_4;
-                          //         4: DAC_pre_register_4 <= data_stream_5;
-                          //         5: DAC_pre_register_4 <= data_stream_6;
-                          //         6: DAC_pre_register_4 <= data_stream_7;
-                          //         7: DAC_pre_register_4 <= data_stream_8;
-                          //         8: DAC_pre_register_4 <= data_stream_9;
-                          //         9: DAC_pre_register_4 <= data_stream_10;
-                          //         10: DAC_pre_register_4 <= data_stream_11;
-                          //         11: DAC_pre_register_4 <= data_stream_12;
-                          //         12: DAC_pre_register_4 <= data_stream_13;
-                          //         13: DAC_pre_register_4 <= data_stream_14;
-                          //         14: DAC_pre_register_4 <= data_stream_15;
-                          //         15: DAC_pre_register_4 <= data_stream_16;
-                          //         16: DAC_pre_register_4 <= DAC_manual;
-                          //         default: DAC_pre_register_4 <= 16'b0;
-                          //     endcase
-                          // end
-                          // if (channel_MISO == DAC_channel_sel_5) begin
-                          //     case (DAC_stream_sel_5)
-                          //         0: DAC_pre_register_5 <= data_stream_1;
-                          //         1: DAC_pre_register_5 <= data_stream_2;
-                          //         2: DAC_pre_register_5 <= data_stream_3;
-                          //         3: DAC_pre_register_5 <= data_stream_4;
-                          //         4: DAC_pre_register_5 <= data_stream_5;
-                          //         5: DAC_pre_register_5 <= data_stream_6;
-                          //         6: DAC_pre_register_5 <= data_stream_7;
-                          //         7: DAC_pre_register_5 <= data_stream_8;
-                          //         8: DAC_pre_register_5 <= data_stream_9;
-                          //         9: DAC_pre_register_5 <= data_stream_10;
-                          //         10: DAC_pre_register_5 <= data_stream_11;
-                          //         11: DAC_pre_register_5 <= data_stream_12;
-                          //         12: DAC_pre_register_5 <= data_stream_13;
-                          //         13: DAC_pre_register_5 <= data_stream_14;
-                          //         14: DAC_pre_register_5 <= data_stream_15;
-                          //         15: DAC_pre_register_5 <= data_stream_16;
-                          //         16: DAC_pre_register_5 <= DAC_manual;
-                          //         default: DAC_pre_register_5 <= 16'b0;
-                          //     endcase
-                          // end
-                          // if (channel_MISO == DAC_channel_sel_6) begin
-                          //     case (DAC_stream_sel_6)
-                          //         0: DAC_pre_register_6 <= data_stream_1;
-                          //         1: DAC_pre_register_6 <= data_stream_2;
-                          //         2: DAC_pre_register_6 <= data_stream_3;
-                          //         3: DAC_pre_register_6 <= data_stream_4;
-                          //         4: DAC_pre_register_6 <= data_stream_5;
-                          //         5: DAC_pre_register_6 <= data_stream_6;
-                          //         6: DAC_pre_register_6 <= data_stream_7;
-                          //         7: DAC_pre_register_6 <= data_stream_8;
-                          //         8: DAC_pre_register_6 <= data_stream_9;
-                          //         9: DAC_pre_register_6 <= data_stream_10;
-                          //         10: DAC_pre_register_6 <= data_stream_11;
-                          //         11: DAC_pre_register_6 <= data_stream_12;
-                          //         12: DAC_pre_register_6 <= data_stream_13;
-                          //         13: DAC_pre_register_6 <= data_stream_14;
-                          //         14: DAC_pre_register_6 <= data_stream_15;
-                          //         15: DAC_pre_register_6 <= data_stream_16;
-                          //         16: DAC_pre_register_6 <= DAC_manual;
-                          //         default: DAC_pre_register_6 <= 16'b0;
-                          //     endcase
-                          // end
-                          // if (channel_MISO == DAC_channel_sel_7) begin
-                          //     case (DAC_stream_sel_7)
-                          //         0: DAC_pre_register_7 <= data_stream_1;
-                          //         1: DAC_pre_register_7 <= data_stream_2;
-                          //         2: DAC_pre_register_7 <= data_stream_3;
-                          //         3: DAC_pre_register_7 <= data_stream_4;
-                          //         4: DAC_pre_register_7 <= data_stream_5;
-                          //         5: DAC_pre_register_7 <= data_stream_6;
-                          //         6: DAC_pre_register_7 <= data_stream_7;
-                          //         7: DAC_pre_register_7 <= data_stream_8;
-                          //         8: DAC_pre_register_7 <= data_stream_9;
-                          //         9: DAC_pre_register_7 <= data_stream_10;
-                          //         10: DAC_pre_register_7 <= data_stream_11;
-                          //         11: DAC_pre_register_7 <= data_stream_12;
-                          //         12: DAC_pre_register_7 <= data_stream_13;
-                          //         13: DAC_pre_register_7 <= data_stream_14;
-                          //         14: DAC_pre_register_7 <= data_stream_15;
-                          //         15: DAC_pre_register_7 <= data_stream_16;
-                          //         16: DAC_pre_register_7 <= DAC_manual;
-                          //         default: DAC_pre_register_7 <= 16'b0;
-                          //     endcase
-                          // end
-                          // if (channel_MISO == DAC_channel_sel_8) begin
-                          //     case (DAC_stream_sel_8)
-                          //         0: DAC_pre_register_8 <= data_stream_1;
-                          //         1: DAC_pre_register_8 <= data_stream_2;
-                          //         2: DAC_pre_register_8 <= data_stream_3;
-                          //         3: DAC_pre_register_8 <= data_stream_4;
-                          //         4: DAC_pre_register_8 <= data_stream_5;
-                          //         5: DAC_pre_register_8 <= data_stream_6;
-                          //         6: DAC_pre_register_8 <= data_stream_7;
-                          //         7: DAC_pre_register_8 <= data_stream_8;
-                          //         8: DAC_pre_register_8 <= data_stream_9;
-                          //         9: DAC_pre_register_8 <= data_stream_10;
-                          //         10: DAC_pre_register_8 <= data_stream_11;
-                          //         11: DAC_pre_register_8 <= data_stream_12;
-                          //         12: DAC_pre_register_8 <= data_stream_13;
-                          //         13: DAC_pre_register_8 <= data_stream_14;
-                          //         14: DAC_pre_register_8 <= data_stream_15;
-                          //         15: DAC_pre_register_8 <= data_stream_16;
-                          //         16: DAC_pre_register_8 <= DAC_manual;
-                          //         default: DAC_pre_register_8 <= 16'b0;
-                          //     endcase
-                          // end                    
+              
                           if (channel == 0) begin
                               timestamp <= timestamp + 1;
                           end
@@ -2243,393 +2046,373 @@ MOSI_command_selector_4x MOSI_command_generator (
             end
         end
         assign OVERFLOW_LED = fifo_overflow;
-              
-      // MISO phase selectors (to compensate for headstage cable delays)
-              
-      MISO_phase_selector MISO_phase_selector_1 (
-          .phase_select(delay_A), .MISO4x(in4x_A1), .MISO(in_A1));    
-  
-      MISO_phase_selector MISO_phase_selector_2 (
-          .phase_select(delay_A), .MISO4x(in4x_A2), .MISO(in_A2));    
-  
-      MISO_phase_selector MISO_phase_selector_3 (
-          .phase_select(delay_B), .MISO4x(in4x_B1), .MISO(in_B1));    
-  
-      MISO_phase_selector MISO_phase_selector_4 (
-          .phase_select(delay_B), .MISO4x(in4x_B2), .MISO(in_B2));    
-      
-      MISO_phase_selector MISO_phase_selector_5 (
-          .phase_select(delay_C), .MISO4x(in4x_C1), .MISO(in_C1));    
-  
-      MISO_phase_selector MISO_phase_selector_6 (
-          .phase_select(delay_C), .MISO4x(in4x_C2), .MISO(in_C2));    
-      
-      MISO_phase_selector MISO_phase_selector_7 (
-          .phase_select(delay_D), .MISO4x(in4x_D1), .MISO(in_D1));
-  
-      MISO_phase_selector MISO_phase_selector_8 (
-          .phase_select(delay_D), .MISO4x(in4x_D2), .MISO(in_D2));    
-          
-      MISO_DDR_phase_selector MISO_DDR_phase_selector_1 (
-          .phase_select(delay_A), .MISO4x(in4x_A1), .MISO(in_DDR_A1));    
-  
-      MISO_DDR_phase_selector MISO_DDR_phase_selector_2 (
-          .phase_select(delay_A), .MISO4x(in4x_A2), .MISO(in_DDR_A2));    
-  
-      MISO_DDR_phase_selector MISO_DDR_phase_selector_3 (
-          .phase_select(delay_B), .MISO4x(in4x_B1), .MISO(in_DDR_B1));    
-  
-      MISO_DDR_phase_selector MISO_DDR_phase_selector_4 (
-          .phase_select(delay_B), .MISO4x(in4x_B2), .MISO(in_DDR_B2));
-  
-      MISO_DDR_phase_selector MISO_DDR_phase_selector_5 (
-          .phase_select(delay_C), .MISO4x(in4x_C1), .MISO(in_DDR_C1));    
-  
-      MISO_DDR_phase_selector MISO_DDR_phase_selector_6 (
-          .phase_select(delay_C), .MISO4x(in4x_C2), .MISO(in_DDR_C2));    
-  
-      MISO_DDR_phase_selector MISO_DDR_phase_selector_7 (
-          .phase_select(delay_D), .MISO4x(in4x_D1), .MISO(in_DDR_D1));    
-  
-      MISO_DDR_phase_selector MISO_DDR_phase_selector_8 (
-          .phase_select(delay_D), .MISO4x(in4x_D2), .MISO(in_DDR_D2));
-  
-  
-      always @(*) begin
-          case (data_stream_1_sel)
-              0:        data_stream_1 <= result_A1;
-              1:        data_stream_1 <= result_A2;
-              2:        data_stream_1 <= result_B1;
-              3:        data_stream_1 <= result_B2;
-              4:        data_stream_1 <= result_C1;
-              5:        data_stream_1 <= result_C2;
-              6:        data_stream_1 <= result_D1;
-              7:        data_stream_1 <= result_D2;
-              8:        data_stream_1 <= result_DDR_A1;
-              9:     data_stream_1 <= result_DDR_A2;
-              10:    data_stream_1 <= result_DDR_B1;
-              11:    data_stream_1 <= result_DDR_B2;
-              12:    data_stream_1 <= result_DDR_C1;
-              13:    data_stream_1 <= result_DDR_C2;
-              14:    data_stream_1 <= result_DDR_D1;
-              15:    data_stream_1 <= result_DDR_D2;
-          endcase
-      end
-      
-      always @(*) begin
-          case (data_stream_2_sel)
-              0:        data_stream_2 <= result_A1;
-              1:        data_stream_2 <= result_A2;
-              2:        data_stream_2 <= result_B1;
-              3:        data_stream_2 <= result_B2;
-              4:        data_stream_2 <= result_C1;
-              5:        data_stream_2 <= result_C2;
-              6:        data_stream_2 <= result_D1;
-              7:        data_stream_2 <= result_D2;
-              8:        data_stream_2 <= result_DDR_A1;
-              9:     data_stream_2 <= result_DDR_A2;
-              10:    data_stream_2 <= result_DDR_B1;
-              11:    data_stream_2 <= result_DDR_B2;
-              12:    data_stream_2 <= result_DDR_C1;
-              13:    data_stream_2 <= result_DDR_C2;
-              14:    data_stream_2 <= result_DDR_D1;
-              15:    data_stream_2 <= result_DDR_D2;
-          endcase
-      end
-      
-      always @(*) begin
-          case (data_stream_3_sel)
-              0:        data_stream_3 <= result_A1;
-              1:        data_stream_3 <= result_A2;
-              2:        data_stream_3 <= result_B1;
-              3:        data_stream_3 <= result_B2;
-              4:        data_stream_3 <= result_C1;
-              5:        data_stream_3 <= result_C2;
-              6:        data_stream_3 <= result_D1;
-              7:        data_stream_3 <= result_D2;
-              8:        data_stream_3 <= result_DDR_A1;
-              9:     data_stream_3 <= result_DDR_A2;
-              10:    data_stream_3 <= result_DDR_B1;
-              11:    data_stream_3 <= result_DDR_B2;
-              12:    data_stream_3 <= result_DDR_C1;
-              13:    data_stream_3 <= result_DDR_C2;
-              14:    data_stream_3 <= result_DDR_D1;
-              15:    data_stream_3 <= result_DDR_D2;
-          endcase
-      end
-      
-      always @(*) begin
-          case (data_stream_4_sel)
-              0:        data_stream_4 <= result_A1;
-              1:        data_stream_4 <= result_A2;
-              2:        data_stream_4 <= result_B1;
-              3:        data_stream_4 <= result_B2;
-              4:        data_stream_4 <= result_C1;
-              5:        data_stream_4 <= result_C2;
-              6:        data_stream_4 <= result_D1;
-              7:        data_stream_4 <= result_D2;
-              8:        data_stream_4 <= result_DDR_A1;
-              9:     data_stream_4 <= result_DDR_A2;
-              10:    data_stream_4 <= result_DDR_B1;
-              11:    data_stream_4 <= result_DDR_B2;
-              12:    data_stream_4 <= result_DDR_C1;
-              13:    data_stream_4 <= result_DDR_C2;
-              14:    data_stream_4 <= result_DDR_D1;
-              15:    data_stream_4 <= result_DDR_D2;
-          endcase
-      end
-      
-      always @(*) begin
-          case (data_stream_5_sel)
-              0:        data_stream_5 <= result_A1;
-              1:        data_stream_5 <= result_A2;
-              2:        data_stream_5 <= result_B1;
-              3:        data_stream_5 <= result_B2;
-              4:        data_stream_5 <= result_C1;
-              5:        data_stream_5 <= result_C2;
-              6:        data_stream_5 <= result_D1;
-              7:        data_stream_5 <= result_D2;
-              8:        data_stream_5 <= result_DDR_A1;
-              9:     data_stream_5 <= result_DDR_A2;
-              10:    data_stream_5 <= result_DDR_B1;
-              11:    data_stream_5 <= result_DDR_B2;
-              12:    data_stream_5 <= result_DDR_C1;
-              13:    data_stream_5 <= result_DDR_C2;
-              14:    data_stream_5 <= result_DDR_D1;
-              15:    data_stream_5 <= result_DDR_D2;
-          endcase
-      end
-      
-      always @(*) begin
-          case (data_stream_6_sel)
-              0:        data_stream_6 <= result_A1;
-              1:        data_stream_6 <= result_A2;
-              2:        data_stream_6 <= result_B1;
-              3:        data_stream_6 <= result_B2;
-              4:        data_stream_6 <= result_C1;
-              5:        data_stream_6 <= result_C2;
-              6:        data_stream_6 <= result_D1;
-              7:        data_stream_6 <= result_D2;
-              8:        data_stream_6 <= result_DDR_A1;
-              9:     data_stream_6 <= result_DDR_A2;
-              10:    data_stream_6 <= result_DDR_B1;
-              11:    data_stream_6 <= result_DDR_B2;
-              12:    data_stream_6 <= result_DDR_C1;
-              13:    data_stream_6 <= result_DDR_C2;
-              14:    data_stream_6 <= result_DDR_D1;
-              15:    data_stream_6 <= result_DDR_D2;
-          endcase
-      end
-      
-      always @(*) begin
-          case (data_stream_7_sel)
-              0:        data_stream_7 <= result_A1;
-              1:        data_stream_7 <= result_A2;
-              2:        data_stream_7 <= result_B1;
-              3:        data_stream_7 <= result_B2;
-              4:        data_stream_7 <= result_C1;
-              5:        data_stream_7 <= result_C2;
-              6:        data_stream_7 <= result_D1;
-              7:        data_stream_7 <= result_D2;
-              8:        data_stream_7 <= result_DDR_A1;
-              9:     data_stream_7 <= result_DDR_A2;
-              10:    data_stream_7 <= result_DDR_B1;
-              11:    data_stream_7 <= result_DDR_B2;
-              12:    data_stream_7 <= result_DDR_C1;
-              13:    data_stream_7 <= result_DDR_C2;
-              14:    data_stream_7 <= result_DDR_D1;
-              15:    data_stream_7 <= result_DDR_D2;
-          endcase
-      end
-      
-      always @(*) begin
-          case (data_stream_8_sel)
-              0:        data_stream_8 <= result_A1;
-              1:        data_stream_8 <= result_A2;
-              2:        data_stream_8 <= result_B1;
-              3:        data_stream_8 <= result_B2;
-              4:        data_stream_8 <= result_C1;
-              5:        data_stream_8 <= result_C2;
-              6:        data_stream_8 <= result_D1;
-              7:        data_stream_8 <= result_D2;
-              8:        data_stream_8 <= result_DDR_A1;
-              9:     data_stream_8 <= result_DDR_A2;
-              10:    data_stream_8 <= result_DDR_B1;
-              11:    data_stream_8 <= result_DDR_B2;
-              12:    data_stream_8 <= result_DDR_C1;
-              13:    data_stream_8 <= result_DDR_C2;
-              14:    data_stream_8 <= result_DDR_D1;
-              15:    data_stream_8 <= result_DDR_D2;
-          endcase
-      end
-      
-      always @(*) begin
-          case (data_stream_9_sel)
-              0:        data_stream_9 <= result_A1;
-              1:        data_stream_9 <= result_A2;
-              2:        data_stream_9 <= result_B1;
-              3:        data_stream_9 <= result_B2;
-              4:        data_stream_9 <= result_C1;
-              5:        data_stream_9 <= result_C2;
-              6:        data_stream_9 <= result_D1;
-              7:        data_stream_9 <= result_D2;
-              8:        data_stream_9 <= result_DDR_A1;
-              9:     data_stream_9 <= result_DDR_A2;
-              10:    data_stream_9 <= result_DDR_B1;
-              11:    data_stream_9 <= result_DDR_B2;
-              12:    data_stream_9 <= result_DDR_C1;
-              13:    data_stream_9 <= result_DDR_C2;
-              14:    data_stream_9 <= result_DDR_D1;
-              15:    data_stream_9 <= result_DDR_D2;
-          endcase
-      end
-      
-      always @(*) begin
-          case (data_stream_10_sel)
-              0:        data_stream_10 <= result_A1;
-              1:        data_stream_10 <= result_A2;
-              2:        data_stream_10 <= result_B1;
-              3:        data_stream_10 <= result_B2;
-              4:        data_stream_10 <= result_C1;
-              5:        data_stream_10 <= result_C2;
-              6:        data_stream_10 <= result_D1;
-              7:        data_stream_10 <= result_D2;
-              8:        data_stream_10 <= result_DDR_A1;
-              9:     data_stream_10 <= result_DDR_A2;
-              10:    data_stream_10 <= result_DDR_B1;
-              11:    data_stream_10 <= result_DDR_B2;
-              12:    data_stream_10 <= result_DDR_C1;
-              13:    data_stream_10 <= result_DDR_C2;
-              14:    data_stream_10 <= result_DDR_D1;
-              15:    data_stream_10 <= result_DDR_D2;
-          endcase
-      end
-      
-      always @(*) begin
-          case (data_stream_11_sel)
-              0:        data_stream_11 <= result_A1;
-              1:        data_stream_11 <= result_A2;
-              2:        data_stream_11 <= result_B1;
-              3:        data_stream_11 <= result_B2;
-              4:        data_stream_11 <= result_C1;
-              5:        data_stream_11 <= result_C2;
-              6:        data_stream_11 <= result_D1;
-              7:        data_stream_11 <= result_D2;
-              8:        data_stream_11 <= result_DDR_A1;
-              9:     data_stream_11 <= result_DDR_A2;
-              10:    data_stream_11 <= result_DDR_B1;
-              11:    data_stream_11 <= result_DDR_B2;
-              12:    data_stream_11 <= result_DDR_C1;
-              13:    data_stream_11 <= result_DDR_C2;
-              14:    data_stream_11 <= result_DDR_D1;
-              15:    data_stream_11 <= result_DDR_D2;
-          endcase
-      end
-      
-      always @(*) begin
-          case (data_stream_12_sel)
-              0:        data_stream_12 <= result_A1;
-              1:        data_stream_12 <= result_A2;
-              2:        data_stream_12 <= result_B1;
-              3:        data_stream_12 <= result_B2;
-              4:        data_stream_12 <= result_C1;
-              5:        data_stream_12 <= result_C2;
-              6:        data_stream_12 <= result_D1;
-              7:        data_stream_12 <= result_D2;
-              8:        data_stream_12 <= result_DDR_A1;
-              9:     data_stream_12 <= result_DDR_A2;
-              10:    data_stream_12 <= result_DDR_B1;
-              11:    data_stream_12 <= result_DDR_B2;
-              12:    data_stream_12 <= result_DDR_C1;
-              13:    data_stream_12 <= result_DDR_C2;
-              14:    data_stream_12 <= result_DDR_D1;
-              15:    data_stream_12 <= result_DDR_D2;
-          endcase
-      end
-      
-      always @(*) begin
-          case (data_stream_13_sel)
-              0:        data_stream_13 <= result_A1;
-              1:        data_stream_13 <= result_A2;
-              2:        data_stream_13 <= result_B1;
-              3:        data_stream_13 <= result_B2;
-              4:        data_stream_13 <= result_C1;
-              5:        data_stream_13 <= result_C2;
-              6:        data_stream_13 <= result_D1;
-              7:        data_stream_13 <= result_D2;
-              8:        data_stream_13 <= result_DDR_A1;
-              9:     data_stream_13 <= result_DDR_A2;
-              10:    data_stream_13 <= result_DDR_B1;
-              11:    data_stream_13 <= result_DDR_B2;
-              12:    data_stream_13 <= result_DDR_C1;
-              13:    data_stream_13 <= result_DDR_C2;
-              14:    data_stream_13 <= result_DDR_D1;
-              15:    data_stream_13 <= result_DDR_D2;
-          endcase
-      end
-      
-      always @(*) begin
-          case (data_stream_14_sel)
-              0:        data_stream_14 <= result_A1;
-              1:        data_stream_14 <= result_A2;
-              2:        data_stream_14 <= result_B1;
-              3:        data_stream_14 <= result_B2;
-              4:        data_stream_14 <= result_C1;
-              5:        data_stream_14 <= result_C2;
-              6:        data_stream_14 <= result_D1;
-              7:        data_stream_14 <= result_D2;
-              8:        data_stream_14 <= result_DDR_A1;
-              9:     data_stream_14 <= result_DDR_A2;
-              10:    data_stream_14 <= result_DDR_B1;
-              11:    data_stream_14 <= result_DDR_B2;
-              12:    data_stream_14 <= result_DDR_C1;
-              13:    data_stream_14 <= result_DDR_C2;
-              14:    data_stream_14 <= result_DDR_D1;
-              15:    data_stream_14 <= result_DDR_D2;
-          endcase
-      end
-      
-      always @(*) begin
-          case (data_stream_15_sel)
-              0:        data_stream_15 <= result_A1;
-              1:        data_stream_15 <= result_A2;
-              2:        data_stream_15 <= result_B1;
-              3:        data_stream_15 <= result_B2;
-              4:        data_stream_15 <= result_C1;
-              5:        data_stream_15 <= result_C2;
-              6:        data_stream_15 <= result_D1;
-              7:        data_stream_15 <= result_D2;
-              8:        data_stream_15 <= result_DDR_A1;
-              9:     data_stream_15 <= result_DDR_A2;
-              10:    data_stream_15 <= result_DDR_B1;
-              11:    data_stream_15 <= result_DDR_B2;
-              12:    data_stream_15 <= result_DDR_C1;
-              13:    data_stream_15 <= result_DDR_C2;
-              14:    data_stream_15 <= result_DDR_D1;
-              15:    data_stream_15 <= result_DDR_D2;
-          endcase
-      end
-      
-      always @(*) begin
-          case (data_stream_16_sel)
-              0:        data_stream_16 <= result_A1;
-              1:        data_stream_16 <= result_A2;
-              2:        data_stream_16 <= result_B1;
-              3:        data_stream_16 <= result_B2;
-              4:        data_stream_16 <= result_C1;
-              5:        data_stream_16 <= result_C2;
-              6:        data_stream_16 <= result_D1;
-              7:        data_stream_16 <= result_D2;
-              8:        data_stream_16 <= result_DDR_A1;
-              9:     data_stream_16 <= result_DDR_A2;
-              10:    data_stream_16 <= result_DDR_B1;
-              11:    data_stream_16 <= result_DDR_B2;
-              12:    data_stream_16 <= result_DDR_C1;
-              13:    data_stream_16 <= result_DDR_C2;
-              14:    data_stream_16 <= result_DDR_D1;
-              15:    data_stream_16 <= result_DDR_D2;
-          endcase
-      end
+ 
+  MISO_phase_selector_4x MISO_generator (
+    .delay_A   (delay_A  ),
+    .delay_B   (delay_B  ),
+    .delay_C   (delay_C  ),
+    .delay_D   (delay_D  ),
+    .in4x_A1   (in4x_A1  ),
+    .in4x_A2   (in4x_A2  ),
+    .in4x_B1   (in4x_B1  ),
+    .in4x_B2   (in4x_B2  ),
+    .in4x_C1   (in4x_C1  ),
+    .in4x_C2   (in4x_C2  ),
+    .in4x_D1   (in4x_D1  ),
+    .in4x_D2   (in4x_D2  ),
+    .out_A1    (in_A1    ),
+    .out_A2    (in_A2    ),
+    .out_B1    (in_B1    ),
+    .out_B2    (in_B2    ),
+    .out_C1    (in_C1    ),
+    .out_C2    (in_C2    ),
+    .out_D1    (in_D1    ),
+    .out_D2    (in_D2    ),
+    .out_DDR_A1(in_DDR_A1),
+    .out_DDR_A2(in_DDR_A2),
+    .out_DDR_B1(in_DDR_B1),
+    .out_DDR_B2(in_DDR_B2),
+    .out_DDR_C1(in_DDR_C1),
+    .out_DDR_C2(in_DDR_C2),
+    .out_DDR_D1(in_DDR_D1),
+    .out_DDR_D2(in_DDR_D2)
+  );
+
+  always @(*) begin
+    case (data_stream_1_sel)
+      0:        data_stream_1 <= result_A1;
+      1:        data_stream_1 <= result_A2;
+      2:        data_stream_1 <= result_B1;
+      3:        data_stream_1 <= result_B2;
+      4:        data_stream_1 <= result_C1;
+      5:        data_stream_1 <= result_C2;
+      6:        data_stream_1 <= result_D1;
+      7:        data_stream_1 <= result_D2;
+      8:     data_stream_1 <= result_DDR_A1;
+      9:     data_stream_1 <= result_DDR_A2;
+      10:    data_stream_1 <= result_DDR_B1;
+      11:    data_stream_1 <= result_DDR_B2;
+      12:    data_stream_1 <= result_DDR_C1;
+      13:    data_stream_1 <= result_DDR_C2;
+      14:    data_stream_1 <= result_DDR_D1;
+      15:    data_stream_1 <= result_DDR_D2;
+    endcase
+  end
+
+  always @(*) begin
+    case (data_stream_2_sel)
+      0:        data_stream_2 <= result_A1;
+      1:        data_stream_2 <= result_A2;
+      2:        data_stream_2 <= result_B1;
+      3:        data_stream_2 <= result_B2;
+      4:        data_stream_2 <= result_C1;
+      5:        data_stream_2 <= result_C2;
+      6:        data_stream_2 <= result_D1;
+      7:        data_stream_2 <= result_D2;
+      8:     data_stream_2 <= result_DDR_A1;
+      9:     data_stream_2 <= result_DDR_A2;
+      10:    data_stream_2 <= result_DDR_B1;
+      11:    data_stream_2 <= result_DDR_B2;
+      12:    data_stream_2 <= result_DDR_C1;
+      13:    data_stream_2 <= result_DDR_C2;
+      14:    data_stream_2 <= result_DDR_D1;
+      15:    data_stream_2 <= result_DDR_D2;
+    endcase
+  end
+
+  always @(*) begin
+    case (data_stream_3_sel)
+      0:        data_stream_3 <= result_A1;
+      1:        data_stream_3 <= result_A2;
+      2:        data_stream_3 <= result_B1;
+      3:        data_stream_3 <= result_B2;
+      4:        data_stream_3 <= result_C1;
+      5:        data_stream_3 <= result_C2;
+      6:        data_stream_3 <= result_D1;
+      7:        data_stream_3 <= result_D2;
+      8:     data_stream_3 <= result_DDR_A1;
+      9:     data_stream_3 <= result_DDR_A2;
+      10:    data_stream_3 <= result_DDR_B1;
+      11:    data_stream_3 <= result_DDR_B2;
+      12:    data_stream_3 <= result_DDR_C1;
+      13:    data_stream_3 <= result_DDR_C2;
+      14:    data_stream_3 <= result_DDR_D1;
+      15:    data_stream_3 <= result_DDR_D2;
+    endcase
+  end
+
+  always @(*) begin
+    case (data_stream_4_sel)
+      0:        data_stream_4 <= result_A1;
+      1:        data_stream_4 <= result_A2;
+      2:        data_stream_4 <= result_B1;
+      3:        data_stream_4 <= result_B2;
+      4:        data_stream_4 <= result_C1;
+      5:        data_stream_4 <= result_C2;
+      6:        data_stream_4 <= result_D1;
+      7:        data_stream_4 <= result_D2;
+      8:     data_stream_4 <= result_DDR_A1;
+      9:     data_stream_4 <= result_DDR_A2;
+      10:    data_stream_4 <= result_DDR_B1;
+      11:    data_stream_4 <= result_DDR_B2;
+      12:    data_stream_4 <= result_DDR_C1;
+      13:    data_stream_4 <= result_DDR_C2;
+      14:    data_stream_4 <= result_DDR_D1;
+      15:    data_stream_4 <= result_DDR_D2;
+    endcase
+  end
+
+  always @(*) begin
+    case (data_stream_5_sel)
+      0:        data_stream_5 <= result_A1;
+      1:        data_stream_5 <= result_A2;
+      2:        data_stream_5 <= result_B1;
+      3:        data_stream_5 <= result_B2;
+      4:        data_stream_5 <= result_C1;
+      5:        data_stream_5 <= result_C2;
+      6:        data_stream_5 <= result_D1;
+      7:        data_stream_5 <= result_D2;
+      8:     data_stream_5 <= result_DDR_A1;
+      9:     data_stream_5 <= result_DDR_A2;
+      10:    data_stream_5 <= result_DDR_B1;
+      11:    data_stream_5 <= result_DDR_B2;
+      12:    data_stream_5 <= result_DDR_C1;
+      13:    data_stream_5 <= result_DDR_C2;
+      14:    data_stream_5 <= result_DDR_D1;
+      15:    data_stream_5 <= result_DDR_D2;
+    endcase
+  end
+
+  always @(*) begin
+    case (data_stream_6_sel)
+      0:        data_stream_6 <= result_A1;
+      1:        data_stream_6 <= result_A2;
+      2:        data_stream_6 <= result_B1;
+      3:        data_stream_6 <= result_B2;
+      4:        data_stream_6 <= result_C1;
+      5:        data_stream_6 <= result_C2;
+      6:        data_stream_6 <= result_D1;
+      7:        data_stream_6 <= result_D2;
+      8:     data_stream_6 <= result_DDR_A1;
+      9:     data_stream_6 <= result_DDR_A2;
+      10:    data_stream_6 <= result_DDR_B1;
+      11:    data_stream_6 <= result_DDR_B2;
+      12:    data_stream_6 <= result_DDR_C1;
+      13:    data_stream_6 <= result_DDR_C2;
+      14:    data_stream_6 <= result_DDR_D1;
+      15:    data_stream_6 <= result_DDR_D2;
+    endcase
+  end
+
+  always @(*) begin
+    case (data_stream_7_sel)
+      0:        data_stream_7 <= result_A1;
+      1:        data_stream_7 <= result_A2;
+      2:        data_stream_7 <= result_B1;
+      3:        data_stream_7 <= result_B2;
+      4:        data_stream_7 <= result_C1;
+      5:        data_stream_7 <= result_C2;
+      6:        data_stream_7 <= result_D1;
+      7:        data_stream_7 <= result_D2;
+      8:     data_stream_7 <= result_DDR_A1;
+      9:     data_stream_7 <= result_DDR_A2;
+      10:    data_stream_7 <= result_DDR_B1;
+      11:    data_stream_7 <= result_DDR_B2;
+      12:    data_stream_7 <= result_DDR_C1;
+      13:    data_stream_7 <= result_DDR_C2;
+      14:    data_stream_7 <= result_DDR_D1;
+      15:    data_stream_7 <= result_DDR_D2;
+    endcase
+  end
+
+  always @(*) begin
+    case (data_stream_8_sel)
+      0:        data_stream_8 <= result_A1;
+      1:        data_stream_8 <= result_A2;
+      2:        data_stream_8 <= result_B1;
+      3:        data_stream_8 <= result_B2;
+      4:        data_stream_8 <= result_C1;
+      5:        data_stream_8 <= result_C2;
+      6:        data_stream_8 <= result_D1;
+      7:        data_stream_8 <= result_D2;
+      8:     data_stream_8 <= result_DDR_A1;
+      9:     data_stream_8 <= result_DDR_A2;
+      10:    data_stream_8 <= result_DDR_B1;
+      11:    data_stream_8 <= result_DDR_B2;
+      12:    data_stream_8 <= result_DDR_C1;
+      13:    data_stream_8 <= result_DDR_C2;
+      14:    data_stream_8 <= result_DDR_D1;
+      15:    data_stream_8 <= result_DDR_D2;
+    endcase
+  end
+
+  always @(*) begin
+    case (data_stream_9_sel)
+      0:        data_stream_9 <= result_A1;
+      1:        data_stream_9 <= result_A2;
+      2:        data_stream_9 <= result_B1;
+      3:        data_stream_9 <= result_B2;
+      4:        data_stream_9 <= result_C1;
+      5:        data_stream_9 <= result_C2;
+      6:        data_stream_9 <= result_D1;
+      7:        data_stream_9 <= result_D2;
+      8:     data_stream_9 <= result_DDR_A1;
+      9:     data_stream_9 <= result_DDR_A2;
+      10:    data_stream_9 <= result_DDR_B1;
+      11:    data_stream_9 <= result_DDR_B2;
+      12:    data_stream_9 <= result_DDR_C1;
+      13:    data_stream_9 <= result_DDR_C2;
+      14:    data_stream_9 <= result_DDR_D1;
+      15:    data_stream_9 <= result_DDR_D2;
+    endcase
+  end
+
+  always @(*) begin
+    case (data_stream_10_sel)
+      0:        data_stream_10 <= result_A1;
+      1:        data_stream_10 <= result_A2;
+      2:        data_stream_10 <= result_B1;
+      3:        data_stream_10 <= result_B2;
+      4:        data_stream_10 <= result_C1;
+      5:        data_stream_10 <= result_C2;
+      6:        data_stream_10 <= result_D1;
+      7:        data_stream_10 <= result_D2;
+      8:     data_stream_10 <= result_DDR_A1;
+      9:     data_stream_10 <= result_DDR_A2;
+      10:    data_stream_10 <= result_DDR_B1;
+      11:    data_stream_10 <= result_DDR_B2;
+      12:    data_stream_10 <= result_DDR_C1;
+      13:    data_stream_10 <= result_DDR_C2;
+      14:    data_stream_10 <= result_DDR_D1;
+      15:    data_stream_10 <= result_DDR_D2;
+    endcase
+  end
+
+  always @(*) begin
+    case (data_stream_11_sel)
+      0:        data_stream_11 <= result_A1;
+      1:        data_stream_11 <= result_A2;
+      2:        data_stream_11 <= result_B1;
+      3:        data_stream_11 <= result_B2;
+      4:        data_stream_11 <= result_C1;
+      5:        data_stream_11 <= result_C2;
+      6:        data_stream_11 <= result_D1;
+      7:        data_stream_11 <= result_D2;
+      8:     data_stream_11 <= result_DDR_A1;
+      9:     data_stream_11 <= result_DDR_A2;
+      10:    data_stream_11 <= result_DDR_B1;
+      11:    data_stream_11 <= result_DDR_B2;
+      12:    data_stream_11 <= result_DDR_C1;
+      13:    data_stream_11 <= result_DDR_C2;
+      14:    data_stream_11 <= result_DDR_D1;
+      15:    data_stream_11 <= result_DDR_D2;
+    endcase
+  end
+
+  always @(*) begin
+    case (data_stream_12_sel)
+      0:        data_stream_12 <= result_A1;
+      1:        data_stream_12 <= result_A2;
+      2:        data_stream_12 <= result_B1;
+      3:        data_stream_12 <= result_B2;
+      4:        data_stream_12 <= result_C1;
+      5:        data_stream_12 <= result_C2;
+      6:        data_stream_12 <= result_D1;
+      7:        data_stream_12 <= result_D2;
+      8:     data_stream_12 <= result_DDR_A1;
+      9:     data_stream_12 <= result_DDR_A2;
+      10:    data_stream_12 <= result_DDR_B1;
+      11:    data_stream_12 <= result_DDR_B2;
+      12:    data_stream_12 <= result_DDR_C1;
+      13:    data_stream_12 <= result_DDR_C2;
+      14:    data_stream_12 <= result_DDR_D1;
+      15:    data_stream_12 <= result_DDR_D2;
+    endcase
+  end
+
+  always @(*) begin
+    case (data_stream_13_sel)
+      0:        data_stream_13 <= result_A1;
+      1:        data_stream_13 <= result_A2;
+      2:        data_stream_13 <= result_B1;
+      3:        data_stream_13 <= result_B2;
+      4:        data_stream_13 <= result_C1;
+      5:        data_stream_13 <= result_C2;
+      6:        data_stream_13 <= result_D1;
+      7:        data_stream_13 <= result_D2;
+      8:     data_stream_13 <= result_DDR_A1;
+      9:     data_stream_13 <= result_DDR_A2;
+      10:    data_stream_13 <= result_DDR_B1;
+      11:    data_stream_13 <= result_DDR_B2;
+      12:    data_stream_13 <= result_DDR_C1;
+      13:    data_stream_13 <= result_DDR_C2;
+      14:    data_stream_13 <= result_DDR_D1;
+      15:    data_stream_13 <= result_DDR_D2;
+    endcase
+  end
+
+  always @(*) begin
+    case (data_stream_14_sel)
+      0:        data_stream_14 <= result_A1;
+      1:        data_stream_14 <= result_A2;
+      2:        data_stream_14 <= result_B1;
+      3:        data_stream_14 <= result_B2;
+      4:        data_stream_14 <= result_C1;
+      5:        data_stream_14 <= result_C2;
+      6:        data_stream_14 <= result_D1;
+      7:        data_stream_14 <= result_D2;
+      8:     data_stream_14 <= result_DDR_A1;
+      9:     data_stream_14 <= result_DDR_A2;
+      10:    data_stream_14 <= result_DDR_B1;
+      11:    data_stream_14 <= result_DDR_B2;
+      12:    data_stream_14 <= result_DDR_C1;
+      13:    data_stream_14 <= result_DDR_C2;
+      14:    data_stream_14 <= result_DDR_D1;
+      15:    data_stream_14 <= result_DDR_D2;
+    endcase
+  end
+
+  always @(*) begin
+    case (data_stream_15_sel)
+      0:        data_stream_15 <= result_A1;
+      1:        data_stream_15 <= result_A2;
+      2:        data_stream_15 <= result_B1;
+      3:        data_stream_15 <= result_B2;
+      4:        data_stream_15 <= result_C1;
+      5:        data_stream_15 <= result_C2;
+      6:        data_stream_15 <= result_D1;
+      7:        data_stream_15 <= result_D2;
+      8:     data_stream_15 <= result_DDR_A1;
+      9:     data_stream_15 <= result_DDR_A2;
+      10:    data_stream_15 <= result_DDR_B1;
+      11:    data_stream_15 <= result_DDR_B2;
+      12:    data_stream_15 <= result_DDR_C1;
+      13:    data_stream_15 <= result_DDR_C2;
+      14:    data_stream_15 <= result_DDR_D1;
+      15:    data_stream_15 <= result_DDR_D2;
+    endcase
+  end
+
+  always @(*) begin
+    case (data_stream_16_sel)
+      0:        data_stream_16 <= result_A1;
+      1:        data_stream_16 <= result_A2;
+      2:        data_stream_16 <= result_B1;
+      3:        data_stream_16 <= result_B2;
+      4:        data_stream_16 <= result_C1;
+      5:        data_stream_16 <= result_C2;
+      6:        data_stream_16 <= result_D1;
+      7:        data_stream_16 <= result_D2;
+      8:     data_stream_16 <= result_DDR_A1;
+      9:     data_stream_16 <= result_DDR_A2;
+      10:    data_stream_16 <= result_DDR_B1;
+      11:    data_stream_16 <= result_DDR_B2;
+      12:    data_stream_16 <= result_DDR_C1;
+      13:    data_stream_16 <= result_DDR_C2;
+      14:    data_stream_16 <= result_DDR_D1;
+      15:    data_stream_16 <= result_DDR_D2;
+    endcase
+  end
 
       xillybus xillybus_ins (
       

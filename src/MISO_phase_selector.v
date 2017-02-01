@@ -1,10 +1,9 @@
-`timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 		 Intan Technologies, LLC
 // 
 // Design Name: 	 RHD2000 Rhythm Interface
 // Module Name:    MISO_phase_selector, MISO_DDR_phase_selector
-// Project Name:   Opal Kelly FPGA/USB RHD2000 Interface
+// Project Name:   xillybus_spi 
 // Target Devices: 
 // Tool versions: 
 // Description:    Downsamples MISO by factor of 4, with selectable phase lag to
@@ -18,8 +17,93 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 
+module MISO_phase_selector_4x (
+	// delay
+	input  wire [ 3:0] delay_A  ,
+	input  wire [ 3:0] delay_B  ,
+	input  wire [ 3:0] delay_C  ,
+	input  wire [ 3:0] delay_D  ,
+	// oversampled MISO input
+	input  wire [73:0] in4x_A1  ,
+	input  wire [73:0] in4x_A2  ,
+	input  wire [73:0] in4x_B1  ,
+	input  wire [73:0] in4x_B2  ,
+	input  wire [73:0] in4x_C1  ,
+	input  wire [73:0] in4x_C2  ,
+	input  wire [73:0] in4x_D1  ,
+	input  wire [73:0] in4x_D2  ,
+	// MISO output
+	output wire [15:0] out_A1, 
+	output wire [15:0] out_A2,
+	output wire [15:0] out_B1, 
+	output wire [15:0] out_B2,
+	output wire [15:0] out_C1, 
+	output wire [15:0] out_C2,
+	output wire [15:0] out_D1, 
+	output wire [15:0] out_D2,
+	output wire [15:0] out_DDR_A1, 
+	output wire [15:0] out_DDR_A2,
+	output wire [15:0] out_DDR_B1, 
+	output wire [15:0] out_DDR_B2,
+	output wire [15:0] out_DDR_C1, 
+	output wire [15:0] out_DDR_C2,
+	output wire [15:0] out_DDR_D1, 
+	output wire [15:0] out_DDR_D2
+);
+
+  // MISO phase selectors (to compensate for headstage cable delays)
+  MISO_phase_selector MISO_phase_selector_1 (
+      .phase_select(delay_A), .MISO4x(in4x_A1), .MISO(out_A1));    
+
+  MISO_phase_selector MISO_phase_selector_2 (
+      .phase_select(delay_A), .MISO4x(in4x_A2), .MISO(out_A2));    
+
+  MISO_phase_selector MISO_phase_selector_3 (
+      .phase_select(delay_B), .MISO4x(in4x_B1), .MISO(out_B1));    
+
+  MISO_phase_selector MISO_phase_selector_4 (
+      .phase_select(delay_B), .MISO4x(in4x_B2), .MISO(out_B2));    
+  
+  MISO_phase_selector MISO_phase_selector_5 (
+      .phase_select(delay_C), .MISO4x(in4x_C1), .MISO(out_C1));    
+
+  MISO_phase_selector MISO_phase_selector_6 (
+      .phase_select(delay_C), .MISO4x(in4x_C2), .MISO(out_C2));    
+  
+  MISO_phase_selector MISO_phase_selector_7 (
+      .phase_select(delay_D), .MISO4x(in4x_D1), .MISO(out_D1));
+
+  MISO_phase_selector MISO_phase_selector_8 (
+      .phase_select(delay_D), .MISO4x(in4x_D2), .MISO(out_D2));    
+      
+  MISO_DDR_phase_selector MISO_DDR_phase_selector_1 (
+      .phase_select(delay_A), .MISO4x(in4x_A1), .MISO(out_DDR_A1));    
+
+  MISO_DDR_phase_selector MISO_DDR_phase_selector_2 (
+      .phase_select(delay_A), .MISO4x(in4x_A2), .MISO(out_DDR_A2));    
+
+  MISO_DDR_phase_selector MISO_DDR_phase_selector_3 (
+      .phase_select(delay_B), .MISO4x(in4x_B1), .MISO(out_DDR_B1));    
+
+  MISO_DDR_phase_selector MISO_DDR_phase_selector_4 (
+      .phase_select(delay_B), .MISO4x(in4x_B2), .MISO(out_DDR_B2));
+
+  MISO_DDR_phase_selector MISO_DDR_phase_selector_5 (
+      .phase_select(delay_C), .MISO4x(in4x_C1), .MISO(out_DDR_C1));    
+
+  MISO_DDR_phase_selector MISO_DDR_phase_selector_6 (
+      .phase_select(delay_C), .MISO4x(in4x_C2), .MISO(out_DDR_C2));    
+
+  MISO_DDR_phase_selector MISO_DDR_phase_selector_7 (
+      .phase_select(delay_D), .MISO4x(in4x_D1), .MISO(out_DDR_D1));    
+
+  MISO_DDR_phase_selector MISO_DDR_phase_selector_8 (
+      .phase_select(delay_D), .MISO4x(in4x_D2), .MISO(out_DDR_D2));
+
+endmodule
+
 module MISO_phase_selector(
-	input wire [3:0] 		phase_select,	// MISO sampling phase lag to compensate for headstage cable delay
+	input wire [3:0] 	phase_select,	// MISO sampling phase lag to compensate for headstage cable delay
 	input wire [73:0] 	MISO4x,			// 4x oversampled MISO input
 	output reg [15:0] 	MISO				// 16-bit MISO output
 	);
@@ -46,7 +130,7 @@ endmodule
 
 
 module MISO_DDR_phase_selector(
-	input wire [3:0] 		phase_select,	// MISO sampling phase lag to compensate for headstage cable delay
+	input wire [3:0] 	phase_select,	// MISO sampling phase lag to compensate for headstage cable delay
 	input wire [73:0] 	MISO4x,			// 4x oversampled MISO input
 	output reg [15:0] 	MISO				// 16-bit MISO output
 	);
