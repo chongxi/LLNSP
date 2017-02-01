@@ -657,18 +657,23 @@ module rhythm_pcie (
       end
       
       
-      MOSI_command_selector command_selector_A (
-          .channel(channel), .DSP_settle(DSP_settle), .aux_cmd(aux_cmd_A), .digout_override(external_digout_A), .MOSI_cmd(MOSI_cmd_selected_A));
-  
-      MOSI_command_selector command_selector_B (
-          .channel(channel), .DSP_settle(DSP_settle), .aux_cmd(aux_cmd_B), .digout_override(external_digout_B), .MOSI_cmd(MOSI_cmd_selected_B));
-  
-      MOSI_command_selector command_selector_C (
-          .channel(channel), .DSP_settle(DSP_settle), .aux_cmd(aux_cmd_C), .digout_override(external_digout_C), .MOSI_cmd(MOSI_cmd_selected_C));
-  
-      MOSI_command_selector command_selector_D (
-          .channel(channel), .DSP_settle(DSP_settle), .aux_cmd(aux_cmd_D), .digout_override(external_digout_D), .MOSI_cmd(MOSI_cmd_selected_D));      
-          
+MOSI_command_selector_4x MOSI_command_generator (
+  .channel          (channel            ),
+  .DSP_settle       (DSP_settle         ),
+  .aux_cmd_A        (aux_cmd_A          ),
+  .aux_cmd_B        (aux_cmd_B          ),
+  .aux_cmd_C        (aux_cmd_C          ),
+  .aux_cmd_D        (aux_cmd_D          ),
+  .external_digout_A(external_digout_A  ),
+  .external_digout_B(external_digout_B  ),
+  .external_digout_C(external_digout_C  ),
+  .external_digout_D(external_digout_D  ),
+  .MOSI_cmd_A       (MOSI_cmd_selected_A),
+  .MOSI_cmd_B       (MOSI_cmd_selected_B),
+  .MOSI_cmd_C       (MOSI_cmd_selected_C),
+  .MOSI_cmd_D       (MOSI_cmd_selected_D)
+);
+
           assign header_magic_number = 64'hC691199927021942;  // Fixed 64-bit "magic number" that begins each data frame
                                                                                    // to aid in synchronization.
           assign data_stream_filler = 16'd0;

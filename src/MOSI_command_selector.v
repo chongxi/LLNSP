@@ -1,3 +1,35 @@
+module MOSI_command_selector_4x(
+	input wire [5:0] channel,
+	input wire DSP_settle,
+	input wire [15:0] aux_cmd_A,
+	input wire [15:0] aux_cmd_B,
+	input wire [15:0] aux_cmd_C,
+	input wire [15:0] aux_cmd_D,
+	input wire external_digout_A,
+	input wire external_digout_B,
+	input wire external_digout_C,
+	input wire external_digout_D,
+	output reg [15:0] MOSI_cmd_A,
+	output reg [15:0] MOSI_cmd_B,
+	output reg [15:0] MOSI_cmd_C,
+	output reg [15:0] MOSI_cmd_D
+	);
+
+  MOSI_command_selector command_selector_A (
+      .channel(channel), .DSP_settle(DSP_settle), .aux_cmd(aux_cmd_A), .digout_override(external_digout_A), .MOSI_cmd(MOSI_cmd_A));
+
+  MOSI_command_selector command_selector_B (
+      .channel(channel), .DSP_settle(DSP_settle), .aux_cmd(aux_cmd_B), .digout_override(external_digout_B), .MOSI_cmd(MOSI_cmd_B));
+
+  MOSI_command_selector command_selector_C (
+      .channel(channel), .DSP_settle(DSP_settle), .aux_cmd(aux_cmd_C), .digout_override(external_digout_C), .MOSI_cmd(MOSI_cmd_C));
+
+  MOSI_command_selector command_selector_D (
+      .channel(channel), .DSP_settle(DSP_settle), .aux_cmd(aux_cmd_D), .digout_override(external_digout_D), .MOSI_cmd(MOSI_cmd_D));      
+      
+
+endmodule
+
 // This simple module creates MOSI commands.  If channel is between 0 and 31, the command is CONVERT(channel),
 // and the LSB is set if DSP_settle = 1.  If channel is between 32 and 34, aux_cmd is used.
 module MOSI_command_selector (
