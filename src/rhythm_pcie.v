@@ -139,7 +139,7 @@ module rhythm_pcie (
   // Wires related to /dev/xillybus_control_regs_16
   wire        user_r_control_regs_16_rden     ;
   wire        user_r_control_regs_16_empty    ;
-  reg  [15:0] user_r_control_regs_16_data     ;
+  wire [15:0] user_r_control_regs_16_data     ;
   wire        user_r_control_regs_16_eof      ;
   wire        user_r_control_regs_16_open     ;
   wire        user_w_control_regs_16_wren     ;
@@ -152,7 +152,7 @@ module rhythm_pcie (
   // Wires related to /dev/xillybus_status_regs_16
   wire        user_r_status_regs_16_rden     ;
   wire        user_r_status_regs_16_empty    ;
-  reg  [15:0] user_r_status_regs_16_data     ;
+  wire [15:0] user_r_status_regs_16_data     ;
   wire        user_r_status_regs_16_eof      ;
   wire        user_r_status_regs_16_open     ;
   wire [ 4:0] user_status_regs_16_addr       ;
