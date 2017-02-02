@@ -9,10 +9,10 @@ module MOSI_command_selector_4x(
 	input wire external_digout_B,
 	input wire external_digout_C,
 	input wire external_digout_D,
-	output reg [15:0] MOSI_cmd_A,
-	output reg [15:0] MOSI_cmd_B,
-	output reg [15:0] MOSI_cmd_C,
-	output reg [15:0] MOSI_cmd_D
+	output wire [15:0] MOSI_cmd_A,
+	output wire [15:0] MOSI_cmd_B,
+	output wire [15:0] MOSI_cmd_C,
+	output wire [15:0] MOSI_cmd_D
 	);
 
   MOSI_command_selector command_selector_A (

@@ -48,7 +48,7 @@ upgrade_ip [get_ips]
 
 #This is specific for xillybus. It uses a file from the pcie IP example. Instead of copying it, which can generate errors between versions, we just generate the example
 generate_target example [get_ips $pcie_vivado]
-file copy -force "[file normalize "$proj_dir/${proj_name}.srcs/sources_1/ip/$pcie_vivado/example_design/support/${pcie_vivado}_pipe_clock.v"]" "[file normalize "$sources_dir"]"
+file copy -force "[file normalize "$proj_dir/${proj_name}.srcs/sources_1/ip/$pcie_vivado/example_design/support/${pcie_vivado}_pipe_clock.v"]" "[file normalize "$sources_dir/pcie"]"
 
 add_files -fileset $obj $sources_dir
 
