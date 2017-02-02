@@ -23,6 +23,160 @@ module rhythm_pcie (
   output       CS_C_PORT
 );
 
+
+
+  xillybus xillybus_ins (
+    // Ports related to /dev/xillybus_auxcmd1_membank_16
+    // CPU to FPGA signals:
+    .user_w_auxcmd1_membank_16_wren(user_w_auxcmd1_membank_16_wren),
+    .user_w_auxcmd1_membank_16_full(user_w_auxcmd1_membank_16_full),
+    .user_w_auxcmd1_membank_16_data(user_w_auxcmd1_membank_16_data),
+    .user_w_auxcmd1_membank_16_open(user_w_auxcmd1_membank_16_open),
+
+    // Address signals:
+    .user_auxcmd1_membank_16_addr(user_auxcmd1_membank_16_addr),
+    .user_auxcmd1_membank_16_addr_update(user_auxcmd1_membank_16_addr_update),
+
+
+    // Ports related to /dev/xillybus_auxcmd2_membank_16
+    // CPU to FPGA signals:
+    .user_w_auxcmd2_membank_16_wren(user_w_auxcmd2_membank_16_wren),
+    .user_w_auxcmd2_membank_16_full(user_w_auxcmd2_membank_16_full),
+    .user_w_auxcmd2_membank_16_data(user_w_auxcmd2_membank_16_data),
+    .user_w_auxcmd2_membank_16_open(user_w_auxcmd2_membank_16_open),
+
+    // Address signals:
+    .user_auxcmd2_membank_16_addr(user_auxcmd2_membank_16_addr),
+    .user_auxcmd2_membank_16_addr_update(user_auxcmd2_membank_16_addr_update),
+
+
+    // Ports related to /dev/xillybus_auxcmd3_membank_16
+    // CPU to FPGA signals:
+    .user_w_auxcmd3_membank_16_wren(user_w_auxcmd3_membank_16_wren),
+    .user_w_auxcmd3_membank_16_full(user_w_auxcmd3_membank_16_full),
+    .user_w_auxcmd3_membank_16_data(user_w_auxcmd3_membank_16_data),
+    .user_w_auxcmd3_membank_16_open(user_w_auxcmd3_membank_16_open),
+
+    // Address signals:
+    .user_auxcmd3_membank_16_addr(user_auxcmd3_membank_16_addr),
+    .user_auxcmd3_membank_16_addr_update(user_auxcmd3_membank_16_addr_update),
+
+
+    // Ports related to /dev/xillybus_control_regs_16
+    // FPGA to CPU signals:
+    .user_r_control_regs_16_rden(user_r_control_regs_16_rden),
+    .user_r_control_regs_16_empty(user_r_control_regs_16_empty),
+    .user_r_control_regs_16_data(user_r_control_regs_16_data),
+    .user_r_control_regs_16_eof(user_r_control_regs_16_eof),
+    .user_r_control_regs_16_open(user_r_control_regs_16_open),
+
+    // CPU to FPGA signals:
+    .user_w_control_regs_16_wren(user_w_control_regs_16_wren),
+    .user_w_control_regs_16_full(user_w_control_regs_16_full),
+    .user_w_control_regs_16_data(user_w_control_regs_16_data),
+    .user_w_control_regs_16_open(user_w_control_regs_16_open),
+
+    // Address signals:
+    .user_control_regs_16_addr(user_control_regs_16_addr),
+    .user_control_regs_16_addr_update(user_control_regs_16_addr_update),
+
+
+    // Ports related to /dev/xillybus_neural_data_32
+    // FPGA to CPU signals:
+    .user_r_neural_data_32_rden(user_r_neural_data_32_rden),
+    .user_r_neural_data_32_empty(user_r_neural_data_32_empty),
+    .user_r_neural_data_32_data(user_r_neural_data_32_data),
+    .user_r_neural_data_32_eof(user_r_neural_data_32_eof),
+    .user_r_neural_data_32_open(user_r_neural_data_32_open),
+
+
+    // Ports related to /dev/xillybus_status_regs_16
+    // FPGA to CPU signals:
+    .user_r_status_regs_16_rden(user_r_status_regs_16_rden),
+    .user_r_status_regs_16_empty(user_r_status_regs_16_empty),
+    .user_r_status_regs_16_data(user_r_status_regs_16_data),
+    .user_r_status_regs_16_eof(user_r_status_regs_16_eof),
+    .user_r_status_regs_16_open(user_r_status_regs_16_open),
+
+    // Address signals:
+    .user_status_regs_16_addr(user_status_regs_16_addr),
+    .user_status_regs_16_addr_update(user_status_regs_16_addr_update),
+
+
+    // General signals
+    .PCIE_PERST_B_LS(PCIE_PERST_B_LS),
+    .PCIE_REFCLK_N(PCIE_REFCLK_N),
+    .PCIE_REFCLK_P(PCIE_REFCLK_P),
+    .PCIE_RX_N(PCIE_RX_N),
+    .PCIE_RX_P(PCIE_RX_P),
+    .GPIO_LED(GPIO_LED),
+    .PCIE_TX_N(PCIE_TX_N),
+    .PCIE_TX_P(PCIE_TX_P),
+    .bus_clk(bus_clk),
+    .quiesce(quiesce)
+  );
+
+  // Clock and quiesce
+  wire bus_clk;
+  wire quiesce;
+
+
+  // Wires related to /dev/xillybus_auxcmd1_membank_16
+  wire        user_w_auxcmd1_membank_16_wren     ;
+  wire        user_w_auxcmd1_membank_16_full     ;
+  wire [15:0] user_w_auxcmd1_membank_16_data     ;
+  wire        user_w_auxcmd1_membank_16_open     ;
+  wire [15:0] user_auxcmd1_membank_16_addr       ;
+  wire        user_auxcmd1_membank_16_addr_update;
+
+  // Wires related to /dev/xillybus_auxcmd2_membank_16
+  wire        user_w_auxcmd2_membank_16_wren     ;
+  wire        user_w_auxcmd2_membank_16_full     ;
+  wire [15:0] user_w_auxcmd2_membank_16_data     ;
+  wire        user_w_auxcmd2_membank_16_open     ;
+  wire [15:0] user_auxcmd2_membank_16_addr       ;
+  wire        user_auxcmd2_membank_16_addr_update;
+
+  // Wires related to /dev/xillybus_auxcmd3_membank_16
+  wire        user_w_auxcmd3_membank_16_wren     ;
+  wire        user_w_auxcmd3_membank_16_full     ;
+  wire [15:0] user_w_auxcmd3_membank_16_data     ;
+  wire        user_w_auxcmd3_membank_16_open     ;
+  wire [15:0] user_auxcmd3_membank_16_addr       ;
+  wire        user_auxcmd3_membank_16_addr_update;
+
+  // Wires related to /dev/xillybus_control_regs_16
+  wire        user_r_control_regs_16_rden     ;
+  wire        user_r_control_regs_16_empty    ;
+  reg  [15:0] user_r_control_regs_16_data     ;
+  wire        user_r_control_regs_16_eof      ;
+  wire        user_r_control_regs_16_open     ;
+  wire        user_w_control_regs_16_wren     ;
+  wire        user_w_control_regs_16_full     ;
+  wire [15:0] user_w_control_regs_16_data     ;
+  wire        user_w_control_regs_16_open     ;
+  wire [ 4:0] user_control_regs_16_addr       ;
+  wire        user_control_regs_16_addr_update;
+
+  // Wires related to /dev/xillybus_neural_data_32
+  wire        user_r_neural_data_32_rden ;
+  wire        user_r_neural_data_32_empty;
+  wire [31:0] user_r_neural_data_32_data ;
+  wire        user_r_neural_data_32_eof  ;
+  wire        user_r_neural_data_32_open ;
+
+  // Wires related to /dev/xillybus_status_regs_16
+  wire        user_r_status_regs_16_rden     ;
+  wire        user_r_status_regs_16_empty    ;
+  reg  [15:0] user_r_status_regs_16_data     ;
+  wire        user_r_status_regs_16_eof      ;
+  wire        user_r_status_regs_16_open     ;
+  wire [ 4:0] user_status_regs_16_addr       ;
+  wire        user_status_regs_16_addr_update;
+
+
+
+
   localparam BOARD_ID      = 16'd701;
   localparam BOARD_VERSION = 16'd1  ;
 
@@ -182,64 +336,6 @@ module rhythm_pcie (
   assign data_stream_ADC_8 = 16'b0;
   assign data_stream_ADC_8 = 16'b0;
 
-  //Xillybus stuff
-  // Clock and quiesce
-  wire bus_clk;
-  wire quiesce;
-
-
-  // Wires related to /dev/xillybus_auxcmd1_membank_16
-  wire        user_w_auxcmd1_membank_16_wren     ;
-  wire        user_w_auxcmd1_membank_16_full     ;
-  wire [15:0] user_w_auxcmd1_membank_16_data     ;
-  wire        user_w_auxcmd1_membank_16_open     ;
-  wire [15:0] user_auxcmd1_membank_16_addr       ;
-  wire        user_auxcmd1_membank_16_addr_update;
-
-  // Wires related to /dev/xillybus_auxcmd2_membank_16
-  wire        user_w_auxcmd2_membank_16_wren     ;
-  wire        user_w_auxcmd2_membank_16_full     ;
-  wire [15:0] user_w_auxcmd2_membank_16_data     ;
-  wire        user_w_auxcmd2_membank_16_open     ;
-  wire [15:0] user_auxcmd2_membank_16_addr       ;
-  wire        user_auxcmd2_membank_16_addr_update;
-
-  // Wires related to /dev/xillybus_auxcmd3_membank_16
-  wire        user_w_auxcmd3_membank_16_wren     ;
-  wire        user_w_auxcmd3_membank_16_full     ;
-  wire [15:0] user_w_auxcmd3_membank_16_data     ;
-  wire        user_w_auxcmd3_membank_16_open     ;
-  wire [15:0] user_auxcmd3_membank_16_addr       ;
-  wire        user_auxcmd3_membank_16_addr_update;
-
-  // Wires related to /dev/xillybus_control_regs_16
-  wire        user_r_control_regs_16_rden     ;
-  wire        user_r_control_regs_16_empty    ;
-  reg  [15:0] user_r_control_regs_16_data     ;
-  wire        user_r_control_regs_16_eof      ;
-  wire        user_r_control_regs_16_open     ;
-  wire        user_w_control_regs_16_wren     ;
-  wire        user_w_control_regs_16_full     ;
-  wire [15:0] user_w_control_regs_16_data     ;
-  wire        user_w_control_regs_16_open     ;
-  wire [ 4:0] user_control_regs_16_addr       ;
-  wire        user_control_regs_16_addr_update;
-
-  // Wires related to /dev/xillybus_neural_data_32
-  wire        user_r_neural_data_32_rden ;
-  wire        user_r_neural_data_32_empty;
-  wire [31:0] user_r_neural_data_32_data ;
-  wire        user_r_neural_data_32_eof  ;
-  wire        user_r_neural_data_32_open ;
-
-  // Wires related to /dev/xillybus_status_regs_16
-  wire        user_r_status_regs_16_rden     ;
-  wire        user_r_status_regs_16_empty    ;
-  reg  [15:0] user_r_status_regs_16_data     ;
-  wire        user_r_status_regs_16_eof      ;
-  wire        user_r_status_regs_16_open     ;
-  wire [ 4:0] user_status_regs_16_addr       ;
-  wire        user_status_regs_16_addr_update;
 
   reg SPI_start_trigger;
   reg PLL_prog_trigger ;
@@ -258,7 +354,7 @@ module rhythm_pcie (
     aux_input[1] <= sma_direct_G25;
     aux_input[0] <= aux_input[1];
   end
-      
+  
   //Control registers
   always @(posedge bus_clk)
   begin
@@ -553,7 +649,7 @@ module rhythm_pcie (
     .out   (max_timestep_dataclk)
   ); 
               
-              
+// ---- MOSI -------------------------------------------------------------------------------------------------           
   // MOSI auxiliary command sequence RAM banks
   RAM_bank RAM_bank_1 (
     .clka (bus_clk                           ),
@@ -565,8 +661,7 @@ module rhythm_pcie (
     .addrb({RAM_bank_sel_rd, RAM_addr_rd}    ),
     .doutb(RAM_data_out_1_pre                )
   );
-     assign user_w_auxcmd1_membank_16_full = 1'b0;
-
+  assign user_w_auxcmd1_membank_16_full = 1'b0;
   
   wire external_fast_settle_rising_edge, external_fast_settle_falling_edge;
   assign external_fast_settle_rising_edge = external_fast_settle_prev == 1'b0 && external_fast_settle == 1'b1;
@@ -578,74 +673,75 @@ module rhythm_pcie (
   // impedance test waveforms.
   always @(*) begin
     if (external_fast_settle_enable == 1'b0)
-        RAM_data_out_1 <= RAM_data_out_1_pre; // If external fast settle is disabled, pass command from RAM
+      RAM_data_out_1 <= RAM_data_out_1_pre; // If external fast settle is disabled, pass command from RAM
     else if (external_fast_settle_rising_edge)
-        RAM_data_out_1 <= 16'h80fe; // Send WRITE(0, 254) command to set fast settle when rising edge detected.
+      RAM_data_out_1 <= 16'h80fe; // Send WRITE(0, 254) command to set fast settle when rising edge detected.
     else if (external_fast_settle_falling_edge)
-        RAM_data_out_1 <= 16'h80de; // Send WRITE(0, 222) command to reset fast settle when falling edge detected.
+      RAM_data_out_1 <= 16'h80de; // Send WRITE(0, 222) command to reset fast settle when falling edge detected.
     else if (RAM_data_out_1_pre[15:8] == 8'h80)
-        // If the user tries to write to Register 0, override it with the external fast settle value.
-        RAM_data_out_1 <= { RAM_data_out_1_pre[15:6], external_fast_settle, RAM_data_out_1_pre[4:0] };
+      // If the user tries to write to Register 0, override it with the external fast settle value.
+      RAM_data_out_1 <= { RAM_data_out_1_pre[15:6], external_fast_settle, RAM_data_out_1_pre[4:0] };
     else RAM_data_out_1 <= RAM_data_out_1_pre; // Otherwise pass command from RAM.
   end
   
-    RAM_bank RAM_bank_2(
-      .clka(bus_clk),
-      .wea(user_w_auxcmd2_membank_16_wren),
-      .addra(user_auxcmd2_membank_16_addr[13:0]),
-      .dina(user_w_auxcmd2_membank_16_data),
-      .clkb(dataclk),
-      .rstb(reset),
-      .addrb({RAM_bank_sel_rd, RAM_addr_rd}),
-      .doutb(RAM_data_out_2_pre)
-      );
-    assign user_w_auxcmd2_membank_16_full = 1'b0;
+  RAM_bank RAM_bank_2(
+    .clka(bus_clk),
+    .wea(user_w_auxcmd2_membank_16_wren),
+    .addra(user_auxcmd2_membank_16_addr[13:0]),
+    .dina(user_w_auxcmd2_membank_16_data),
+    .clkb(dataclk),
+    .rstb(reset),
+    .addrb({RAM_bank_sel_rd, RAM_addr_rd}),
+    .doutb(RAM_data_out_2_pre)
+    );
+  assign user_w_auxcmd2_membank_16_full = 1'b0;
+
+  always @(*) begin
+      if (external_fast_settle_enable == 1'b1 && RAM_data_out_2_pre[15:8] == 8'h80)
+          // If the user tries to write to Register 0 when external fast settle is enabled, override it
+          // with the external fast settle value.
+          RAM_data_out_2 <= { RAM_data_out_2_pre[15:6], external_fast_settle, RAM_data_out_2_pre[4:0] };
+      else RAM_data_out_2 <= RAM_data_out_2_pre;
+  end
+
+  RAM_bank RAM_bank_3(
+    .clka(bus_clk),
+    .wea(user_w_auxcmd3_membank_16_wren),
+    .addra(user_auxcmd3_membank_16_addr[13:0]),
+    .dina(user_w_auxcmd3_membank_16_data),
+    .clkb(dataclk),
+    .rstb(reset),
+    .addrb({RAM_bank_sel_rd, RAM_addr_rd}),
+    .doutb(RAM_data_out_3_pre)
+    );
+  assign user_w_auxcmd3_membank_16_full = 1'b0;
+    
+  always @(*) begin
+      if (external_fast_settle_enable == 1'b1 && RAM_data_out_3_pre[15:8] == 8'h80)
+          // If the user tries to write to Register 0 when external fast settle is enabled, override it
+          // with the external fast settle value.
+          RAM_data_out_3 <= { RAM_data_out_3_pre[15:6], external_fast_settle, RAM_data_out_3_pre[4:0] };
+      else RAM_data_out_3 <= RAM_data_out_3_pre;
+  end
       
-      always @(*) begin
-          if (external_fast_settle_enable == 1'b1 && RAM_data_out_2_pre[15:8] == 8'h80)
-              // If the user tries to write to Register 0 when external fast settle is enabled, override it
-              // with the external fast settle value.
-              RAM_data_out_2 <= { RAM_data_out_2_pre[15:6], external_fast_settle, RAM_data_out_2_pre[4:0] };
-          else RAM_data_out_2 <= RAM_data_out_2_pre;
-      end
       
-    RAM_bank RAM_bank_3(
-      .clka(bus_clk),
-      .wea(user_w_auxcmd3_membank_16_wren),
-      .addra(user_auxcmd3_membank_16_addr[13:0]),
-      .dina(user_w_auxcmd3_membank_16_data),
-      .clkb(dataclk),
-      .rstb(reset),
-      .addrb({RAM_bank_sel_rd, RAM_addr_rd}),
-      .doutb(RAM_data_out_3_pre)
-      );
-    assign user_w_auxcmd3_membank_16_full = 1'b0;
-      
-      always @(*) begin
-          if (external_fast_settle_enable == 1'b1 && RAM_data_out_3_pre[15:8] == 8'h80)
-              // If the user tries to write to Register 0 when external fast settle is enabled, override it
-              // with the external fast settle value.
-              RAM_data_out_3 <= { RAM_data_out_3_pre[15:6], external_fast_settle, RAM_data_out_3_pre[4:0] };
-          else RAM_data_out_3 <= RAM_data_out_3_pre;
-      end
-      
-      
-MOSI_command_selector_4x MOSI_command_generator (
-  .channel          (channel            ),
-  .DSP_settle       (DSP_settle         ),
-  .aux_cmd_A        (aux_cmd_A          ),
-  .aux_cmd_B        (aux_cmd_B          ),
-  .aux_cmd_C        (aux_cmd_C          ),
-  .aux_cmd_D        (aux_cmd_D          ),
-  .external_digout_A(external_digout_A  ),
-  .external_digout_B(external_digout_B  ),
-  .external_digout_C(external_digout_C  ),
-  .external_digout_D(external_digout_D  ),
-  .MOSI_cmd_A       (MOSI_cmd_selected_A),
-  .MOSI_cmd_B       (MOSI_cmd_selected_B),
-  .MOSI_cmd_C       (MOSI_cmd_selected_C),
-  .MOSI_cmd_D       (MOSI_cmd_selected_D)
-);
+  MOSI_command_selector_4x MOSI_command_generator (
+    .channel          (channel            ),
+    .DSP_settle       (DSP_settle         ),
+    .aux_cmd_A        (aux_cmd_A          ),
+    .aux_cmd_B        (aux_cmd_B          ),
+    .aux_cmd_C        (aux_cmd_C          ),
+    .aux_cmd_D        (aux_cmd_D          ),
+    .external_digout_A(external_digout_A  ),
+    .external_digout_B(external_digout_B  ),
+    .external_digout_C(external_digout_C  ),
+    .external_digout_D(external_digout_D  ),
+    .MOSI_cmd_A       (MOSI_cmd_selected_A),
+    .MOSI_cmd_B       (MOSI_cmd_selected_B),
+    .MOSI_cmd_C       (MOSI_cmd_selected_C),
+    .MOSI_cmd_D       (MOSI_cmd_selected_D)
+  );
+// ---- MOSI end ----------------------------------------------------------------------------------------------
 
           assign header_magic_number = 64'hC691199927021942;  // Fixed 64-bit "magic number" that begins each data frame
                                                                                    // to aid in synchronization.
@@ -2387,96 +2483,4 @@ MOSI_command_selector_4x MOSI_command_generator (
     endcase
   end
 
-      xillybus xillybus_ins (
-      
-          // Ports related to /dev/xillybus_auxcmd1_membank_16
-          // CPU to FPGA signals:
-          .user_w_auxcmd1_membank_16_wren(user_w_auxcmd1_membank_16_wren),
-          .user_w_auxcmd1_membank_16_full(user_w_auxcmd1_membank_16_full),
-          .user_w_auxcmd1_membank_16_data(user_w_auxcmd1_membank_16_data),
-          .user_w_auxcmd1_membank_16_open(user_w_auxcmd1_membank_16_open),
-      
-          // Address signals:
-          .user_auxcmd1_membank_16_addr(user_auxcmd1_membank_16_addr),
-          .user_auxcmd1_membank_16_addr_update(user_auxcmd1_membank_16_addr_update),
-      
-      
-          // Ports related to /dev/xillybus_auxcmd2_membank_16
-          // CPU to FPGA signals:
-          .user_w_auxcmd2_membank_16_wren(user_w_auxcmd2_membank_16_wren),
-          .user_w_auxcmd2_membank_16_full(user_w_auxcmd2_membank_16_full),
-          .user_w_auxcmd2_membank_16_data(user_w_auxcmd2_membank_16_data),
-          .user_w_auxcmd2_membank_16_open(user_w_auxcmd2_membank_16_open),
-      
-          // Address signals:
-          .user_auxcmd2_membank_16_addr(user_auxcmd2_membank_16_addr),
-          .user_auxcmd2_membank_16_addr_update(user_auxcmd2_membank_16_addr_update),
-      
-      
-          // Ports related to /dev/xillybus_auxcmd3_membank_16
-          // CPU to FPGA signals:
-          .user_w_auxcmd3_membank_16_wren(user_w_auxcmd3_membank_16_wren),
-          .user_w_auxcmd3_membank_16_full(user_w_auxcmd3_membank_16_full),
-          .user_w_auxcmd3_membank_16_data(user_w_auxcmd3_membank_16_data),
-          .user_w_auxcmd3_membank_16_open(user_w_auxcmd3_membank_16_open),
-      
-          // Address signals:
-          .user_auxcmd3_membank_16_addr(user_auxcmd3_membank_16_addr),
-          .user_auxcmd3_membank_16_addr_update(user_auxcmd3_membank_16_addr_update),
-      
-      
-          // Ports related to /dev/xillybus_control_regs_16
-          // FPGA to CPU signals:
-          .user_r_control_regs_16_rden(user_r_control_regs_16_rden),
-          .user_r_control_regs_16_empty(user_r_control_regs_16_empty),
-          .user_r_control_regs_16_data(user_r_control_regs_16_data),
-          .user_r_control_regs_16_eof(user_r_control_regs_16_eof),
-          .user_r_control_regs_16_open(user_r_control_regs_16_open),
-      
-          // CPU to FPGA signals:
-          .user_w_control_regs_16_wren(user_w_control_regs_16_wren),
-          .user_w_control_regs_16_full(user_w_control_regs_16_full),
-          .user_w_control_regs_16_data(user_w_control_regs_16_data),
-          .user_w_control_regs_16_open(user_w_control_regs_16_open),
-      
-          // Address signals:
-          .user_control_regs_16_addr(user_control_regs_16_addr),
-          .user_control_regs_16_addr_update(user_control_regs_16_addr_update),
-      
-      
-          // Ports related to /dev/xillybus_neural_data_32
-          // FPGA to CPU signals:
-          .user_r_neural_data_32_rden(user_r_neural_data_32_rden),
-          .user_r_neural_data_32_empty(user_r_neural_data_32_empty),
-          .user_r_neural_data_32_data(user_r_neural_data_32_data),
-          .user_r_neural_data_32_eof(user_r_neural_data_32_eof),
-          .user_r_neural_data_32_open(user_r_neural_data_32_open),
-      
-      
-          // Ports related to /dev/xillybus_status_regs_16
-          // FPGA to CPU signals:
-          .user_r_status_regs_16_rden(user_r_status_regs_16_rden),
-          .user_r_status_regs_16_empty(user_r_status_regs_16_empty),
-          .user_r_status_regs_16_data(user_r_status_regs_16_data),
-          .user_r_status_regs_16_eof(user_r_status_regs_16_eof),
-          .user_r_status_regs_16_open(user_r_status_regs_16_open),
-      
-          // Address signals:
-          .user_status_regs_16_addr(user_status_regs_16_addr),
-          .user_status_regs_16_addr_update(user_status_regs_16_addr_update),
-      
-      
-          // General signals
-          .PCIE_PERST_B_LS(PCIE_PERST_B_LS),
-          .PCIE_REFCLK_N(PCIE_REFCLK_N),
-          .PCIE_REFCLK_P(PCIE_REFCLK_P),
-          .PCIE_RX_N(PCIE_RX_N),
-          .PCIE_RX_P(PCIE_RX_P),
-          .GPIO_LED(GPIO_LED),
-          .PCIE_TX_N(PCIE_TX_N),
-          .PCIE_TX_P(PCIE_TX_P),
-          .bus_clk(bus_clk),
-          .quiesce(quiesce)
-        );
-	
 endmodule
