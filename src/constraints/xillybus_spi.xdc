@@ -47,21 +47,21 @@ set_property PACKAGE_PIN AD12 [get_ports SYSCLK_P]
 set_property IOSTANDARD LVDS [get_ports SYSCLK_N]
 
 # isolated output from FPGA
-set_property PACKAGE_PIN AK26 [get_ports sma_out_isol_H23]
-set_property IOSTANDARD LVCMOS33 [get_ports sma_out_isol_H23]
+# set_property PACKAGE_PIN AK26 [get_ports sma_out_isol_H23]
+# set_property IOSTANDARD LVCMOS33 [get_ports sma_out_isol_H23]
 
 # isolated inputs to FPGA
 
 
 # direct SMAs (G24, 25, 27)
-set_property PACKAGE_PIN AJ27 [get_ports sma_direct_G24]
-set_property IOSTANDARD LVCMOS33 [get_ports sma_direct_G24]
+# set_property PACKAGE_PIN AJ27 [get_ports sma_direct_G24]
+# set_property IOSTANDARD LVCMOS33 [get_ports sma_direct_G24]
 
-set_property PACKAGE_PIN AK28 [get_ports sma_direct_G25]
-set_property IOSTANDARD LVCMOS33 [get_ports sma_direct_G25]
+# set_property PACKAGE_PIN AK28 [get_ports sma_direct_G25]
+# set_property IOSTANDARD LVCMOS33 [get_ports sma_direct_G25]
 
-set_property PACKAGE_PIN AC26 [get_ports sma_direct_G27]
-set_property IOSTANDARD LVCMOS33 [get_ports sma_direct_G27]
+# set_property PACKAGE_PIN AC26 [get_ports sma_direct_G27]
+# set_property IOSTANDARD LVCMOS33 [get_ports sma_direct_G27]
 
 
 # C spi port (isolated, simple cmos33 logic, gets translated to lvds after isolator)
