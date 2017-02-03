@@ -238,8 +238,11 @@ module rhythm_pcie (
   wire MOSI_B;
   wire MOSI_C;
   wire MOSI_D;
-  wire [15:0] FIFO_data_in;
-  wire FIFO_write_to;
+  wire [15:0] FIFO_DATA_STREAM;
+  wire FIFO_DATA_STREAM_WEN;
+
+  wire [15:0] FIFO_DATA_TO_XIKE;
+  wire        FIFO_DATA_TO_XIKE_WEN;
 
   SPI_4x i_SPI_4x (
     .bus_clk                       (bus_clk                       ),
@@ -247,6 +250,7 @@ module rhythm_pcie (
     .reset                         (reset                         ),
     .PLL_prog_done                 (PLL_prog_done                 ),
     .dataclk_locked                (dataclk_locked                ),
+    
     .user_w_auxcmd1_membank_16_wren(user_w_auxcmd1_membank_16_wren),
     .user_w_auxcmd1_membank_16_data(user_w_auxcmd1_membank_16_data),
     .user_auxcmd1_membank_16_addr  (user_auxcmd1_membank_16_addr  ),
@@ -264,9 +268,11 @@ module rhythm_pcie (
     .user_r_status_regs_16_rden    (user_r_status_regs_16_rden    ),
     .user_r_status_regs_16_data    (user_r_status_regs_16_data    ),
     .user_status_regs_16_addr      (user_status_regs_16_addr      ),
+    
     .dataclk_O                     (dataclk_O                     ),
     .dataclk_D                     (dataclk_D                     ),
     .dataclk_M                     (dataclk_M                     ),
+    
     .MISO_A1                       (MISO_A1                       ),
     .MISO_A2                       (MISO_A2                       ),
     .MISO_B1                       (MISO_B1                       ),
@@ -282,8 +288,12 @@ module rhythm_pcie (
     .MOSI_B                        (MOSI_B                        ),
     .MOSI_C                        (MOSI_C                        ),
     .MOSI_D                        (MOSI_D                        ),
-    .FIFO_data_in                  (FIFO_data_in                  ),
-    .FIFO_write_to                 (FIFO_write_to                 )
+    
+    .FIFO_DATA_STREAM              (FIFO_DATA_STREAM              ),
+    .FIFO_DATA_STREAM_WEN          (FIFO_DATA_STREAM_WEN          ),
+    
+    .FIFO_DATA_TO_XIKE             (FIFO_DATA_TO_XIKE             ),
+    .FIFO_DATA_TO_XIKE_WEN         (FIFO_DATA_TO_XIKE_WEN         )
   );
 
 
@@ -296,18 +306,18 @@ module rhythm_pcie (
   reg         fifo_overflow;
 
   assign fifo_reset = reset | ~user_r_neural_data_32_open;  //reset the fifo when the pipe closes even if the interface is opened
-  assign fifo_wen   = FIFO_write_to & ~fifo_overflow; //If the fifo overflows, stop writing to it
+  assign fifo_wen   = FIFO_DATA_STREAM_WEN & ~fifo_overflow; //If the fifo overflows, stop writing to it
 
   fifo_w16_4096_r32_2048 data_fifo (
-    .rst          (fifo_reset                 ),
-    .wr_clk       (dataclk                    ),
-    .rd_clk       (bus_clk                    ),
-    .din          (FIFO_data_in               ),
-    .wr_en        (fifo_wen                   ),
-    .rd_en        (user_r_neural_data_32_rden ),
-    .dout         (data_reverse               ),
-    .full         (fifo_full                  ),
-    .empty        (user_r_neural_data_32_empty)
+    .rst       (fifo_reset                 ),
+    .wr_clk    (dataclk                    ),
+    .rd_clk    (bus_clk                    ),
+    .din       (FIFO_DATA_STREAM           ),
+    .wr_en     (fifo_wen                   ),
+    .rd_en     (user_r_neural_data_32_rden ),
+    .dout      (data_reverse               ),
+    .full      (fifo_full                  ),
+    .empty     (user_r_neural_data_32_empty)
   );
 
   assign user_r_neural_data_32_eof  = fifo_overflow & user_r_neural_data_32_empty; //Generate EOF after overflow (this helps signal overflow to the host)

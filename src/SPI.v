@@ -58,8 +58,12 @@ module SPI_4x (
   output reg        MOSI_B                        ,
   output reg        MOSI_C                        ,
   output reg        MOSI_D                        ,
-  output reg [15:0] FIFO_data_in                  ,
-  output reg        FIFO_write_to
+  output reg [15:0] FIFO_DATA_STREAM              ,
+  output reg        FIFO_DATA_STREAM_WEN          ,
+
+  // To Xike
+  output reg [15:0] FIFO_DATA_TO_XIKE             ,
+  output reg        FIFO_DATA_TO_XIKE_WEN         ,
 );
 
 // -- SPI Control registers -----------------------------------------------------------------------------------------------------
@@ -656,16 +660,16 @@ module SPI_4x (
                   MOSI_B <= 1'b0;
                   MOSI_C <= 1'b0;
                   MOSI_D <= 1'b0;
-                  FIFO_data_in <= 16'b0;
-                  FIFO_write_to <= 1'b0; 
+                  FIFO_DATA_STREAM <= 16'b0;
+                  FIFO_DATA_STREAM_WEN <= 1'b0; 
                   max_timestep <= 32'b0;   
                   SPI_running <= 1'b0;
                   SPI_run_continuous <= 1'b0;
               end else begin
                   CS <= 1'b0;
                   SCLK <= 1'b0;
-                  FIFO_data_in <= 16'b0;
-                  FIFO_write_to <= 1'b0;
+                  FIFO_DATA_STREAM <= 16'b0;
+                  FIFO_DATA_STREAM_WEN <= 1'b0;
       
                   case (main_state)
                   
@@ -679,8 +683,8 @@ module SPI_4x (
                           MOSI_B <= 1'b0;
                           MOSI_C <= 1'b0;
                           MOSI_D <= 1'b0;
-                          FIFO_data_in <= 16'b0;
-                          FIFO_write_to <= 1'b0;
+                          FIFO_DATA_STREAM <= 16'b0;
+                          FIFO_DATA_STREAM_WEN <= 1'b0;
                           aux_cmd_index_1 <= 0;
                           aux_cmd_index_2 <= 0;
                           aux_cmd_index_3 <= 0;
@@ -793,8 +797,8 @@ module SPI_4x (
                           end
       
                           if (channel == 0) begin
-                              FIFO_data_in <= header_magic_number[15:0];
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= header_magic_number[15:0];
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           main_state <= ms_clk1_c;
@@ -811,8 +815,8 @@ module SPI_4x (
                           end
       
                           if (channel == 0) begin
-                              FIFO_data_in <= header_magic_number[31:16];
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= header_magic_number[31:16];
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           SCLK <= 1'b1;
@@ -833,8 +837,8 @@ module SPI_4x (
                           end
       
                           if (channel == 0) begin
-                              FIFO_data_in <= header_magic_number[47:32];
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= header_magic_number[47:32];
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           SCLK <= 1'b1;
@@ -855,8 +859,8 @@ module SPI_4x (
                           end
       
                           if (channel == 0) begin
-                              FIFO_data_in <= header_magic_number[63:48];
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= header_magic_number[63:48];
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           MOSI_A <= MOSI_cmd_A[14];
@@ -880,8 +884,8 @@ module SPI_4x (
                           end
       
                           if (channel == 0) begin
-                              FIFO_data_in <= timestamp[15:0];
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= timestamp[15:0];
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           in4x_A1[3] <= MISO_A1; in4x_A2[3] <= MISO_A2;
@@ -901,8 +905,8 @@ module SPI_4x (
                           end
       
                           if (channel == 0) begin
-                              FIFO_data_in <= timestamp[31:16];
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= timestamp[31:16];
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           SCLK <= 1'b1;
@@ -923,8 +927,8 @@ module SPI_4x (
                           end
       
                           if (data_stream_1_en == 1'b1) begin
-                              FIFO_data_in <= data_stream_1;
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_1;
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           SCLK <= 1'b1;
@@ -945,8 +949,8 @@ module SPI_4x (
                           end
       
                           if (data_stream_2_en == 1'b1) begin
-                              FIFO_data_in <= data_stream_2;
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_2;
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           MOSI_A <= MOSI_cmd_A[13];
@@ -969,8 +973,8 @@ module SPI_4x (
                               aux_cmd_D <= RAM_data_out_3;
                           end
                           if (data_stream_3_en == 1'b1) begin
-                              FIFO_data_in <= data_stream_3;
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_3;
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           in4x_A1[7] <= MISO_A1; in4x_A2[7] <= MISO_A2;
@@ -982,8 +986,8 @@ module SPI_4x (
       
                       ms_clk3_c: begin
                           if (data_stream_4_en == 1'b1) begin
-                              FIFO_data_in <= data_stream_4;
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_4;
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           SCLK <= 1'b1;
@@ -996,8 +1000,8 @@ module SPI_4x (
                       
                       ms_clk3_d: begin
                           if (data_stream_5_en == 1'b1) begin
-                              FIFO_data_in <= data_stream_5;
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_5;
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           SCLK <= 1'b1;
@@ -1010,8 +1014,8 @@ module SPI_4x (
       
                       ms_clk4_a: begin
                           if (data_stream_6_en == 1'b1) begin
-                              FIFO_data_in <= data_stream_6;
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_6;
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           MOSI_A <= MOSI_cmd_A[12];
@@ -1027,8 +1031,8 @@ module SPI_4x (
       
                       ms_clk4_b: begin
                           if (data_stream_7_en == 1'b1) begin
-                              FIFO_data_in <= data_stream_7;
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_7;
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           in4x_A1[11] <= MISO_A1; in4x_A2[11] <= MISO_A2;
@@ -1040,8 +1044,8 @@ module SPI_4x (
       
                       ms_clk4_c: begin
                           if (data_stream_8_en == 1'b1) begin
-                              FIFO_data_in <= data_stream_8;
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_8;
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           SCLK <= 1'b1;
@@ -1054,8 +1058,8 @@ module SPI_4x (
                       
                       ms_clk4_d: begin
                           if (data_stream_9_en == 1'b1) begin
-                              FIFO_data_in <= data_stream_9;
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_9;
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
                           
                           SCLK <= 1'b1;
@@ -1068,8 +1072,8 @@ module SPI_4x (
                       
                       ms_clk5_a: begin
                           if (data_stream_10_en == 1'b1) begin
-                              FIFO_data_in <= data_stream_10;
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_10;
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
                           
                           MOSI_A <= MOSI_cmd_A[11];
@@ -1085,8 +1089,8 @@ module SPI_4x (
       
                       ms_clk5_b: begin
                           if (data_stream_11_en == 1'b1) begin
-                              FIFO_data_in <= data_stream_11;
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_11;
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
                           
                           in4x_A1[15] <= MISO_A1; in4x_A2[15] <= MISO_A2;
@@ -1098,8 +1102,8 @@ module SPI_4x (
       
                       ms_clk5_c: begin
                           if (data_stream_12_en == 1'b1) begin
-                              FIFO_data_in <= data_stream_12;
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_12;
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
                           
                           SCLK <= 1'b1;
@@ -1112,8 +1116,8 @@ module SPI_4x (
                       
                       ms_clk5_d: begin
                           if (data_stream_13_en == 1'b1) begin
-                              FIFO_data_in <= data_stream_13;
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_13;
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
                           
                           SCLK <= 1'b1;
@@ -1126,8 +1130,8 @@ module SPI_4x (
                       
                       ms_clk6_a: begin
                           if (data_stream_14_en == 1'b1) begin
-                              FIFO_data_in <= data_stream_14;
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_14;
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
                           
                           MOSI_A <= MOSI_cmd_A[10];
@@ -1143,8 +1147,8 @@ module SPI_4x (
       
                       ms_clk6_b: begin
                           if (data_stream_15_en == 1'b1) begin
-                              FIFO_data_in <= data_stream_15;
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_15;
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
                           
                           in4x_A1[19] <= MISO_A1; in4x_A2[19] <= MISO_A2;
@@ -1156,8 +1160,8 @@ module SPI_4x (
       
                       ms_clk6_c: begin
                           if (data_stream_16_en == 1'b1) begin
-                              FIFO_data_in <= data_stream_16;
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_16;
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
                           
                           SCLK <= 1'b1;
@@ -1436,8 +1440,8 @@ module SPI_4x (
                       
                       ms_clk13_d: begin
                           if (data_stream_1_en == 1'b1 && channel == 34) begin
-                              FIFO_data_in <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           SCLK <= 1'b1;
@@ -1450,8 +1454,8 @@ module SPI_4x (
       
                       ms_clk14_a: begin
                           if (data_stream_2_en == 1'b1 && channel == 34) begin
-                              FIFO_data_in <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           MOSI_A <= MOSI_cmd_A[2];
@@ -1467,8 +1471,8 @@ module SPI_4x (
       
                       ms_clk14_b: begin
                           if (data_stream_3_en == 1'b1 && channel == 34) begin
-                              FIFO_data_in <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           in4x_A1[51] <= MISO_A1; in4x_A2[51] <= MISO_A2;
@@ -1480,8 +1484,8 @@ module SPI_4x (
       
                       ms_clk14_c: begin
                           if (data_stream_4_en == 1'b1 && channel == 34) begin
-                              FIFO_data_in <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           SCLK <= 1'b1;
@@ -1494,8 +1498,8 @@ module SPI_4x (
                       
                       ms_clk14_d: begin
                           if (data_stream_5_en == 1'b1 && channel == 34) begin
-                              FIFO_data_in <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           SCLK <= 1'b1;
@@ -1508,8 +1512,8 @@ module SPI_4x (
       
                       ms_clk15_a: begin
                           if (data_stream_6_en == 1'b1 && channel == 34) begin
-                              FIFO_data_in <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           MOSI_A <= MOSI_cmd_A[1];
@@ -1525,8 +1529,8 @@ module SPI_4x (
       
                       ms_clk15_b: begin
                           if (data_stream_7_en == 1'b1 && channel == 34) begin
-                              FIFO_data_in <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           in4x_A1[55] <= MISO_A1; in4x_A2[55] <= MISO_A2;
@@ -1538,8 +1542,8 @@ module SPI_4x (
       
                       ms_clk15_c: begin
                           if (data_stream_8_en == 1'b1 && channel == 34) begin
-                              FIFO_data_in <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           SCLK <= 1'b1;
@@ -1552,8 +1556,8 @@ module SPI_4x (
                       
                       ms_clk15_d: begin
                           if (data_stream_9_en == 1'b1 && channel == 34) begin
-                              FIFO_data_in <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           SCLK <= 1'b1;
@@ -1566,8 +1570,8 @@ module SPI_4x (
       
                       ms_clk16_a: begin
                           if (data_stream_10_en == 1'b1 && channel == 34) begin
-                              FIFO_data_in <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           MOSI_A <= MOSI_cmd_A[0];
@@ -1583,8 +1587,8 @@ module SPI_4x (
       
                       ms_clk16_b: begin
                           if (data_stream_11_en == 1'b1 && channel == 34) begin
-                              FIFO_data_in <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           in4x_A1[59] <= MISO_A1; in4x_A2[59] <= MISO_A2;
@@ -1596,8 +1600,8 @@ module SPI_4x (
       
                       ms_clk16_c: begin
                           if (data_stream_12_en == 1'b1 && channel == 34) begin
-                              FIFO_data_in <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           SCLK <= 1'b1;
@@ -1610,8 +1614,8 @@ module SPI_4x (
                       
                       ms_clk16_d: begin
                           if (data_stream_13_en == 1'b1 && channel == 34) begin
-                              FIFO_data_in <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           SCLK <= 1'b1;
@@ -1624,8 +1628,8 @@ module SPI_4x (
       
                       ms_clk17_a: begin
                           if (data_stream_14_en == 1'b1 && channel == 34) begin
-                              FIFO_data_in <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           MOSI_A <= 1'b0;
@@ -1641,8 +1645,8 @@ module SPI_4x (
       
                       ms_clk17_b: begin
                           if (data_stream_15_en == 1'b1 && channel == 34) begin
-                              FIFO_data_in <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           in4x_A1[63] <= MISO_A1; in4x_A2[63] <= MISO_A2;
@@ -1654,8 +1658,8 @@ module SPI_4x (
       
                       ms_cs_a: begin
                           if (data_stream_16_en == 1'b1 && channel == 34) begin
-                              FIFO_data_in <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_filler;    // Send a 36th 'filler' sample to keep number of samples divisible by four
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end
       
                           CS <= 1'b1;
@@ -1668,8 +1672,8 @@ module SPI_4x (
       
                       ms_cs_b: begin
                           if (channel == 34) begin
-                              FIFO_data_in <= data_stream_ADC_1;    // Write evaluation-board ADC samples
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_ADC_1;    // Write evaluation-board ADC samples
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end                    
       
                           CS <= 1'b1;
@@ -1682,8 +1686,8 @@ module SPI_4x (
       
                       ms_cs_c: begin
                           if (channel == 34) begin
-                              FIFO_data_in <= data_stream_ADC_2;    // Write evaluation-board ADC samples
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_ADC_2;    // Write evaluation-board ADC samples
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end                    
       
                           CS <= 1'b1;
@@ -1696,8 +1700,8 @@ module SPI_4x (
                       
                       ms_cs_d: begin
                           if (channel == 34) begin
-                              FIFO_data_in <= data_stream_ADC_3;    // Write evaluation-board ADC samples
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_ADC_3;    // Write evaluation-board ADC samples
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end                    
       
                           CS <= 1'b1;
@@ -1710,8 +1714,8 @@ module SPI_4x (
                       
                       ms_cs_e: begin
                           if (channel == 34) begin
-                              FIFO_data_in <= data_stream_ADC_4;    // Write evaluation-board ADC samples
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_ADC_4;    // Write evaluation-board ADC samples
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end                    
       
                           CS <= 1'b1;
@@ -1724,8 +1728,8 @@ module SPI_4x (
                       
                       ms_cs_f: begin
                           if (channel == 34) begin
-                              FIFO_data_in <= data_stream_ADC_5;    // Write evaluation-board ADC samples
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_ADC_5;    // Write evaluation-board ADC samples
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end                    
       
                           CS <= 1'b1;
@@ -1738,8 +1742,8 @@ module SPI_4x (
                       
                       ms_cs_g: begin
                           if (channel == 34) begin
-                              FIFO_data_in <= data_stream_ADC_6;    // Write evaluation-board ADC samples
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_ADC_6;    // Write evaluation-board ADC samples
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end                    
       
                           CS <= 1'b1;
@@ -1752,8 +1756,8 @@ module SPI_4x (
                       
                       ms_cs_h: begin
                           if (channel == 34) begin
-                              FIFO_data_in <= data_stream_ADC_7;    // Write evaluation-board ADC samples
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_ADC_7;    // Write evaluation-board ADC samples
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end                    
       
                           CS <= 1'b1;
@@ -1766,8 +1770,8 @@ module SPI_4x (
                       
                       ms_cs_i: begin
                           if (channel == 34) begin
-                              FIFO_data_in <= data_stream_ADC_8;    // Write evaluation-board ADC samples
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_ADC_8;    // Write evaluation-board ADC samples
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end                    
       
                           CS <= 1'b1;
@@ -1780,8 +1784,8 @@ module SPI_4x (
                       
                       ms_cs_j: begin
                           if (channel == 34) begin
-                              FIFO_data_in <= data_stream_TTL_in;    // Write TTL inputs
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_TTL_in;    // Write TTL inputs
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end                    
       
                           CS <= 1'b1;
@@ -1794,8 +1798,8 @@ module SPI_4x (
                       
                       ms_cs_k: begin
                           if (channel == 34) begin
-                              FIFO_data_in <= data_stream_TTL_out;    // Write current value of TTL outputs so users can reconstruct exact timings
-                              FIFO_write_to <= 1'b1;
+                              FIFO_DATA_STREAM <= data_stream_TTL_out;    // Write current value of TTL outputs so users can reconstruct exact timings
+                              FIFO_DATA_STREAM_WEN <= 1'b1;
                           end                    
       
                           CS <= 1'b1;
