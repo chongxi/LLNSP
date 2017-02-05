@@ -63,7 +63,7 @@ module SPI_4x (
 
   // To Xike
   output reg [15:0] FIFO_DATA_TO_XIKE             ,
-  output reg        FIFO_DATA_TO_XIKE_WEN         ,
+  output reg        FIFO_DATA_TO_XIKE_WEN         
 );
 
 // -- SPI Control registers -----------------------------------------------------------------------------------------------------
