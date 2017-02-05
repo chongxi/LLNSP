@@ -19,6 +19,8 @@ module rhythm_pcie (
   output       CS_C_PORT
 );
 
+// ------- XILLYBUS -------------------------------------------------------------------------------------------
+
   xillybus xillybus_ins (
     // Ports related to /dev/xillybus_auxcmd1_membank_16
     // CPU to FPGA signals:
@@ -110,8 +112,6 @@ module rhythm_pcie (
     .quiesce                            (quiesce                            )
   );
 
-  wire quiesce;
-
   // Wires related to /dev/xillybus_auxcmd1_membank_16
   wire        user_w_auxcmd1_membank_16_wren     ;
   wire        user_w_auxcmd1_membank_16_full     ;
@@ -170,7 +170,7 @@ module rhythm_pcie (
 
   wire bus_clk;   // 250MHz PCIe clock
   wire sys_clk;   // on-board 200 MHz clock
-  wire dataclk;   // programmable frequency clock (f = 2800 * per-channel amplifier sampling rate) for SPI
+  wire spi_clk;   // programmable frequency clock (f = 2800 * per-channel amplifier sampling rate) for SPI
   wire reset = ~user_w_control_regs_16_open;
 
   wire [7:0] dataclk_O;
@@ -193,10 +193,10 @@ module rhythm_pcie (
     .start_sig    (PLL_prog_trigger),
     .ready        (PLL_prog_done   ),    // output
     .locked       (dataclk_locked  ),    // output
-    .clk_out      (dataclk         )     // output
+    .clk_out      (spi_clk         )     // output
   );  
 
-// ------- CLOCK end ----------------------------------------------------------------------------------------
+// SPI protocol signals ----------------------------------------------------------------------------------------
 
   //IO signals
   wire MISO_A1, MISO_A2;
@@ -231,22 +231,21 @@ module rhythm_pcie (
 
 // SPI ------------------------------------------------------------------------------------------------------
 
-  wire PLL_prog_done;
-  wire dataclk_locked;
-  wire SPI_running;
-  wire MOSI_A;
-  wire MOSI_B;
-  wire MOSI_C;
-  wire MOSI_D;
-  wire [15:0] FIFO_DATA_STREAM;
-  wire FIFO_DATA_STREAM_WEN;
-
-  wire [15:0] FIFO_DATA_TO_XIKE;
+  wire        PLL_prog_done        ;
+  wire        dataclk_locked       ;
+  wire        SPI_running          ;
+  wire        MOSI_A               ;
+  wire        MOSI_B               ;
+  wire        MOSI_C               ;
+  wire        MOSI_D               ;
+  wire [15:0] FIFO_DATA_STREAM     ;
+  wire        FIFO_DATA_STREAM_WEN ;
+  wire [15:0] FIFO_DATA_TO_XIKE    ;
   wire        FIFO_DATA_TO_XIKE_WEN;
 
-  SPI_4x i_SPI_4x (
+  SPI_4x spi_4x (
     .bus_clk                       (bus_clk                       ),
-    .dataclk                       (dataclk                       ),
+    .dataclk                       (spi_clk                       ),
     .reset                         (reset                         ),
     .PLL_prog_done                 (PLL_prog_done                 ),
     .dataclk_locked                (dataclk_locked                ),
@@ -296,45 +295,24 @@ module rhythm_pcie (
     .FIFO_DATA_TO_XIKE_WEN         (FIFO_DATA_TO_XIKE_WEN         )
   );
 
+// spi_xillybus_interface ------------------------------------------------------------------------------------------------------
 
-// Open-ephys FIFO ------------------------------------------------------------------------------------------------------
+spi_xillybus_interface spi_xillybus_interface_4x (
+  .bus_clk                         (bus_clk                       ),
+  .dataclk                         (spi_clk                       ),
+  .reset                           (reset                         ),   
 
-  wire [31:0] data_reverse ;
-  wire        fifo_full    ;
-  wire        fifo_reset   ;
-  wire        fifo_wen     ;
-  reg         fifo_overflow;
+  .FIFO_DATA_STREAM                (FIFO_DATA_STREAM              ),   // intan => spi    (16 bits data)
+  .FIFO_DATA_STREAM_WEN            (FIFO_DATA_STREAM_WEN          ),   // intan => spi
 
-  assign fifo_reset = reset | ~user_r_neural_data_32_open;  //reset the fifo when the pipe closes even if the interface is opened
-  assign fifo_wen   = FIFO_DATA_STREAM_WEN & ~fifo_overflow; //If the fifo overflows, stop writing to it
+  .user_r_neural_data_32_open      (user_r_neural_data_32_open    ),   // xillybus => spi 
+  .user_r_neural_data_32_empty     (user_r_neural_data_32_empty   ),   // xillybus => spi 
+  .user_r_neural_data_32_rden      (user_r_neural_data_32_rden    ),   // xillybus => spi 
+  .user_r_neural_data_32_eof       (user_r_neural_data_32_eof     ),   // spi => xillybus
+  .user_r_neural_data_32_data      (user_r_neural_data_32_data    )    // spi => xillybus (32 bits data)
+);
 
-  fifo_w16_4096_r32_2048 data_fifo (
-    .rst       (fifo_reset                 ),
-    .wr_clk    (dataclk                    ),
-    .rd_clk    (bus_clk                    ),
-    .din       (FIFO_DATA_STREAM           ),
-    .wr_en     (fifo_wen                   ),
-    .rd_en     (user_r_neural_data_32_rden ),
-    .dout      (data_reverse               ),
-    .full      (fifo_full                  ),
-    .empty     (user_r_neural_data_32_empty)
-  );
-
-  assign user_r_neural_data_32_eof  = fifo_overflow & user_r_neural_data_32_empty; //Generate EOF after overflow (this helps signal overflow to the host)
-  assign user_r_neural_data_32_data = {data_reverse[15:0], data_reverse[31:16]}; //To keep a "16-bit endianess"-like format, to avoid rewriting the existing Rhythm API, which used 16bit words for transmission
-
-  //fifo_overflow goes to 1 when there the fifo is full and only resets on fifo reset (file close or global reset)
-  always @(posedge dataclk or posedge fifo_reset)
-    begin
-      if (fifo_reset)
-        fifo_overflow <= 1'b0;
-      else
-        begin
-          if (fifo_full & fifo_wen) fifo_overflow <= 1'b1;
-        end
-    end
-
-// SPI related LED --------------------------
+// SPI related LED 
   assign RESET_LED = reset;
   assign SPI_LED   = SPI_running;
   assign OVERFLOW_LED = fifo_overflow;
