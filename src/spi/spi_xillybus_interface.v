@@ -11,13 +11,14 @@ module spi_xillybus_interface (
 	input         user_r_neural_data_32_rden ,
 	output        user_r_neural_data_32_eof  ,
 	output [31:0] user_r_neural_data_32_data ,
+
+	output reg    fifo_overflow
 );
 
   wire [31:0] data_reverse ;
   wire        fifo_full    ;
   wire        fifo_reset   ;
   wire        fifo_wen     ;
-  reg         fifo_overflow;
 
   assign fifo_reset = reset | ~user_r_neural_data_32_open;  //reset the fifo when the pipe closes even if the interface is opened
   assign fifo_wen   = FIFO_DATA_STREAM_WEN & ~fifo_overflow; //If the fifo overflows, stop writing to it

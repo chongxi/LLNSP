@@ -309,7 +309,9 @@ spi_xillybus_interface spi_xillybus_interface_4x (
   .user_r_neural_data_32_empty     (user_r_neural_data_32_empty   ),   // xillybus => spi 
   .user_r_neural_data_32_rden      (user_r_neural_data_32_rden    ),   // xillybus => spi 
   .user_r_neural_data_32_eof       (user_r_neural_data_32_eof     ),   // spi => xillybus
-  .user_r_neural_data_32_data      (user_r_neural_data_32_data    )    // spi => xillybus (32 bits data)
+  .user_r_neural_data_32_data      (user_r_neural_data_32_data    ),   // spi => xillybus (32 bits data)
+
+  .fifo_overflow                   (fifo_overflow                 )
 );
 
 // SPI related LED 
