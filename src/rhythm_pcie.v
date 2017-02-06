@@ -168,10 +168,10 @@ module rhythm_pcie (
 
 // ------- CLOCK -------------------------------------------------------------------------------------------
 
-  wire bus_clk;   // 250MHz PCIe clock
-  wire sys_clk;   // on-board 200 MHz clock
-  wire spi_clk;   // programmable frequency clock (f = 2800 * per-channel amplifier sampling rate) for SPI
-  wire reset = ~user_w_control_regs_16_open;
+(* mark_debug = "true" *)   wire bus_clk;   // 250MHz PCIe clock
+(* mark_debug = "true" *)   wire sys_clk;   // on-board 200 MHz clock
+(* mark_debug = "true" *)   wire spi_clk;   // programmable frequency clock (f = 2800 * per-channel amplifier sampling rate) for SPI
+(* mark_debug = "true" *)   wire reset = ~user_w_control_regs_16_open;
 
   wire [7:0] dataclk_O;
   wire [3:0] dataclk_D;
@@ -199,9 +199,13 @@ module rhythm_pcie (
 // SPI protocol signals ----------------------------------------------------------------------------------------
 
   //IO signals
+(* mark_debug = "true" *)   wire SCLK;
+(* mark_debug = "true" *)   wire MOSI_C;
+(* mark_debug = "true" *)   wire CS;
   wire MISO_A1, MISO_A2;
   wire MISO_B1, MISO_B2;
-  wire MISO_C1, MISO_C2;
+(* mark_debug = "true" *)   wire MISO_C1;
+(* mark_debug = "true" *)   wire MISO_C2;
   wire MISO_D1, MISO_D2;
 
   //IO assigments
