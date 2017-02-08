@@ -173,35 +173,67 @@ module rhythm_pcie (
 (* mark_debug = "true" *)   wire spi_clk;   // programmable frequency clock (f = 2800 * per-channel amplifier sampling rate) for SPI
 (* mark_debug = "true" *)   wire reset = ~user_w_control_regs_16_open;
 
-  wire [7:0] dataclk_O;
-  wire [3:0] dataclk_D;
-  wire [6:0] dataclk_M;
-
+  // fout = fin * M / (D*O)
+(* mark_debug = "true" *)  wire [7:0] dataclk_O;
+(* mark_debug = "true" *)  wire [3:0] dataclk_D;
+(* mark_debug = "true" *)  wire [6:0] dataclk_M;
+  
+  wire [3:0] dataclk_O2 = dataclk_O >> 1;
+  wire [6:0] dataclk_D2 = dataclk_D >> 1;
+  
   IBUFDS clkbuf (
       .I(SYSCLK_P),
       .IB(SYSCLK_N),
       .O(sys_clk)
   );
 
+  wire debug_clk;
+
+//  clk_500MHz clk_200
+//   (
+//   // Clock in ports
+//    .clk_in1(sys_clk),      // input clk_in1
+//    // Clock out ports
+//    .clk_out1(dbg_clk)      // output clk_out1
+//   );    
+    
+//    BUFG clkout_buf (
+//        .O(clk200),
+//        .I(dbg_clk)
+//    );
+    
   clock_generator clkgen (
-    .config_clk_in(bus_clk         ),
-    .clk_in       (sys_clk         ),
-    .rst          (reset           ),
-    .O            (dataclk_O       ),
-    .D            (dataclk_D       ),
-    .M            (dataclk_M       ),
-    .start_sig    (PLL_prog_trigger),
+    .config_clk_in(bus_clk         ),    // input
+    .clk_in       (sys_clk         ),    // input
+    .rst          (reset           ),    // input
+    .O            (dataclk_O       ),    // input
+    .D            (dataclk_D       ),    // input
+    .M            (dataclk_M       ),    // input
+    .start_sig    (PLL_prog_trigger),    // input 
     .ready        (PLL_prog_done   ),    // output
     .locked       (dataclk_locked  ),    // output
     .clk_out      (spi_clk         )     // output
+  );  
+  
+  clock_generator clkgen_4x (
+    .config_clk_in(bus_clk         ),    // input
+    .clk_in       (sys_clk         ),    // input
+    .rst          (reset           ),    // input
+    .O            (dataclk_O2      ),    // input
+    .D            (dataclk_D2      ),    // input
+    .M            (dataclk_M       ),    // input
+    .start_sig    (PLL_prog_trigger),    // input 
+    .ready        (PLL_prog_done_4x),    // output
+    .locked       (debug_clk_locked),    // output
+    .clk_out      (debug_clk       )     // output
   );  
 
 // SPI protocol signals ----------------------------------------------------------------------------------------
 
   //IO signals
 (* mark_debug = "true" *)   wire SCLK;
-(* mark_debug = "true" *)   wire MOSI_C;
 (* mark_debug = "true" *)   wire CS;
+(* mark_debug = "true" *)   wire MOSI_C;  
   wire MISO_A1, MISO_A2;
   wire MISO_B1, MISO_B2;
 (* mark_debug = "true" *)   wire MISO_C1;
@@ -272,6 +304,7 @@ module rhythm_pcie (
     .user_r_status_regs_16_data    (user_r_status_regs_16_data    ),
     .user_status_regs_16_addr      (user_status_regs_16_addr      ),
     
+    .PLL_prog_trigger              (PLL_prog_trigger              ),
     .dataclk_O                     (dataclk_O                     ),
     .dataclk_D                     (dataclk_D                     ),
     .dataclk_M                     (dataclk_M                     ),
@@ -310,9 +343,9 @@ spi_xillybus_interface spi_xillybus_interface_4x (
   .FIFO_DATA_STREAM_WEN            (FIFO_DATA_STREAM_WEN          ),   // intan => spi
 
   .user_r_neural_data_32_open      (user_r_neural_data_32_open    ),   // xillybus => spi 
-  .user_r_neural_data_32_empty     (user_r_neural_data_32_empty   ),   // xillybus => spi 
   .user_r_neural_data_32_rden      (user_r_neural_data_32_rden    ),   // xillybus => spi 
   .user_r_neural_data_32_eof       (user_r_neural_data_32_eof     ),   // spi => xillybus
+  .user_r_neural_data_32_empty     (user_r_neural_data_32_empty   ),   // spi => xillybus
   .user_r_neural_data_32_data      (user_r_neural_data_32_data    ),   // spi => xillybus (32 bits data)
 
   .fifo_overflow                   (fifo_overflow                 )

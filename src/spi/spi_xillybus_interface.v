@@ -7,9 +7,9 @@ module spi_xillybus_interface (
 	input         FIFO_DATA_STREAM_WEN       ,
 
 	input		  user_r_neural_data_32_open ,
-	input         user_r_neural_data_32_empty,
 	input         user_r_neural_data_32_rden ,
 	output        user_r_neural_data_32_eof  ,
+    output        user_r_neural_data_32_empty,
 	output [31:0] user_r_neural_data_32_data ,
 
 	output reg    fifo_overflow

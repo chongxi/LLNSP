@@ -27,7 +27,7 @@ input rst,
 input [7:0] O,
 input [3:0] D,
 input [6:0] M,
-input start_sig,
+input start_sig,    // PLL_prog_trigger
 output ready,
 output locked,
 output clk_out
@@ -317,7 +317,8 @@ output clk_out
             end
         endcase
     end
-
+    
+// 200*42/(4*25) = 84.00MHz
 PLLE2_ADV
   #(.BANDWIDTH            ("OPTIMIZED"),
     .COMPENSATION         ("ZHOLD"),
@@ -361,7 +362,6 @@ PLLE2_ADV
         .O(clk_in_buf),
         .I(clk_in)
     );
-  //assign clk_in_buf = clk_in;
     
     BUFG clkfb_buf (
         .O(clkfbout_buf),

@@ -35,7 +35,8 @@ module SPI_4x (
   output reg [15:0] user_r_status_regs_16_data    ,
   input      [ 4:0] user_status_regs_16_addr      ,
 
-  // O,D,M output
+  // O,D,M output and PLL trigger
+  output reg        PLL_prog_trigger              ,
   output reg [ 7:0] dataclk_O                     ,
   output reg [ 3:0] dataclk_D                     ,
   output reg [ 6:0] dataclk_M                     ,
@@ -75,7 +76,6 @@ module SPI_4x (
   reg [1:0]  aux_input = 2'b0;
 
   reg SPI_start_trigger;
-  reg PLL_prog_trigger ;
   reg SPI_run_continuous_in;
   reg DSP_settle;
   reg [31:0] max_timestep_in;
