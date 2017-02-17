@@ -10,7 +10,7 @@ vivado -source build-project.tcl
 - The `src/constraints` folder contains the xdc file
 - The `src/xillybus` folder contains the xillybus RTL code.
 - The `src/clock` folder contains PLL RTL code
-
+- The `src/spi` folder contains SPI firmware with two interface module
 
 ### Device in the project
 ```
@@ -21,6 +21,14 @@ crw-rw-rw- 1 root root 241, 1 Jan 30 22:09 /dev/xillybus_control_regs_16
 crw-rw-rw- 1 root root 241, 0 Jan 30 22:09 /dev/xillybus_neural_data_32
 crw-rw-rw- 1 root root 241, 2 Jan 30 22:09 /dev/xillybus_status_regs_16
 ```
+-------------------
+
+### Signal flow
+```
+INTAN -> SPI -> Xillybus
+two interfaces module are located in `src/spi` folder
+```
+
 -------------------
 
 To be continued...
