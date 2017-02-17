@@ -3,7 +3,7 @@ create_clock -period 5.000 -name board_clk [get_ports SYSCLK_P]
 #create_clock -period 5.000 -name clk200 [get_nets clk200]
 #create_generated_clock -name dataclk -source [get_ports SYSCLK_P] -divide_by 100 -multiply_by 42 [get_nets dataclk]
 
-set_clock_groups -name async_pcie_data -asynchronous -group {board_clk dataclk clkfbout clk_buf_out spi_clk} -group {sys_clk userclk1 clk200}
+set_clock_groups -name async_pcie_data -asynchronous -group {board_clk dataclk clkfbout clk_buf_out spi_clk} -group {sys_clk userclk1}
 
 #set_false_path -from [get_pins clkgen/start_cd/toggleA*/*] -to [get_pins clkgen/start_cd/syncA*/*]
 ##set_false_path -from [get_pins xillybus_ins/xillybus_core_ins/unitr_2_ins/user_w_control_regs_16_open/C] -to [get_pins -match_style ucf clkgen/*]
@@ -66,10 +66,10 @@ set_property IOSTANDARD LVDS [get_ports SYSCLK_N]
 
 
 # C spi port (isolated, simple cmos33 logic, gets translated to lvds after isolator)
-set_property PACKAGE_PIN AE25 [get_ports MISO_C1_PORT]
+set_property PACKAGE_PIN AF25 [get_ports MISO_C1_PORT]
 set_property IOSTANDARD LVCMOS33 [get_ports MISO_C1_PORT]
 
-set_property PACKAGE_PIN AF25 [get_ports MISO_C2_PORT]
+set_property PACKAGE_PIN AE25 [get_ports MISO_C2_PORT]
 set_property IOSTANDARD LVCMOS33 [get_ports MISO_C2_PORT]
 
 set_property PACKAGE_PIN AC24 [get_ports MOSI_C_PORT]
@@ -121,7 +121,7 @@ create_debug_core u_ila_0 ila
 set_property ALL_PROBE_SAME_MU true [get_debug_cores u_ila_0]
 set_property ALL_PROBE_SAME_MU_CNT 1 [get_debug_cores u_ila_0]
 set_property C_ADV_TRIGGER false [get_debug_cores u_ila_0]
-set_property C_DATA_DEPTH 8192 [get_debug_cores u_ila_0]
+set_property C_DATA_DEPTH 65536 [get_debug_cores u_ila_0]
 set_property C_EN_STRG_QUAL false [get_debug_cores u_ila_0]
 set_property C_INPUT_PIPE_STAGES 0 [get_debug_cores u_ila_0]
 set_property C_TRIGIN_EN false [get_debug_cores u_ila_0]
@@ -129,16 +129,16 @@ set_property C_TRIGOUT_EN false [get_debug_cores u_ila_0]
 set_property port_width 1 [get_debug_ports u_ila_0/clk]
 connect_debug_port u_ila_0/clk [get_nets [list xillybus_ins/pipe_clock/pipe_clock/pipe_userclk1_in]]
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe0]
-set_property port_width 7 [get_debug_ports u_ila_0/probe0]
-connect_debug_port u_ila_0/probe0 [get_nets [list {dataclk_M[0]} {dataclk_M[1]} {dataclk_M[2]} {dataclk_M[3]} {dataclk_M[4]} {dataclk_M[5]} {dataclk_M[6]}]]
+set_property port_width 4 [get_debug_ports u_ila_0/probe0]
+connect_debug_port u_ila_0/probe0 [get_nets [list {dataclk_D[0]} {dataclk_D[1]} {dataclk_D[2]} {dataclk_D[3]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe1]
-set_property port_width 8 [get_debug_ports u_ila_0/probe1]
-connect_debug_port u_ila_0/probe1 [get_nets [list {dataclk_O[0]} {dataclk_O[1]} {dataclk_O[2]} {dataclk_O[3]} {dataclk_O[4]} {dataclk_O[5]} {dataclk_O[6]} {dataclk_O[7]}]]
+set_property port_width 7 [get_debug_ports u_ila_0/probe1]
+connect_debug_port u_ila_0/probe1 [get_nets [list {dataclk_M[0]} {dataclk_M[1]} {dataclk_M[2]} {dataclk_M[3]} {dataclk_M[4]} {dataclk_M[5]} {dataclk_M[6]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe2]
-set_property port_width 4 [get_debug_ports u_ila_0/probe2]
-connect_debug_port u_ila_0/probe2 [get_nets [list {dataclk_D[0]} {dataclk_D[1]} {dataclk_D[2]} {dataclk_D[3]}]]
+set_property port_width 8 [get_debug_ports u_ila_0/probe2]
+connect_debug_port u_ila_0/probe2 [get_nets [list {dataclk_O[0]} {dataclk_O[1]} {dataclk_O[2]} {dataclk_O[3]} {dataclk_O[4]} {dataclk_O[5]} {dataclk_O[6]} {dataclk_O[7]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe3]
 set_property port_width 1 [get_debug_ports u_ila_0/probe3]
@@ -158,15 +158,7 @@ connect_debug_port u_ila_0/probe6 [get_nets [list MOSI_C]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe7]
 set_property port_width 1 [get_debug_ports u_ila_0/probe7]
-connect_debug_port u_ila_0/probe7 [get_nets [list reset]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe8]
-set_property port_width 1 [get_debug_ports u_ila_0/probe8]
-connect_debug_port u_ila_0/probe8 [get_nets [list SCLK]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe9]
-set_property port_width 1 [get_debug_ports u_ila_0/probe9]
-connect_debug_port u_ila_0/probe9 [get_nets [list spi_clk]]
+connect_debug_port u_ila_0/probe7 [get_nets [list SCLK]]
 set_property C_CLK_INPUT_FREQ_HZ 300000000 [get_debug_cores dbg_hub]
 set_property C_ENABLE_CLK_DIVIDER false [get_debug_cores dbg_hub]
 set_property C_USER_SCAN_CHAIN 1 [get_debug_cores dbg_hub]

@@ -168,40 +168,22 @@ module rhythm_pcie (
 
 // ------- CLOCK -------------------------------------------------------------------------------------------
 
-(* mark_debug = "true" *)   wire bus_clk;   // 250MHz PCIe clock
-(* mark_debug = "true" *)   wire sys_clk;   // on-board 200 MHz clock
-(* mark_debug = "true" *)   wire spi_clk;   // programmable frequency clock (f = 2800 * per-channel amplifier sampling rate) for SPI
-(* mark_debug = "true" *)   wire reset = ~user_w_control_regs_16_open;
+wire bus_clk;   // 250MHz PCIe clock
+wire sys_clk;   // on-board 200 MHz clock
+wire spi_clk;   // programmable frequency clock (f = 2800 * per-channel amplifier sampling rate) for SPI
+wire reset = ~user_w_control_regs_16_open;
 
   // fout = fin * M / (D*O)
 (* mark_debug = "true" *)  wire [7:0] dataclk_O;
 (* mark_debug = "true" *)  wire [3:0] dataclk_D;
 (* mark_debug = "true" *)  wire [6:0] dataclk_M;
-  
-  wire [3:0] dataclk_O2 = dataclk_O >> 1;
-  wire [6:0] dataclk_D2 = dataclk_D >> 1;
-  
+ 
   IBUFDS clkbuf (
       .I(SYSCLK_P),
       .IB(SYSCLK_N),
       .O(sys_clk)
   );
 
-  wire debug_clk;
-
-//  clk_500MHz clk_200
-//   (
-//   // Clock in ports
-//    .clk_in1(sys_clk),      // input clk_in1
-//    // Clock out ports
-//    .clk_out1(dbg_clk)      // output clk_out1
-//   );    
-    
-//    BUFG clkout_buf (
-//        .O(clk200),
-//        .I(dbg_clk)
-//    );
-    
   clock_generator clkgen (
     .config_clk_in(bus_clk         ),    // input
     .clk_in       (sys_clk         ),    // input
@@ -213,19 +195,6 @@ module rhythm_pcie (
     .ready        (PLL_prog_done   ),    // output
     .locked       (dataclk_locked  ),    // output
     .clk_out      (spi_clk         )     // output
-  );  
-  
-  clock_generator clkgen_4x (
-    .config_clk_in(bus_clk         ),    // input
-    .clk_in       (sys_clk         ),    // input
-    .rst          (reset           ),    // input
-    .O            (dataclk_O2      ),    // input
-    .D            (dataclk_D2      ),    // input
-    .M            (dataclk_M       ),    // input
-    .start_sig    (PLL_prog_trigger),    // input 
-    .ready        (PLL_prog_done_4x),    // output
-    .locked       (debug_clk_locked),    // output
-    .clk_out      (debug_clk       )     // output
   );  
 
 // SPI protocol signals ----------------------------------------------------------------------------------------
