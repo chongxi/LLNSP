@@ -1,12 +1,9 @@
-module SPI_4x (
+module spi_intan_interface_4_bank (
   // clock and reset
   input             bus_clk                       , //
-  input             dataclk                       , //
+  input             sys_clk                       , //
+  output            spi_clk                       ,
   input             reset                         , //
-
-  // pll ready and locked input
-  input             PLL_prog_done                 ,
-  input             dataclk_locked                ,
 
   // Wires related to /dev/xillybus_auxcmd1_membank_16
   input             user_w_auxcmd1_membank_16_wren,
@@ -35,12 +32,6 @@ module SPI_4x (
   output reg [15:0] user_r_status_regs_16_data    ,
   input      [ 4:0] user_status_regs_16_addr      ,
 
-  // O,D,M output and PLL trigger
-  output reg        PLL_prog_trigger              ,
-  output reg [ 7:0] dataclk_O                     ,
-  output reg [ 3:0] dataclk_D                     ,
-  output reg [ 6:0] dataclk_M                     ,
-
   // Protocal input
   input             MISO_A1                       ,
   input             MISO_A2                       ,
@@ -66,6 +57,31 @@ module SPI_4x (
   output reg [15:0] FIFO_DATA_TO_XIKE             ,
   output reg        FIFO_DATA_TO_XIKE_WEN         
 );
+
+
+// -- SPI Clock
+// fout = fin * M / (D*O)
+// 84MHz = 200MHz/(25*4) * 42    for 30kS/sec
+// 70MHz = 200MHz/(25*4) * 35    for 25kS/sec
+// 56MHz = 200MHz/(25*4) * 28    for 20kS/sec
+  (* mark_debug = "true" *) reg [7:0] dataclk_O       ;
+  (* mark_debug = "true" *) reg [3:0] dataclk_D       ;
+  (* mark_debug = "true" *) reg [6:0] dataclk_M       ;
+  reg       PLL_prog_trigger;
+
+  clock_generator spi_clkgen (
+    .config_clk_in(bus_clk         ),    // input
+    .clk_in       (sys_clk         ),    // input
+    .rst          (reset           ),    // input
+    .O            (dataclk_O       ),    // input
+    .D            (dataclk_D       ),    // input
+    .M            (dataclk_M       ),    // input
+    .start_sig    (PLL_prog_trigger),    // input 
+    .ready        (PLL_prog_done   ),    // output
+    .locked       (dataclk_locked  ),    // output
+    .clk_out      (spi_clk         )     // output
+  );  
+
 
 // -- SPI Control registers -----------------------------------------------------------------------------------------------------
 
@@ -444,20 +460,20 @@ module SPI_4x (
 
   flag_cdc SPI_cdc (
     .clkA(bus_clk          ),
-    .clkB(dataclk          ),
+    .clkB(spk_clk          ),
     .in  (SPI_start_trigger),
     .out (SPI_start        ),
     .busy(unused_spi_cdc   )
   );
               
   bus_cdc SPI_cont_cdc (
-    .clkDst(dataclk                   ),
+    .clkDst(spi_clk                   ),
     .in    (SPI_run_continuous_in     ),
     .out   (SPI_run_continuous_dataclk)
   );
 
   bus_cdc #(.WIDTH(32)) max_timestep_cdc (
-    .clkDst(dataclk             ),
+    .clkDst(spi_clk             ),
     .in    (max_timestep_in     ),
     .out   (max_timestep_dataclk)
   ); 
@@ -469,7 +485,7 @@ module SPI_4x (
     .wea  (user_w_auxcmd1_membank_16_wren    ),
     .addra(user_auxcmd1_membank_16_addr[13:0]),
     .dina (user_w_auxcmd1_membank_16_data    ),
-    .clkb (dataclk                           ),
+    .clkb (spi_clk                           ),
     .rstb (reset                             ),
     .addrb({RAM_bank_sel_rd, RAM_addr_rd}    ),
     .doutb(RAM_data_out_1_pre                )
@@ -503,7 +519,7 @@ module SPI_4x (
     .wea(user_w_auxcmd2_membank_16_wren),
     .addra(user_auxcmd2_membank_16_addr[13:0]),
     .dina(user_w_auxcmd2_membank_16_data),
-    .clkb(dataclk),
+    .clkb(spi_clk),
     .rstb(reset),
     .addrb({RAM_bank_sel_rd, RAM_addr_rd}),
     .doutb(RAM_data_out_2_pre)
@@ -524,7 +540,7 @@ module SPI_4x (
     .wea(user_w_auxcmd3_membank_16_wren),
     .addra(user_auxcmd3_membank_16_addr[13:0]),
     .dina(user_w_auxcmd3_membank_16_data),
-    .clkb(dataclk),
+    .clkb(spi_clk),
     .rstb(reset),
     .addrb({RAM_bank_sel_rd, RAM_addr_rd}),
     .doutb(RAM_data_out_3_pre)
@@ -649,7 +665,7 @@ module SPI_4x (
                         ms_cs_n    = 179;
       
                            
-          always @(posedge dataclk or posedge reset) begin
+          always @(posedge spi_clk or posedge reset) begin
               if (reset) begin
                   main_state <= ms_wait;
                   timestamp <= 0;

@@ -1,18 +1,15 @@
 module spi_xillybus_interface (
-	input         bus_clk                    , //
-	input         dataclk                    , //
-	input         reset                      , //
-
-	input  [15:0] FIFO_DATA_STREAM           ,
-	input         FIFO_DATA_STREAM_WEN       ,
-
-	input		  user_r_neural_data_32_open ,
-	input         user_r_neural_data_32_rden ,
-	output        user_r_neural_data_32_eof  ,
-    output        user_r_neural_data_32_empty,
-	output [31:0] user_r_neural_data_32_data ,
-
-	output reg    fifo_overflow
+  input             bus_clk                    , //
+  input             spi_clk                    , //
+  input             reset                      , //
+  input      [15:0] FIFO_DATA_STREAM           ,
+  input             FIFO_DATA_STREAM_WEN       ,
+  input             user_r_neural_data_32_open ,
+  input             user_r_neural_data_32_rden ,
+  output            user_r_neural_data_32_eof  ,
+  output            user_r_neural_data_32_empty,
+  output     [31:0] user_r_neural_data_32_data ,
+  output reg        fifo_overflow
 );
 
   wire [31:0] data_reverse ;
@@ -25,7 +22,7 @@ module spi_xillybus_interface (
 
   fifo_w16_4096_r32_2048 data_fifo (
     .rst       (fifo_reset                 ),
-    .wr_clk    (dataclk                    ),
+    .wr_clk    (spi_clk                    ),
     .rd_clk    (bus_clk                    ),
     .din       (FIFO_DATA_STREAM           ),
     .wr_en     (fifo_wen                   ),
@@ -39,7 +36,7 @@ module spi_xillybus_interface (
   assign user_r_neural_data_32_data = {data_reverse[15:0], data_reverse[31:16]}; //To keep a "16-bit endianess"-like format, to avoid rewriting the existing Rhythm API, which used 16bit words for transmission
 
   //fifo_overflow goes to 1 when there the fifo is full and only resets on fifo reset (file close or global reset)
-  always @(posedge dataclk or posedge fifo_reset)
+  always @(posedge spi_clk or posedge fifo_reset)
     begin
       if (fifo_reset)
         fifo_overflow <= 1'b0;

@@ -33,6 +33,9 @@ set_property -dict {PACKAGE_PIN AA8 IOSTANDARD LVCMOS15} [get_ports {GPIO_LED[1]
 set_property -dict {PACKAGE_PIN AC9 IOSTANDARD LVCMOS15} [get_ports {GPIO_LED[2]}]
 set_property -dict {PACKAGE_PIN AB9 IOSTANDARD LVCMOS15} [get_ports {GPIO_LED[3]}]
 
+set_property PACKAGE_PIN H24 [get_ports SPI_CLK]
+set_property IOSTANDARD LVCMOS25 [get_ports SPI_CLK]
+
 set_property PACKAGE_PIN F16 [get_ports RESET_LED]
 set_property IOSTANDARD LVCMOS25 [get_ports RESET_LED]
 
