@@ -234,7 +234,7 @@ module rhythm_pcie (
   wire [15:0] FIFO_DATA_TO_XIKE    ;
   wire        FIFO_DATA_TO_XIKE_WEN;
 
-  spi_intan_interface_4_bank intan_spi_4_bank (
+  spi_intan_interface_4_bank INTAN_2_SPI (
     .bus_clk                       (bus_clk                       ),
     .sys_clk                       (sys_clk                       ),
     .spi_clk                       (spi_clk                       ),
@@ -285,7 +285,7 @@ module rhythm_pcie (
 
 // spi_xillybus_interface ------------------------------------------------------------------------------------------------------
 
-spi_xillybus_interface spi_xillybus_4_bank (
+spi_xillybus_interface  SPI_2_XILLYBUS (
   .bus_clk                         (bus_clk                       ),
   .spi_clk                         (spi_clk                       ),
   .reset                           (reset                         ),   

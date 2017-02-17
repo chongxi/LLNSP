@@ -460,7 +460,7 @@ module spi_intan_interface_4_bank (
 
   flag_cdc SPI_cdc (
     .clkA(bus_clk          ),
-    .clkB(spk_clk          ),
+    .clkB(spi_clk          ),
     .in  (SPI_start_trigger),
     .out (SPI_start        ),
     .busy(unused_spi_cdc   )

@@ -120,11 +120,12 @@ set_property CONFIG_MODE BPI16 [current_design]
 
 
 
+
 create_debug_core u_ila_0 ila
 set_property ALL_PROBE_SAME_MU true [get_debug_cores u_ila_0]
 set_property ALL_PROBE_SAME_MU_CNT 1 [get_debug_cores u_ila_0]
 set_property C_ADV_TRIGGER false [get_debug_cores u_ila_0]
-set_property C_DATA_DEPTH 65536 [get_debug_cores u_ila_0]
+set_property C_DATA_DEPTH 16384 [get_debug_cores u_ila_0]
 set_property C_EN_STRG_QUAL false [get_debug_cores u_ila_0]
 set_property C_INPUT_PIPE_STAGES 0 [get_debug_cores u_ila_0]
 set_property C_TRIGIN_EN false [get_debug_cores u_ila_0]
@@ -133,15 +134,15 @@ set_property port_width 1 [get_debug_ports u_ila_0/clk]
 connect_debug_port u_ila_0/clk [get_nets [list xillybus_ins/pipe_clock/pipe_clock/pipe_userclk1_in]]
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe0]
 set_property port_width 4 [get_debug_ports u_ila_0/probe0]
-connect_debug_port u_ila_0/probe0 [get_nets [list {dataclk_D[0]} {dataclk_D[1]} {dataclk_D[2]} {dataclk_D[3]}]]
+connect_debug_port u_ila_0/probe0 [get_nets [list {INTAN_2_SPI/dataclk_D[0]} {INTAN_2_SPI/dataclk_D[1]} {INTAN_2_SPI/dataclk_D[2]} {INTAN_2_SPI/dataclk_D[3]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe1]
 set_property port_width 7 [get_debug_ports u_ila_0/probe1]
-connect_debug_port u_ila_0/probe1 [get_nets [list {dataclk_M[0]} {dataclk_M[1]} {dataclk_M[2]} {dataclk_M[3]} {dataclk_M[4]} {dataclk_M[5]} {dataclk_M[6]}]]
+connect_debug_port u_ila_0/probe1 [get_nets [list {INTAN_2_SPI/dataclk_M[0]} {INTAN_2_SPI/dataclk_M[1]} {INTAN_2_SPI/dataclk_M[2]} {INTAN_2_SPI/dataclk_M[3]} {INTAN_2_SPI/dataclk_M[4]} {INTAN_2_SPI/dataclk_M[5]} {INTAN_2_SPI/dataclk_M[6]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe2]
 set_property port_width 8 [get_debug_ports u_ila_0/probe2]
-connect_debug_port u_ila_0/probe2 [get_nets [list {dataclk_O[0]} {dataclk_O[1]} {dataclk_O[2]} {dataclk_O[3]} {dataclk_O[4]} {dataclk_O[5]} {dataclk_O[6]} {dataclk_O[7]}]]
+connect_debug_port u_ila_0/probe2 [get_nets [list {INTAN_2_SPI/dataclk_O[0]} {INTAN_2_SPI/dataclk_O[1]} {INTAN_2_SPI/dataclk_O[2]} {INTAN_2_SPI/dataclk_O[3]} {INTAN_2_SPI/dataclk_O[4]} {INTAN_2_SPI/dataclk_O[5]} {INTAN_2_SPI/dataclk_O[6]} {INTAN_2_SPI/dataclk_O[7]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe3]
 set_property port_width 1 [get_debug_ports u_ila_0/probe3]
