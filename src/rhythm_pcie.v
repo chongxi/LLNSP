@@ -78,6 +78,34 @@ module rhythm_pcie (
     .user_control_regs_16_addr_update   (user_control_regs_16_addr_update   ),
     
     
+    // Ports related to /dev/xillybus_mem_16
+    // FPGA to CPU signals:
+    .user_r_mem_16_rden                 (user_r_mem_16_rden                 ),
+    .user_r_mem_16_empty                (user_r_mem_16_empty                ),
+    .user_r_mem_16_data                 (user_r_mem_16_data                 ),
+    .user_r_mem_16_eof                  (user_r_mem_16_eof                  ),
+    .user_r_mem_16_open                 (user_r_mem_16_open                 ),
+    
+    // CPU to FPGA signals:
+    .user_w_mem_16_wren                 (user_w_mem_16_wren                 ),
+    .user_w_mem_16_full                 (user_w_mem_16_full                 ),
+    .user_w_mem_16_data                 (user_w_mem_16_data                 ),
+    .user_w_mem_16_open                 (user_w_mem_16_open                 ),
+    
+    // Address signals:
+    .user_mem_16_addr                   (user_mem_16_addr                   ),
+    .user_mem_16_addr_update            (user_mem_16_addr_update            ),
+    
+    
+    // Ports related to /dev/xillybus_mua_32
+    // FPGA to CPU signals:
+    .user_r_mua_32_rden                 (user_r_mua_32_rden                 ),
+    .user_r_mua_32_empty                (user_r_mua_32_empty                ),
+    .user_r_mua_32_data                 (user_r_mua_32_data                 ),
+    .user_r_mua_32_eof                  (user_r_mua_32_eof                  ),
+    .user_r_mua_32_open                 (user_r_mua_32_open                 ),
+    
+    
     // Ports related to /dev/xillybus_neural_data_32
     // FPGA to CPU signals:
     .user_r_neural_data_32_rden         (user_r_neural_data_32_rden         ),
@@ -85,6 +113,24 @@ module rhythm_pcie (
     .user_r_neural_data_32_data         (user_r_neural_data_32_data         ),
     .user_r_neural_data_32_eof          (user_r_neural_data_32_eof          ),
     .user_r_neural_data_32_open         (user_r_neural_data_32_open         ),
+    
+    
+    // Ports related to /dev/xillybus_spk_realtime_32
+    // FPGA to CPU signals:
+    .user_r_spk_realtime_32_rden        (user_r_spk_realtime_32_rden        ),
+    .user_r_spk_realtime_32_empty       (user_r_spk_realtime_32_empty       ),
+    .user_r_spk_realtime_32_data        (user_r_spk_realtime_32_data        ),
+    .user_r_spk_realtime_32_eof         (user_r_spk_realtime_32_eof         ),
+    .user_r_spk_realtime_32_open        (user_r_spk_realtime_32_open        ),
+    
+    
+    // Ports related to /dev/xillybus_spk_sort_32
+    // FPGA to CPU signals:
+    .user_r_spk_sort_32_rden            (user_r_spk_sort_32_rden            ),
+    .user_r_spk_sort_32_empty           (user_r_spk_sort_32_empty           ),
+    .user_r_spk_sort_32_data            (user_r_spk_sort_32_data            ),
+    .user_r_spk_sort_32_eof             (user_r_spk_sort_32_eof             ),
+    .user_r_spk_sort_32_open            (user_r_spk_sort_32_open            ),
     
     
     // Ports related to /dev/xillybus_status_regs_16
@@ -98,6 +144,52 @@ module rhythm_pcie (
     // Address signals:
     .user_status_regs_16_addr           (user_status_regs_16_addr           ),
     .user_status_regs_16_addr_update    (user_status_regs_16_addr_update    ),
+    
+    
+    // Ports related to /dev/xillybus_template_32
+    // FPGA to CPU signals:
+    .user_r_template_32_rden            (user_r_template_32_rden            ),
+    .user_r_template_32_empty           (user_r_template_32_empty           ),
+    .user_r_template_32_data            (user_r_template_32_data            ),
+    .user_r_template_32_eof             (user_r_template_32_eof             ),
+    .user_r_template_32_open            (user_r_template_32_open            ),
+    
+    // CPU to FPGA signals:
+    .user_w_template_32_wren            (user_w_template_32_wren            ),
+    .user_w_template_32_full            (user_w_template_32_full            ),
+    .user_w_template_32_data            (user_w_template_32_data            ),
+    .user_w_template_32_open            (user_w_template_32_open            ),
+    
+    // Address signals:
+    .user_template_32_addr              (user_template_32_addr              ),
+    .user_template_32_addr_update       (user_template_32_addr_update       ),
+    
+    
+    // Ports related to /dev/xillybus_thr_32
+    // FPGA to CPU signals:
+    .user_r_thr_32_rden                 (user_r_thr_32_rden                 ),
+    .user_r_thr_32_empty                (user_r_thr_32_empty                ),
+    .user_r_thr_32_data                 (user_r_thr_32_data                 ),
+    .user_r_thr_32_eof                  (user_r_thr_32_eof                  ),
+    .user_r_thr_32_open                 (user_r_thr_32_open                 ),
+    
+    // CPU to FPGA signals:
+    .user_w_thr_32_wren                 (user_w_thr_32_wren                 ),
+    .user_w_thr_32_full                 (user_w_thr_32_full                 ),
+    .user_w_thr_32_data                 (user_w_thr_32_data                 ),
+    .user_w_thr_32_open                 (user_w_thr_32_open                 ),
+    
+    // Address signals:
+    .user_thr_32_addr                   (user_thr_32_addr                   ),
+    .user_thr_32_addr_update            (user_thr_32_addr_update            ),
+    
+    
+    // Ports related to /dev/xillybus_write_32
+    // CPU to FPGA signals:
+    .user_w_write_32_wren               (user_w_write_32_wren               ),
+    .user_w_write_32_full               (user_w_write_32_full               ),
+    .user_w_write_32_data               (user_w_write_32_data               ),
+    .user_w_write_32_open               (user_w_write_32_open               ),
     
     
     // General signals
@@ -165,6 +257,72 @@ module rhythm_pcie (
   wire [31:0] user_r_neural_data_32_data ;
   wire        user_r_neural_data_32_eof  ;
   wire        user_r_neural_data_32_open ;
+
+  // Wires related to /dev/xillybus_mem_16
+  wire        user_r_mem_16_rden     ;
+  wire        user_r_mem_16_empty    ;
+  wire [15:0] user_r_mem_16_data     ;
+  wire        user_r_mem_16_eof      ;
+  wire        user_r_mem_16_open     ;
+  wire        user_w_mem_16_wren     ;
+  wire        user_w_mem_16_full     ;
+  wire [15:0] user_w_mem_16_data     ;
+  wire        user_w_mem_16_open     ;
+  wire [ 4:0] user_mem_16_addr       ;
+  wire        user_mem_16_addr_update;
+
+  // Wires related to /dev/xillybus_mua_32
+  wire        user_r_mua_32_rden ;
+  wire        user_r_mua_32_empty;
+  wire [31:0] user_r_mua_32_data ;
+  wire        user_r_mua_32_eof  ;
+  wire        user_r_mua_32_open ;
+
+  // Wires related to /dev/xillybus_spk_realtime_32
+  wire        user_r_spk_realtime_32_rden ;
+  wire        user_r_spk_realtime_32_empty;
+  wire [31:0] user_r_spk_realtime_32_data ;
+  wire        user_r_spk_realtime_32_eof  ;
+  wire        user_r_spk_realtime_32_open ;
+
+  // Wires related to /dev/xillybus_spk_sort_32
+  wire        user_r_spk_sort_32_rden ;
+  wire        user_r_spk_sort_32_empty;
+  wire [31:0] user_r_spk_sort_32_data ;
+  wire        user_r_spk_sort_32_eof  ;
+  wire        user_r_spk_sort_32_open ;
+
+  // Wires related to /dev/xillybus_template_32
+  wire        user_r_template_32_rden     ;
+  wire        user_r_template_32_empty    ;
+  wire [31:0] user_r_template_32_data     ;
+  wire        user_r_template_32_eof      ;
+  wire        user_r_template_32_open     ;
+  wire        user_w_template_32_wren     ;
+  wire        user_w_template_32_full     ;
+  wire [31:0] user_w_template_32_data     ;
+  wire        user_w_template_32_open     ;
+  wire [15:0] user_template_32_addr       ;
+  wire        user_template_32_addr_update;
+
+  // Wires related to /dev/xillybus_thr_32
+  wire        user_r_thr_32_rden     ;
+  wire        user_r_thr_32_empty    ;
+  wire [31:0] user_r_thr_32_data     ;
+  wire        user_r_thr_32_eof      ;
+  wire        user_r_thr_32_open     ;
+  wire        user_w_thr_32_wren     ;
+  wire        user_w_thr_32_full     ;
+  wire [31:0] user_w_thr_32_data     ;
+  wire        user_w_thr_32_open     ;
+  wire [15:0] user_thr_32_addr       ;
+  wire        user_thr_32_addr_update;
+
+  // Wires related to /dev/xillybus_write_32
+  wire        user_w_write_32_wren;
+  wire        user_w_write_32_full;
+  wire [31:0] user_w_write_32_data;
+  wire        user_w_write_32_open;
 
 
 // ------- CLOCK -------------------------------------------------------------------------------------------
