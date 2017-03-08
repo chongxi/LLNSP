@@ -1,4 +1,4 @@
-module rhythm_pcie (
+module spi_xike_pcie (
   input        SYSCLK_P        ,
   input        SYSCLK_N        ,
   input        PCIE_PERST_B_LS ,

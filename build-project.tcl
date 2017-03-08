@@ -3,7 +3,7 @@
 #Manually set here the properties of the project
 set proj_name vivado
 set thepart "xc7k325tffg900-2"
-set top_file "rhythm_pcie"
+set top_file "spi_xike_pcie"
 
 set pcie_vivado pcie_k7_vivado
 
