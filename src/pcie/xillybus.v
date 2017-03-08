@@ -2,18 +2,23 @@
 
 module xillybus(PCIE_TX_P, PCIE_TX_N, PCIE_RX_P, PCIE_RX_N, PCIE_REFCLK_P,
   PCIE_REFCLK_N, PCIE_PERST_B_LS, bus_clk, quiesce, GPIO_LED,
-  user_r_neural_data_32_rden, user_r_neural_data_32_data,
-  user_r_neural_data_32_empty, user_r_neural_data_32_eof,
-  user_r_neural_data_32_open, user_r_control_regs_16_rden,
-  user_r_control_regs_16_data, user_r_control_regs_16_empty,
-  user_r_control_regs_16_eof, user_r_control_regs_16_open,
-  user_w_control_regs_16_wren, user_w_control_regs_16_data,
-  user_w_control_regs_16_full, user_w_control_regs_16_open,
-  user_control_regs_16_addr, user_control_regs_16_addr_update,
-  user_r_status_regs_16_rden, user_r_status_regs_16_data,
-  user_r_status_regs_16_empty, user_r_status_regs_16_eof,
-  user_r_status_regs_16_open, user_status_regs_16_addr,
-  user_status_regs_16_addr_update, user_w_auxcmd1_membank_16_wren,
+  user_w_write_32_wren, user_w_write_32_data, user_w_write_32_full,
+  user_w_write_32_open, user_r_mua_32_rden, user_r_mua_32_data,
+  user_r_mua_32_empty, user_r_mua_32_eof, user_r_mua_32_open,
+  user_r_spk_realtime_32_rden, user_r_spk_realtime_32_data,
+  user_r_spk_realtime_32_empty, user_r_spk_realtime_32_eof,
+  user_r_spk_realtime_32_open, user_r_spk_sort_32_rden,
+  user_r_spk_sort_32_data, user_r_spk_sort_32_empty, user_r_spk_sort_32_eof,
+  user_r_spk_sort_32_open, user_r_template_32_rden, user_r_template_32_data,
+  user_r_template_32_empty, user_r_template_32_eof, user_r_template_32_open,
+  user_w_template_32_wren, user_w_template_32_data, user_w_template_32_full,
+  user_w_template_32_open, user_template_32_addr, user_template_32_addr_update,
+  user_r_control_regs_16_rden, user_r_control_regs_16_data,
+  user_r_control_regs_16_empty, user_r_control_regs_16_eof,
+  user_r_control_regs_16_open, user_w_control_regs_16_wren,
+  user_w_control_regs_16_data, user_w_control_regs_16_full,
+  user_w_control_regs_16_open, user_control_regs_16_addr,
+  user_control_regs_16_addr_update, user_w_auxcmd1_membank_16_wren,
   user_w_auxcmd1_membank_16_data, user_w_auxcmd1_membank_16_full,
   user_w_auxcmd1_membank_16_open, user_auxcmd1_membank_16_addr,
   user_auxcmd1_membank_16_addr_update, user_w_auxcmd2_membank_16_wren,
@@ -22,33 +27,82 @@ module xillybus(PCIE_TX_P, PCIE_TX_N, PCIE_RX_P, PCIE_RX_N, PCIE_REFCLK_P,
   user_auxcmd2_membank_16_addr_update, user_w_auxcmd3_membank_16_wren,
   user_w_auxcmd3_membank_16_data, user_w_auxcmd3_membank_16_full,
   user_w_auxcmd3_membank_16_open, user_auxcmd3_membank_16_addr,
-  user_auxcmd3_membank_16_addr_update);
+  user_auxcmd3_membank_16_addr_update, user_r_thr_32_rden, user_r_thr_32_data,
+  user_r_thr_32_empty, user_r_thr_32_eof, user_r_thr_32_open,
+  user_w_thr_32_wren, user_w_thr_32_data, user_w_thr_32_full,
+  user_w_thr_32_open, user_thr_32_addr, user_thr_32_addr_update,
+  user_r_status_regs_16_rden, user_r_status_regs_16_data,
+  user_r_status_regs_16_empty, user_r_status_regs_16_eof,
+  user_r_status_regs_16_open, user_status_regs_16_addr,
+  user_status_regs_16_addr_update, user_r_neural_data_32_rden,
+  user_r_neural_data_32_data, user_r_neural_data_32_empty,
+  user_r_neural_data_32_eof, user_r_neural_data_32_open, user_r_mem_16_rden,
+  user_r_mem_16_data, user_r_mem_16_empty, user_r_mem_16_eof,
+  user_r_mem_16_open, user_w_mem_16_wren, user_w_mem_16_data,
+  user_w_mem_16_full, user_w_mem_16_open, user_mem_16_addr,
+  user_mem_16_addr_update);
 
   input [7:0] PCIE_RX_P;
   input [7:0] PCIE_RX_N;
   input  PCIE_REFCLK_P;
   input  PCIE_REFCLK_N;
   input  PCIE_PERST_B_LS;
-  input [31:0] user_r_neural_data_32_data;
-  input  user_r_neural_data_32_empty;
-  input  user_r_neural_data_32_eof;
+  input  user_w_write_32_full;
+  input [31:0] user_r_mua_32_data;
+  input  user_r_mua_32_empty;
+  input  user_r_mua_32_eof;
+  input [31:0] user_r_spk_realtime_32_data;
+  input  user_r_spk_realtime_32_empty;
+  input  user_r_spk_realtime_32_eof;
+  input [31:0] user_r_spk_sort_32_data;
+  input  user_r_spk_sort_32_empty;
+  input  user_r_spk_sort_32_eof;
+  input [31:0] user_r_template_32_data;
+  input  user_r_template_32_empty;
+  input  user_r_template_32_eof;
+  input  user_w_template_32_full;
   input [15:0] user_r_control_regs_16_data;
   input  user_r_control_regs_16_empty;
   input  user_r_control_regs_16_eof;
   input  user_w_control_regs_16_full;
-  input [15:0] user_r_status_regs_16_data;
-  input  user_r_status_regs_16_empty;
-  input  user_r_status_regs_16_eof;
   input  user_w_auxcmd1_membank_16_full;
   input  user_w_auxcmd2_membank_16_full;
   input  user_w_auxcmd3_membank_16_full;
+  input [31:0] user_r_thr_32_data;
+  input  user_r_thr_32_empty;
+  input  user_r_thr_32_eof;
+  input  user_w_thr_32_full;
+  input [15:0] user_r_status_regs_16_data;
+  input  user_r_status_regs_16_empty;
+  input  user_r_status_regs_16_eof;
+  input [31:0] user_r_neural_data_32_data;
+  input  user_r_neural_data_32_empty;
+  input  user_r_neural_data_32_eof;
+  input [15:0] user_r_mem_16_data;
+  input  user_r_mem_16_empty;
+  input  user_r_mem_16_eof;
+  input  user_w_mem_16_full;
   output [7:0] PCIE_TX_P;
   output [7:0] PCIE_TX_N;
   output  bus_clk;
   output  quiesce;
   output [3:0] GPIO_LED;
-  output  user_r_neural_data_32_rden;
-  output  user_r_neural_data_32_open;
+  output  user_w_write_32_wren;
+  output [31:0] user_w_write_32_data;
+  output  user_w_write_32_open;
+  output  user_r_mua_32_rden;
+  output  user_r_mua_32_open;
+  output  user_r_spk_realtime_32_rden;
+  output  user_r_spk_realtime_32_open;
+  output  user_r_spk_sort_32_rden;
+  output  user_r_spk_sort_32_open;
+  output  user_r_template_32_rden;
+  output  user_r_template_32_open;
+  output  user_w_template_32_wren;
+  output [31:0] user_w_template_32_data;
+  output  user_w_template_32_open;
+  output [15:0] user_template_32_addr;
+  output  user_template_32_addr_update;
   output  user_r_control_regs_16_rden;
   output  user_r_control_regs_16_open;
   output  user_w_control_regs_16_wren;
@@ -56,10 +110,6 @@ module xillybus(PCIE_TX_P, PCIE_TX_N, PCIE_RX_P, PCIE_RX_N, PCIE_REFCLK_P,
   output  user_w_control_regs_16_open;
   output [4:0] user_control_regs_16_addr;
   output  user_control_regs_16_addr_update;
-  output  user_r_status_regs_16_rden;
-  output  user_r_status_regs_16_open;
-  output [4:0] user_status_regs_16_addr;
-  output  user_status_regs_16_addr_update;
   output  user_w_auxcmd1_membank_16_wren;
   output [15:0] user_w_auxcmd1_membank_16_data;
   output  user_w_auxcmd1_membank_16_open;
@@ -75,6 +125,26 @@ module xillybus(PCIE_TX_P, PCIE_TX_N, PCIE_RX_P, PCIE_RX_N, PCIE_REFCLK_P,
   output  user_w_auxcmd3_membank_16_open;
   output [15:0] user_auxcmd3_membank_16_addr;
   output  user_auxcmd3_membank_16_addr_update;
+  output  user_r_thr_32_rden;
+  output  user_r_thr_32_open;
+  output  user_w_thr_32_wren;
+  output [31:0] user_w_thr_32_data;
+  output  user_w_thr_32_open;
+  output [15:0] user_thr_32_addr;
+  output  user_thr_32_addr_update;
+  output  user_r_status_regs_16_rden;
+  output  user_r_status_regs_16_open;
+  output [4:0] user_status_regs_16_addr;
+  output  user_status_regs_16_addr_update;
+  output  user_r_neural_data_32_rden;
+  output  user_r_neural_data_32_open;
+  output  user_r_mem_16_rden;
+  output  user_r_mem_16_open;
+  output  user_w_mem_16_wren;
+  output [15:0] user_w_mem_16_data;
+  output  user_w_mem_16_open;
+  output [4:0] user_mem_16_addr;
+  output  user_mem_16_addr_update;
   wire  trn_reset_n;
   wire  trn_lnk_up_n;
   wire  s_axis_tx_tready;
@@ -87,6 +157,7 @@ module xillybus(PCIE_TX_P, PCIE_TX_N, PCIE_RX_P, PCIE_RX_N, PCIE_REFCLK_P,
   wire  m_axis_rx_tlast;
   wire  m_axis_rx_tvalid;
   wire  m_axis_rx_tready;
+  wire [21:0] m_axis_rx_tuser;
   wire  cfg_interrupt_n;
   wire  cfg_interrupt_rdy_n;
   wire [7:0] cfg_bus_number;
@@ -104,7 +175,6 @@ module xillybus(PCIE_TX_P, PCIE_TX_N, PCIE_RX_P, PCIE_RX_N, PCIE_REFCLK_P,
   wire  user_lnk_up;
   wire  cfg_interrupt_rdy;
   wire  tx_err_drop;
-  wire [21:0] m_axis_rx_tuser;
   wire  PIPE_PCLK_IN;
   wire  PIPE_RXUSRCLK_IN;
   wire [7:0] PIPE_RXOUTCLK_IN;
@@ -118,7 +188,14 @@ module xillybus(PCIE_TX_P, PCIE_TX_N, PCIE_RX_P, PCIE_RX_N, PCIE_REFCLK_P,
   wire  PIPE_GEN3_OUT;
   wire  PIPE_OOBCLK_IN;
 
-  // Wires used for external clocking connectivity
+   parameter         PCIE_ASYNC_EN = "FALSE";
+   parameter         PCIE_TXBUF_EN = "FALSE";
+   parameter         PCIE_LANE = 6'h08;
+   parameter         PCIE_LINK_SPEED = 3;
+   parameter         PCIE_REFCLK_FREQ = 0;
+   parameter         PCIE_USERCLK1_FREQ = 4;
+   parameter         PCIE_USERCLK2_FREQ = 4;
+   parameter         PCIE_DEBUG_MODE = 0;
 
    IBUFDS_GTE2 pcieclk_ibuf (.O(pcie_ref_clk), .ODIV2(),
 			     .I(PCIE_REFCLK_P), .IB(PCIE_REFCLK_N),
@@ -247,14 +324,14 @@ module xillybus(PCIE_TX_P, PCIE_TX_N, PCIE_RX_P, PCIE_RX_N, PCIE_REFCLK_P,
 
    pcie_k7_8x_pipe_clock #
      (
-      .PCIE_ASYNC_EN                  ( "FALSE" ),     // PCIe async enable
-      .PCIE_TXBUF_EN                  ( "FALSE" ),     // PCIe TX buffer enable for Gen1/Gen2 only
-      .PCIE_LANE                      ( 6'h08 ),     // PCIe number of lanes
-      .PCIE_LINK_SPEED              ( 3 ),
-      .PCIE_REFCLK_FREQ               ( 0 ),     // PCIe reference clock frequency
-      .PCIE_USERCLK1_FREQ             ( 4 ),     // PCIe user clock 1 frequency
-      .PCIE_USERCLK2_FREQ             ( 4 ),     // PCIe user clock 2 frequency
-      .PCIE_DEBUG_MODE                ( 0 )
+      .PCIE_ASYNC_EN(PCIE_ASYNC_EN),
+      .PCIE_TXBUF_EN(PCIE_TXBUF_EN),
+      .PCIE_LANE(PCIE_LANE),
+      .PCIE_LINK_SPEED(PCIE_LINK_SPEED),
+      .PCIE_REFCLK_FREQ(PCIE_REFCLK_FREQ),
+      .PCIE_USERCLK1_FREQ(PCIE_USERCLK1_FREQ),
+      .PCIE_USERCLK2_FREQ(PCIE_USERCLK2_FREQ),
+      .PCIE_DEBUG_MODE(PCIE_DEBUG_MODE)
       )
      pipe_clock
        (
@@ -279,58 +356,94 @@ module xillybus(PCIE_TX_P, PCIE_TX_N, PCIE_RX_P, PCIE_RX_N, PCIE_REFCLK_P,
 	);
 
   xillybus_core  xillybus_core_ins(.trn_reset_n_w(trn_reset_n),
+    .user_w_template_32_wren_w(user_w_template_32_wren),
+    .user_w_template_32_data_w(user_w_template_32_data),
+    .user_w_template_32_full_w(user_w_template_32_full),
+    .user_w_template_32_open_w(user_w_template_32_open),
+    .trn_lnk_up_n_w(trn_lnk_up_n), .user_template_32_addr_w(user_template_32_addr),
+    .user_template_32_addr_update_w(user_template_32_addr_update),
+    .user_r_control_regs_16_rden_w(user_r_control_regs_16_rden),
+    .user_r_control_regs_16_data_w(user_r_control_regs_16_data),
+    .user_r_control_regs_16_empty_w(user_r_control_regs_16_empty),
+    .user_r_control_regs_16_eof_w(user_r_control_regs_16_eof),
+    .user_r_control_regs_16_open_w(user_r_control_regs_16_open),
+    .quiesce_w(quiesce), .user_w_control_regs_16_wren_w(user_w_control_regs_16_wren),
+    .user_w_control_regs_16_data_w(user_w_control_regs_16_data),
+    .user_w_control_regs_16_full_w(user_w_control_regs_16_full),
+    .user_w_control_regs_16_open_w(user_w_control_regs_16_open),
+    .GPIO_LED_w(GPIO_LED), .user_control_regs_16_addr_w(user_control_regs_16_addr),
+    .user_control_regs_16_addr_update_w(user_control_regs_16_addr_update),
+    .user_w_auxcmd1_membank_16_wren_w(user_w_auxcmd1_membank_16_wren),
+    .user_w_auxcmd1_membank_16_data_w(user_w_auxcmd1_membank_16_data),
+    .user_w_auxcmd1_membank_16_full_w(user_w_auxcmd1_membank_16_full),
+    .user_w_auxcmd1_membank_16_open_w(user_w_auxcmd1_membank_16_open),
+    .s_axis_tx_tready_w(s_axis_tx_tready), .s_axis_tx_tdata_w(s_axis_tx_tdata),
+    .user_auxcmd1_membank_16_addr_w(user_auxcmd1_membank_16_addr),
+    .user_auxcmd1_membank_16_addr_update_w(user_auxcmd1_membank_16_addr_update),
+    .user_w_auxcmd2_membank_16_wren_w(user_w_auxcmd2_membank_16_wren),
+    .user_w_auxcmd2_membank_16_data_w(user_w_auxcmd2_membank_16_data),
+    .user_w_auxcmd2_membank_16_full_w(user_w_auxcmd2_membank_16_full),
+    .user_w_auxcmd2_membank_16_open_w(user_w_auxcmd2_membank_16_open),
+    .s_axis_tx_tkeep_w(s_axis_tx_tkeep), .user_auxcmd2_membank_16_addr_w(user_auxcmd2_membank_16_addr),
+    .user_auxcmd2_membank_16_addr_update_w(user_auxcmd2_membank_16_addr_update),
     .user_w_auxcmd3_membank_16_wren_w(user_w_auxcmd3_membank_16_wren),
     .user_w_auxcmd3_membank_16_data_w(user_w_auxcmd3_membank_16_data),
     .user_w_auxcmd3_membank_16_full_w(user_w_auxcmd3_membank_16_full),
     .user_w_auxcmd3_membank_16_open_w(user_w_auxcmd3_membank_16_open),
-    .user_auxcmd3_membank_16_addr_w(user_auxcmd3_membank_16_addr),
+    .s_axis_tx_tlast_w(s_axis_tx_tlast), .user_auxcmd3_membank_16_addr_w(user_auxcmd3_membank_16_addr),
     .user_auxcmd3_membank_16_addr_update_w(user_auxcmd3_membank_16_addr_update),
-    .trn_lnk_up_n_w(trn_lnk_up_n), .quiesce_w(quiesce), .GPIO_LED_w(GPIO_LED),
-    .s_axis_tx_tready_w(s_axis_tx_tready), .s_axis_tx_tdata_w(s_axis_tx_tdata),
-    .s_axis_tx_tkeep_w(s_axis_tx_tkeep), .s_axis_tx_tlast_w(s_axis_tx_tlast),
-    .s_axis_tx_tvalid_w(s_axis_tx_tvalid), .m_axis_rx_tdata_w(m_axis_rx_tdata),
-    .m_axis_rx_tkeep_w(m_axis_rx_tkeep), .m_axis_rx_tlast_w(m_axis_rx_tlast),
-    .m_axis_rx_tvalid_w(m_axis_rx_tvalid), .m_axis_rx_tready_w(m_axis_rx_tready),
+    .user_r_thr_32_rden_w(user_r_thr_32_rden), .user_r_thr_32_data_w(user_r_thr_32_data),
+    .user_r_thr_32_empty_w(user_r_thr_32_empty), .user_r_thr_32_eof_w(user_r_thr_32_eof),
+    .user_r_thr_32_open_w(user_r_thr_32_open), .s_axis_tx_tvalid_w(s_axis_tx_tvalid),
+    .user_w_thr_32_wren_w(user_w_thr_32_wren), .user_w_thr_32_data_w(user_w_thr_32_data),
+    .user_w_thr_32_full_w(user_w_thr_32_full), .user_w_thr_32_open_w(user_w_thr_32_open),
+    .m_axis_rx_tdata_w(m_axis_rx_tdata), .m_axis_rx_tkeep_w(m_axis_rx_tkeep),
+    .user_thr_32_addr_w(user_thr_32_addr), .user_thr_32_addr_update_w(user_thr_32_addr_update),
+    .user_r_status_regs_16_rden_w(user_r_status_regs_16_rden),
+    .user_r_status_regs_16_data_w(user_r_status_regs_16_data),
+    .user_r_status_regs_16_empty_w(user_r_status_regs_16_empty),
+    .user_r_status_regs_16_eof_w(user_r_status_regs_16_eof),
+    .user_r_status_regs_16_open_w(user_r_status_regs_16_open),
+    .m_axis_rx_tlast_w(m_axis_rx_tlast), .user_status_regs_16_addr_w(user_status_regs_16_addr),
+    .user_status_regs_16_addr_update_w(user_status_regs_16_addr_update),
+    .user_r_neural_data_32_rden_w(user_r_neural_data_32_rden),
+    .user_r_neural_data_32_data_w(user_r_neural_data_32_data),
+    .user_r_neural_data_32_empty_w(user_r_neural_data_32_empty),
+    .user_r_neural_data_32_eof_w(user_r_neural_data_32_eof),
+    .user_r_neural_data_32_open_w(user_r_neural_data_32_open),
+    .m_axis_rx_tvalid_w(m_axis_rx_tvalid), .user_r_mem_16_rden_w(user_r_mem_16_rden),
+    .user_r_mem_16_data_w(user_r_mem_16_data), .user_r_mem_16_empty_w(user_r_mem_16_empty),
+    .user_r_mem_16_eof_w(user_r_mem_16_eof), .user_r_mem_16_open_w(user_r_mem_16_open),
+    .m_axis_rx_tready_w(m_axis_rx_tready), .user_w_mem_16_wren_w(user_w_mem_16_wren),
+    .user_w_mem_16_data_w(user_w_mem_16_data), .user_w_mem_16_full_w(user_w_mem_16_full),
+    .user_w_mem_16_open_w(user_w_mem_16_open), .m_axis_rx_tuser_w(m_axis_rx_tuser),
+    .user_mem_16_addr_w(user_mem_16_addr), .user_mem_16_addr_update_w(user_mem_16_addr_update),
     .cfg_interrupt_n_w(cfg_interrupt_n), .cfg_interrupt_rdy_n_w(cfg_interrupt_rdy_n),
     .cfg_bus_number_w(cfg_bus_number), .cfg_device_number_w(cfg_device_number),
     .cfg_function_number_w(cfg_function_number), .cfg_dcommand_w(cfg_dcommand),
     .cfg_lcommand_w(cfg_lcommand), .cfg_dstatus_w(cfg_dstatus),
     .trn_rerrfwd_n_w(trn_rerrfwd_n), .trn_fc_cplh_w(trn_fc_cplh),
     .trn_fc_cpld_w(trn_fc_cpld), .trn_terr_drop_n_w(trn_terr_drop_n),
-    .user_r_neural_data_32_rden_w(user_r_neural_data_32_rden),
-    .user_r_neural_data_32_data_w(user_r_neural_data_32_data),
-    .user_r_neural_data_32_empty_w(user_r_neural_data_32_empty),
-    .user_r_neural_data_32_eof_w(user_r_neural_data_32_eof),
-    .user_r_neural_data_32_open_w(user_r_neural_data_32_open),
-    .user_r_control_regs_16_rden_w(user_r_control_regs_16_rden),
-    .user_r_control_regs_16_data_w(user_r_control_regs_16_data),
-    .user_r_control_regs_16_empty_w(user_r_control_regs_16_empty),
-    .user_r_control_regs_16_eof_w(user_r_control_regs_16_eof),
-    .user_r_control_regs_16_open_w(user_r_control_regs_16_open),
-    .user_w_control_regs_16_wren_w(user_w_control_regs_16_wren),
-    .user_w_control_regs_16_data_w(user_w_control_regs_16_data),
-    .user_w_control_regs_16_full_w(user_w_control_regs_16_full),
-    .user_w_control_regs_16_open_w(user_w_control_regs_16_open),
-    .user_control_regs_16_addr_w(user_control_regs_16_addr),
-    .user_control_regs_16_addr_update_w(user_control_regs_16_addr_update),
-    .user_r_status_regs_16_rden_w(user_r_status_regs_16_rden),
-    .user_r_status_regs_16_data_w(user_r_status_regs_16_data),
-    .user_r_status_regs_16_empty_w(user_r_status_regs_16_empty),
-    .user_r_status_regs_16_eof_w(user_r_status_regs_16_eof),
-    .user_r_status_regs_16_open_w(user_r_status_regs_16_open),
-    .user_status_regs_16_addr_w(user_status_regs_16_addr),
-    .user_status_regs_16_addr_update_w(user_status_regs_16_addr_update),
-    .user_w_auxcmd1_membank_16_wren_w(user_w_auxcmd1_membank_16_wren),
-    .user_w_auxcmd1_membank_16_data_w(user_w_auxcmd1_membank_16_data),
-    .user_w_auxcmd1_membank_16_full_w(user_w_auxcmd1_membank_16_full),
-    .user_w_auxcmd1_membank_16_open_w(user_w_auxcmd1_membank_16_open),
-    .bus_clk_w(bus_clk), .user_auxcmd1_membank_16_addr_w(user_auxcmd1_membank_16_addr),
-    .user_auxcmd1_membank_16_addr_update_w(user_auxcmd1_membank_16_addr_update),
-    .user_w_auxcmd2_membank_16_wren_w(user_w_auxcmd2_membank_16_wren),
-    .user_w_auxcmd2_membank_16_data_w(user_w_auxcmd2_membank_16_data),
-    .user_w_auxcmd2_membank_16_full_w(user_w_auxcmd2_membank_16_full),
-    .user_w_auxcmd2_membank_16_open_w(user_w_auxcmd2_membank_16_open),
-    .user_auxcmd2_membank_16_addr_w(user_auxcmd2_membank_16_addr),
-    .user_auxcmd2_membank_16_addr_update_w(user_auxcmd2_membank_16_addr_update));
+    .user_w_write_32_wren_w(user_w_write_32_wren),
+    .user_w_write_32_data_w(user_w_write_32_data),
+    .user_w_write_32_full_w(user_w_write_32_full),
+    .user_w_write_32_open_w(user_w_write_32_open),
+    .user_r_mua_32_rden_w(user_r_mua_32_rden), .user_r_mua_32_data_w(user_r_mua_32_data),
+    .user_r_mua_32_empty_w(user_r_mua_32_empty), .user_r_mua_32_eof_w(user_r_mua_32_eof),
+    .user_r_mua_32_open_w(user_r_mua_32_open), .user_r_spk_realtime_32_rden_w(user_r_spk_realtime_32_rden),
+    .user_r_spk_realtime_32_data_w(user_r_spk_realtime_32_data),
+    .user_r_spk_realtime_32_empty_w(user_r_spk_realtime_32_empty),
+    .user_r_spk_realtime_32_eof_w(user_r_spk_realtime_32_eof),
+    .user_r_spk_realtime_32_open_w(user_r_spk_realtime_32_open),
+    .user_r_spk_sort_32_rden_w(user_r_spk_sort_32_rden),
+    .user_r_spk_sort_32_data_w(user_r_spk_sort_32_data),
+    .user_r_spk_sort_32_empty_w(user_r_spk_sort_32_empty),
+    .user_r_spk_sort_32_eof_w(user_r_spk_sort_32_eof),
+    .user_r_spk_sort_32_open_w(user_r_spk_sort_32_open), .bus_clk_w(bus_clk),
+    .user_r_template_32_rden_w(user_r_template_32_rden),
+    .user_r_template_32_data_w(user_r_template_32_data),
+    .user_r_template_32_empty_w(user_r_template_32_empty),
+    .user_r_template_32_eof_w(user_r_template_32_eof),
+    .user_r_template_32_open_w(user_r_template_32_open));
 
 endmodule
