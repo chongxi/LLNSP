@@ -40,8 +40,9 @@ set_property "edif_extra_search_paths" "[file normalize "$util_dir"]" $obj
 set_property "top" $top_file $obj
 
 #add IP
+set files [glob -nocomplain -directory [file normalize $ip_dir] *.xcix]
+import_ip -srcset $obj $files
 set files [glob -nocomplain -directory [file normalize $ip_dir] *.xci]
-
 import_ip -srcset $obj $files
 
 upgrade_ip [get_ips]
