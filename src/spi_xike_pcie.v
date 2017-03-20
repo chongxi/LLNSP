@@ -346,18 +346,18 @@ module spi_xike_pcie (
   // SPI_running means data acq process is on
 
   //IO signals
-  (* mark_debug = "true" *)   wire SCLK;
-  (* mark_debug = "true" *)   wire CS;
+  wire SCLK;
+  wire CS;
 
-  wire SPI_running;
-  wire MOSI_A     ;
-  wire MOSI_B     ;
-  (* mark_debug = "true" *)   wire MOSI_C;
+  (* mark_debug = "true" *)   wire SPI_running;
+  wire MOSI_A;
+  wire MOSI_B;
+  wire MOSI_C;
   wire MOSI_D;
 
   wire MISO_A1, MISO_A2;
   wire MISO_B1, MISO_B2;
-  (* mark_debug = "true" *)   wire MISO_C1, MISO_C2;
+  wire MISO_C1, MISO_C2;
   wire MISO_D1, MISO_D2;
 
   //IO signals assignment
@@ -467,8 +467,10 @@ spi_xillybus_interface  SPI_2_XILLYBUS (
   assign OVERFLOW_LED = fifo_overflow;
 
 // Xike
+  (* mark_debug = "true" *) wire [31:0] xike_fifo_din = {32'b0, FIFO_DATA_TO_XIKE};
+  (* mark_debug = "true" *) wire        xike_fifo_wen = FIFO_DATA_TO_XIKE_WEN;
   wire [31:0] fifo0_dout;
-  wire [15:0] fir_in = fifo0_dout[15:0];
+  (* mark_debug = "true" *) wire [15:0] fir_in;
   wire [31:0] mua_to_spkDet;
   wire [31:0] mua_to_host;
   wire [4:0] chNo_to_FIR;
@@ -476,12 +478,14 @@ spi_xillybus_interface  SPI_2_XILLYBUS (
   wire [31:0] threshold;
   wire [31:0] ch_unigroup;
   wire xike_reset = !user_w_write_32_open;
+  assign fir_in = fifo0_dout[15:0];
+  assign user_r_mua_32_eof = !SPI_running;
 
   fwft_fifo fifo_32_in (
     .clk  (bus_clk                  ), // input wire clk
     .srst (xike_reset               ), // input wire srst
-    .wr_en(user_w_write_32_wren     ), // input wire wr_en
-    .din  (user_w_write_32_data     ), // input wire [31 : 0] din
+    .wr_en(xike_fifo_wen.           ), // input wire wr_en         (default: user_w_write_32_wren)
+    .din  (xike_fifo_din.           ), // input wire [31 : 0] din. (default: user_w_write_32_data)
     .rd_en(fir_ready && !fifo0_empty), // input wire rd_en
     .dout (fifo0_dout               ), // output wire [31 : 0] dout
     .full (user_w_write_32_full     ), // output wire full
