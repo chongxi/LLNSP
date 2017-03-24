@@ -17,7 +17,7 @@ module spi_xillybus_interface (
   wire        fifo_reset   ;
   wire        fifo_wen     ;
 
-  assign fifo_reset = reset | ~user_r_neural_data_32_open;  //reset the fifo when the pipe closes even if the interface is opened
+  assign fifo_reset = reset | ~user_r_neural_data_32_open;   //reset the fifo when the pipe closes even if the interface is opened
   assign fifo_wen   = FIFO_DATA_STREAM_WEN & ~fifo_overflow; //If the fifo overflows, stop writing to it
 
   fifo_w16_4096_r32_2048 data_fifo (
