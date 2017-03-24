@@ -952,11 +952,11 @@ module spi_intan_interface_4_bank (
                           if (data_stream_1_en == 1'b1) begin
                               FIFO_DATA_STREAM      <= data_stream_1;
                               FIFO_DATA_STREAM_WEN  <= 1'b1;
-			      //if(channel_MISO < 32) begin
-				  FIFO_DATA_TO_XIKE     <= data_stream_1;
-				  FIFO_DATA_TO_XIKE_WEN <= 1'b1;
-				  CHANNEL_TO_XIKE       <= channel_MISO;
-			      //end
+                              if(channel_MISO <= 32 && channel_MISO > 0) begin
+                                FIFO_DATA_TO_XIKE     <= data_stream_1;
+                                FIFO_DATA_TO_XIKE_WEN <= 1'b1;
+                                CHANNEL_TO_XIKE       <= channel_MISO;
+                              end
                           end
       
                           SCLK <= 1'b1;
@@ -979,11 +979,11 @@ module spi_intan_interface_4_bank (
                           if (data_stream_2_en == 1'b1) begin
                               FIFO_DATA_STREAM      <= data_stream_2;
                               FIFO_DATA_STREAM_WEN  <= 1'b1;
-			      //if(channel_MISO < 32) begin
-				  FIFO_DATA_TO_XIKE     <= data_stream_2;
-				  FIFO_DATA_TO_XIKE_WEN <= 1'b1;
-				  CHANNEL_TO_XIKE       <= channel_MISO;
-			      //end
+                              if(channel_MISO <= 32 && channel_MISO > 0) begin
+                                FIFO_DATA_TO_XIKE     <= data_stream_2;
+                                FIFO_DATA_TO_XIKE_WEN <= 1'b1;
+                                CHANNEL_TO_XIKE       <= channel_MISO;
+                              end
                          end
       
                           MOSI_A <= MOSI_cmd_A[13];
@@ -1008,12 +1008,12 @@ module spi_intan_interface_4_bank (
                           if (data_stream_3_en == 1'b1) begin
                               FIFO_DATA_STREAM      <= data_stream_3;
                               FIFO_DATA_STREAM_WEN  <= 1'b1;
-       			      //if(channel_MISO < 32) begin
-				  FIFO_DATA_TO_XIKE     <= data_stream_3;
-				  FIFO_DATA_TO_XIKE_WEN <= 1'b1;
-				  CHANNEL_TO_XIKE       <= channel_MISO;
-			      //end
-			  end
+                              if(channel_MISO <= 32 && channel_MISO > 0) begin
+                                FIFO_DATA_TO_XIKE     <= data_stream_2;
+                                FIFO_DATA_TO_XIKE_WEN <= 1'b1;
+                                CHANNEL_TO_XIKE       <= channel_MISO;
+                              end
+			                    end
       
                           in4x_A1[7] <= MISO_A1; in4x_A2[7] <= MISO_A2;
                           in4x_B1[7] <= MISO_B1; in4x_B2[7] <= MISO_B2;
@@ -1026,12 +1026,12 @@ module spi_intan_interface_4_bank (
                           if (data_stream_4_en == 1'b1) begin
                               FIFO_DATA_STREAM      <= data_stream_4;
                               FIFO_DATA_STREAM_WEN  <= 1'b1;
-       			      //if(channel_MISO < 32) begin
-				  FIFO_DATA_TO_XIKE     <= data_stream_4;
-				  FIFO_DATA_TO_XIKE_WEN <= 1'b1;
-				  CHANNEL_TO_XIKE       <= channel_MISO;
-			      //end
-			  end
+                              if(channel_MISO <= 32 && channel_MISO > 0) begin
+                                FIFO_DATA_TO_XIKE     <= data_stream_4;
+                                FIFO_DATA_TO_XIKE_WEN <= 1'b1;
+                                CHANNEL_TO_XIKE       <= channel_MISO;
+                              end
+			                    end
       
                           SCLK <= 1'b1;
                           in4x_A1[8] <= MISO_A1; in4x_A2[8] <= MISO_A2;
@@ -1045,11 +1045,11 @@ module spi_intan_interface_4_bank (
                           if (data_stream_5_en == 1'b1) begin
                               FIFO_DATA_STREAM      <= data_stream_5;
                               FIFO_DATA_STREAM_WEN  <= 1'b1;
-			      //if(channel_MISO < 32) begin
-				  FIFO_DATA_TO_XIKE     <= data_stream_5;
-				  FIFO_DATA_TO_XIKE_WEN <= 1'b1;
-				  CHANNEL_TO_XIKE       <= channel_MISO;
-			      //end
+                              if(channel_MISO <= 32 && channel_MISO > 0) begin
+                                FIFO_DATA_TO_XIKE     <= data_stream_5;
+                                FIFO_DATA_TO_XIKE_WEN <= 1'b1;
+                                CHANNEL_TO_XIKE       <= channel_MISO;
+                              end
                          end
       
                           SCLK <= 1'b1;
@@ -1064,11 +1064,11 @@ module spi_intan_interface_4_bank (
                           if (data_stream_6_en == 1'b1) begin
                               FIFO_DATA_STREAM      <= data_stream_6;
                               FIFO_DATA_STREAM_WEN  <= 1'b1;
-			      //if(channel_MISO < 32) begin
-				  FIFO_DATA_TO_XIKE     <= data_stream_6;
-				  FIFO_DATA_TO_XIKE_WEN <= 1'b1;
-				  CHANNEL_TO_XIKE       <= channel_MISO;
-			      //end
+                              if(channel_MISO <= 32 && channel_MISO > 0) begin
+                                FIFO_DATA_TO_XIKE     <= data_stream_6;
+                                FIFO_DATA_TO_XIKE_WEN <= 1'b1;
+                                CHANNEL_TO_XIKE       <= channel_MISO;
+                              end
                          end
       
                           MOSI_A <= MOSI_cmd_A[12];
@@ -1086,11 +1086,11 @@ module spi_intan_interface_4_bank (
                           if (data_stream_7_en == 1'b1) begin
                               FIFO_DATA_STREAM      <= data_stream_7;
                               FIFO_DATA_STREAM_WEN  <= 1'b1;
-			      //if(channel_MISO < 32) begin
-				  FIFO_DATA_TO_XIKE     <= data_stream_7;
-				  FIFO_DATA_TO_XIKE_WEN <= 1'b1;
-				  CHANNEL_TO_XIKE       <= channel_MISO;
-			      //end
+                              if(channel_MISO <= 32 && channel_MISO > 0) begin
+                                FIFO_DATA_TO_XIKE     <= data_stream_7;
+                                FIFO_DATA_TO_XIKE_WEN <= 1'b1;
+                                CHANNEL_TO_XIKE       <= channel_MISO;
+                              end
                          end
       
                           in4x_A1[11] <= MISO_A1; in4x_A2[11] <= MISO_A2;
@@ -1104,11 +1104,11 @@ module spi_intan_interface_4_bank (
                           if (data_stream_8_en == 1'b1) begin
                               FIFO_DATA_STREAM      <= data_stream_8;
                               FIFO_DATA_STREAM_WEN  <= 1'b1;
-       			      //if(channel_MISO < 32) begin
-				  FIFO_DATA_TO_XIKE     <= data_stream_8;
-				  FIFO_DATA_TO_XIKE_WEN <= 1'b1;
-				  CHANNEL_TO_XIKE       <= channel_MISO;
-			      //end
+                              if(channel_MISO <= 32 && channel_MISO > 0) begin
+                                FIFO_DATA_TO_XIKE     <= data_stream_8;
+                                FIFO_DATA_TO_XIKE_WEN <= 1'b1;
+                                CHANNEL_TO_XIKE       <= channel_MISO;
+                              end
                           end
       
                           SCLK <= 1'b1;
@@ -1123,11 +1123,11 @@ module spi_intan_interface_4_bank (
                           if (data_stream_9_en == 1'b1) begin
                               FIFO_DATA_STREAM      <= data_stream_9;
                               FIFO_DATA_STREAM_WEN  <= 1'b1;
-       			      //if(channel_MISO < 32) begin
-				  FIFO_DATA_TO_XIKE     <= data_stream_9;
-				  FIFO_DATA_TO_XIKE_WEN <= 1'b1;
-				  CHANNEL_TO_XIKE       <= channel_MISO;
-			      //end
+                              if(channel_MISO <= 32 && channel_MISO > 0) begin
+                                FIFO_DATA_TO_XIKE     <= data_stream_9;
+                                FIFO_DATA_TO_XIKE_WEN <= 1'b1;
+                                CHANNEL_TO_XIKE       <= channel_MISO;
+                              end
                          end
                           
                           SCLK <= 1'b1;
@@ -1142,12 +1142,12 @@ module spi_intan_interface_4_bank (
                           if (data_stream_10_en == 1'b1) begin
                               FIFO_DATA_STREAM      <= data_stream_10;
                               FIFO_DATA_STREAM_WEN  <= 1'b1;
-       			      //if(channel_MISO < 32) begin
-				  FIFO_DATA_TO_XIKE     <= data_stream_10;
-				  FIFO_DATA_TO_XIKE_WEN <= 1'b1;
-				  CHANNEL_TO_XIKE       <= channel_MISO;
-			      //end
-                       end
+                              if(channel_MISO <= 32 && channel_MISO > 0) begin
+                                FIFO_DATA_TO_XIKE     <= data_stream_10;
+                                FIFO_DATA_TO_XIKE_WEN <= 1'b1;
+                                CHANNEL_TO_XIKE       <= channel_MISO;
+                              end
+                          end
                           
                           MOSI_A <= MOSI_cmd_A[11];
                           MOSI_B <= MOSI_cmd_B[11];
@@ -1164,11 +1164,11 @@ module spi_intan_interface_4_bank (
                           if (data_stream_11_en == 1'b1) begin
                               FIFO_DATA_STREAM      <= data_stream_11;
                               FIFO_DATA_STREAM_WEN  <= 1'b1;
-       			      //if(channel_MISO < 32) begin
-				  FIFO_DATA_TO_XIKE     <= data_stream_11;
-				  FIFO_DATA_TO_XIKE_WEN <= 1'b1;
-				  CHANNEL_TO_XIKE       <= channel_MISO;
-			      //end
+                              if(channel_MISO <= 32 && channel_MISO > 0) begin
+                                FIFO_DATA_TO_XIKE     <= data_stream_11;
+                                FIFO_DATA_TO_XIKE_WEN <= 1'b1;
+                                CHANNEL_TO_XIKE       <= channel_MISO;
+                              end
                           end
                           
                           in4x_A1[15] <= MISO_A1; in4x_A2[15] <= MISO_A2;
@@ -1182,11 +1182,11 @@ module spi_intan_interface_4_bank (
                           if (data_stream_12_en == 1'b1) begin
                               FIFO_DATA_STREAM      <= data_stream_12;
                               FIFO_DATA_STREAM_WEN  <= 1'b1;
-       			      //if(channel_MISO < 32) begin
-				  FIFO_DATA_TO_XIKE     <= data_stream_12;
-				  FIFO_DATA_TO_XIKE_WEN <= 1'b1;
-				  CHANNEL_TO_XIKE       <= channel_MISO;
-			      //end
+                              if(channel_MISO <= 32 && channel_MISO > 0) begin
+                                FIFO_DATA_TO_XIKE     <= data_stream_12;
+                                FIFO_DATA_TO_XIKE_WEN <= 1'b1;
+                                CHANNEL_TO_XIKE       <= channel_MISO;
+                              end
                           end
                           
                           SCLK <= 1'b1;
@@ -1201,11 +1201,11 @@ module spi_intan_interface_4_bank (
                           if (data_stream_13_en == 1'b1) begin
                               FIFO_DATA_STREAM      <= data_stream_13;
                               FIFO_DATA_STREAM_WEN  <= 1'b1;
-       			      //if(channel_MISO < 32) begin
-				  FIFO_DATA_TO_XIKE     <= data_stream_13;
-				  FIFO_DATA_TO_XIKE_WEN <= 1'b1;
-				  CHANNEL_TO_XIKE       <= channel_MISO;
-			      //end
+                              if(channel_MISO <= 32 && channel_MISO > 0) begin
+                                FIFO_DATA_TO_XIKE     <= data_stream_13;
+                                FIFO_DATA_TO_XIKE_WEN <= 1'b1;
+                                CHANNEL_TO_XIKE       <= channel_MISO;
+                              end
                           end
                           
                           SCLK <= 1'b1;
@@ -1220,11 +1220,11 @@ module spi_intan_interface_4_bank (
                           if (data_stream_14_en == 1'b1) begin
                               FIFO_DATA_STREAM      <= data_stream_14;
                               FIFO_DATA_STREAM_WEN  <= 1'b1;
-       			      //if(channel_MISO < 32) begin
-				  FIFO_DATA_TO_XIKE     <= data_stream_14;
-				  FIFO_DATA_TO_XIKE_WEN <= 1'b1;
-				  CHANNEL_TO_XIKE       <= channel_MISO;
-			      //end
+                              if(channel_MISO <= 32 && channel_MISO > 0) begin
+                                FIFO_DATA_TO_XIKE     <= data_stream_14;
+                                FIFO_DATA_TO_XIKE_WEN <= 1'b1;
+                                CHANNEL_TO_XIKE       <= channel_MISO;
+                              end
                           end
                           
                           MOSI_A <= MOSI_cmd_A[10];
@@ -1242,11 +1242,11 @@ module spi_intan_interface_4_bank (
                           if (data_stream_15_en == 1'b1) begin
                               FIFO_DATA_STREAM      <= data_stream_15;
                               FIFO_DATA_STREAM_WEN  <= 1'b1;
-       			      //if(channel_MISO < 32) begin
-				  FIFO_DATA_TO_XIKE     <= data_stream_15;
-				  FIFO_DATA_TO_XIKE_WEN <= 1'b1;
-				  CHANNEL_TO_XIKE       <= channel_MISO;
-			      //end
+                              if(channel_MISO <= 32 && channel_MISO > 0) begin
+                                FIFO_DATA_TO_XIKE     <= data_stream_15;
+                                FIFO_DATA_TO_XIKE_WEN <= 1'b1;
+                                CHANNEL_TO_XIKE       <= channel_MISO;
+                              end
                           end
                           
                           in4x_A1[19] <= MISO_A1; in4x_A2[19] <= MISO_A2;
@@ -1260,11 +1260,11 @@ module spi_intan_interface_4_bank (
                           if (data_stream_16_en == 1'b1) begin
                               FIFO_DATA_STREAM      <= data_stream_16;
                               FIFO_DATA_STREAM_WEN  <= 1'b1;
-       			      //if(channel_MISO < 32) begin
-				  FIFO_DATA_TO_XIKE     <= data_stream_16;
-				  FIFO_DATA_TO_XIKE_WEN <= 1'b1;
-				  CHANNEL_TO_XIKE       <= channel_MISO;
-			      //end
+                              if(channel_MISO <= 32 && channel_MISO > 0) begin
+                                FIFO_DATA_TO_XIKE     <= data_stream_16;
+                                FIFO_DATA_TO_XIKE_WEN <= 1'b1;
+                                CHANNEL_TO_XIKE       <= channel_MISO;
+                              end
                           end
                           
                           SCLK <= 1'b1;
