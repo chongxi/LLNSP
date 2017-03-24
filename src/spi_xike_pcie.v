@@ -468,32 +468,48 @@ spi_xillybus_interface  SPI_2_XILLYBUS (
   assign OVERFLOW_LED = fifo_overflow;
 
 // Xike
+
+  mem_reg mem_reg_16 (
+    .clk   (bus_clk           ),
+    .din   (user_w_mem_16_data),
+    .we    (user_w_mem_16_wren),
+    .re    (user_r_mem_16_rden),
+    .addr  (user_r_mem_16_addr),
+    .dout  (user_r_mem_16_data),
+    .thr_en(thr_en            ),
+    .eof   (xike_spk_eof      )
+  );
+
+  assign user_r_mua_32_eof          = xike_spk_eof;
+  assign user_r_spk_sort_32_eof     = xike_spk_eof;
+  assign user_r_spk_realtime_32_eof = xike_spk_eof;
+
   wire [15:0] fifo0_dout;
-  (* mark_debug = "true" *) wire [5:0]  FIFO_CHNO_TO_XIKE; 
+  (* mark_debug = "true" *) wire [5:0]  FIFO_CHNO_TO_XIKE;
   (* mark_debug = "true" *) wire [15:0] fir_in;
   wire [31:0] mua_to_spkDet;
   (* mark_debug = "true" *) wire fir_valid;
-  wire [31:0] mua_to_host;
-  wire [5:0] chNo_to_FIR;
-  wire [5:0] chNo_to_spkDet;
-  wire [31:0] threshold;
-  wire [31:0] ch_unigroup;
-  wire xike_reset; // = !user_w_write_32_open;
+  wire [31:0] mua_to_host   ;
+  wire [ 5:0] chNo_to_FIR   ;
+  wire [ 5:0] chNo_to_spkDet;
+  wire [31:0] threshold     ;
+  wire [31:0] ch_unigroup   ;
+  wire        xike_reset    ; // = !user_w_write_32_open;
   assign fir_in = fifo0_dout;
-  assign user_r_mua_32_eof = !SPI_running;
+  // assign user_r_mua_32_eof = !SPI_running;
   assign xike_reset = reset;
 
-    fwft_fifo your_instance_name (
-      .rst(xike_reset),        // input wire rst
-      .wr_clk(spi_clk),  // input wire wr_clk
-      .rd_clk(bus_clk),  // input wire rd_clk
-      .din(FIFO_DATA_TO_XIKE),        // input wire [15 : 0] din
-      .wr_en(FIFO_DATA_TO_XIKE_WEN),    // input wire wr_en
-      .rd_en(fir_ready && !fifo0_empty),    // input wire rd_en
-      .dout(fifo0_dout),      // output wire [15 : 0] dout
-      .full(user_w_write_32_full),      // output wire full
-      .empty(fifo0_empty)    // output wire empty
-    );
+  fwft_fifo your_instance_name (
+    .rst   (xike_reset               ), // input wire rst
+    .wr_clk(spi_clk                  ), // input wire wr_clk
+    .rd_clk(bus_clk                  ), // input wire rd_clk
+    .din   (FIFO_DATA_TO_XIKE        ), // input wire [15 : 0] din
+    .wr_en (FIFO_DATA_TO_XIKE_WEN    ), // input wire wr_en
+    .rd_en (fir_ready && !fifo0_empty), // input wire rd_en
+    .dout  (fifo0_dout               ), // output wire [15 : 0] dout
+    .full  (user_w_write_32_full     ), // output wire full
+    .empty (fifo0_empty              )  // output wire empty
+  );
 
 //  fwft_fifo fifo_16_to_xike (
 //    .clk  (spi_clk                  ), // input wire clk
