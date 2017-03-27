@@ -272,9 +272,9 @@ module spi_xike_pcie (
   wire        user_mem_16_addr_update;
 
   // Wires related to /dev/xillybus_mua_32
-  wire        user_r_mua_32_rden ;
+  (* mark_debug = "true" *) wire        user_r_mua_32_rden ;
   wire        user_r_mua_32_empty;
-  wire [31:0] user_r_mua_32_data ;
+  (* mark_debug = "true" *) wire [31:0] user_r_mua_32_data ;
   wire        user_r_mua_32_eof  ;
   wire        user_r_mua_32_open ;
 
@@ -391,6 +391,7 @@ module spi_xike_pcie (
   (* mark_debug = "true" *) wire        FIFO_DATA_STREAM_WEN ;
   (* mark_debug = "true" *) wire [15:0] FIFO_DATA_TO_XIKE    ;
   (* mark_debug = "true" *) wire        FIFO_DATA_TO_XIKE_WEN;
+  (* mark_debug = "true" *) wire [5:0]  FIFO_CHNO_TO_XIKE;
 
   spi_intan_interface_4_bank INTAN_2_SPI (
     .bus_clk                       (bus_clk                       ),
@@ -469,12 +470,15 @@ spi_xillybus_interface  SPI_2_XILLYBUS (
 
 // Xike
 
-  mem_reg mem_reg_16 (
+  (* mark_debug = "true" *) wire xike_spk_eof;
+  (* mark_debug = "true" *) wire thr_en;
+
+  mem_reg_16 mem_reg_16 (
     .clk   (bus_clk           ),
     .din   (user_w_mem_16_data),
     .we    (user_w_mem_16_wren),
     .re    (user_r_mem_16_rden),
-    .addr  (user_r_mem_16_addr),
+    .addr  (user_mem_16_addr  ),
     .dout  (user_r_mem_16_data),
     .thr_en(thr_en            ),
     .eof   (xike_spk_eof      )
@@ -485,10 +489,9 @@ spi_xillybus_interface  SPI_2_XILLYBUS (
   assign user_r_spk_realtime_32_eof = xike_spk_eof;
 
   wire [15:0] fifo0_dout;
-  (* mark_debug = "true" *) wire [5:0]  FIFO_CHNO_TO_XIKE;
-  (* mark_debug = "true" *) wire [15:0] fir_in;
+  wire [15:0] fir_in;
   wire [31:0] mua_to_spkDet;
-  (* mark_debug = "true" *) wire fir_valid;
+  wire fir_valid;
   wire [31:0] mua_to_host   ;
   wire [ 5:0] chNo_to_FIR   ;
   wire [ 5:0] chNo_to_spkDet;
@@ -499,16 +502,16 @@ spi_xillybus_interface  SPI_2_XILLYBUS (
   // assign user_r_mua_32_eof = !SPI_running;
   assign xike_reset = reset;
 
-  fwft_fifo your_instance_name (
+  fwft_fifo fifo_to_fir (
     .rst   (xike_reset               ), // input wire rst
     .wr_clk(spi_clk                  ), // input wire wr_clk
     .rd_clk(bus_clk                  ), // input wire rd_clk
-    .din   (FIFO_DATA_TO_XIKE        ), // input wire [15 : 0] din
+    .din   (FIFO_DATA_TO_XIKE        ), // input wire [31 : 0] din
     .wr_en (FIFO_DATA_TO_XIKE_WEN    ), // input wire wr_en
-    .rd_en (fir_ready && !fifo0_empty), // input wire rd_en
-    .dout  (fifo0_dout               ), // output wire [15 : 0] dout
-    .full  (user_w_write_32_full     ), // output wire full
-    .empty (fifo0_empty              )  // output wire empty
+    .rd_en (user_r_mua_32_rden       ), // input wire rd_en 
+    .dout  (user_r_mua_32_data       ), // output wire [31 : 0] dout
+    .full  (fifo0_full               ), // output wire full
+    .empty (user_r_mua_32_empty      )  // output wire empty
   );
 
 //  fwft_fifo fifo_16_to_xike (
@@ -522,40 +525,40 @@ spi_xillybus_interface  SPI_2_XILLYBUS (
 //    .empty(fifo0_empty              )  // output wire empty
 //  );
 
-  channel_counter channel_gen (
-    .rst       (xike_reset               ),
-    .clk       (bus_clk                  ), // input wire clk
-    .en        (fir_ready && !fifo0_empty), // cnt enable == tvalid && tready
-    .tlast     (tlast_in                 ), // output tlast generator
-    .channel_No(chNo_to_FIR              )
-  );
+//  channel_counter channel_gen (
+//    .rst       (xike_reset               ),
+//    .clk       (bus_clk                  ), // input wire clk
+//    .en        (fir_ready && !fifo0_empty), // cnt enable == tvalid && tready
+//    .tlast     (tlast_in                 ), // output tlast generator
+//    .channel_No(chNo_to_FIR              )
+//  );
 
-  fir_compiler_0 fir_band_pass (
-    .aresetn                      (!xike_reset                  ), // input wire !reset, 0 to reset, 1 to work: active low
-    .aclk                         (bus_clk                      ), // input wire aclk
-    .s_axis_data_tvalid           (!fifo0_empty                 ), // input wire s_axis_data_tvalid
-    .s_axis_data_tready           (fir_ready                    ), // output wire s_axis_data_tready
-    .s_axis_data_tlast            (tlast_in                     ), // input wire s_axis_data_tlast
-    .s_axis_data_tuser            (chNo_to_FIR                  ), // input wire [3 : 0] s_axis_data_tuser
-    .s_axis_data_tdata            (fir_in                       ), // input wire [15 : 0] s_axis_data_tdata
-    .m_axis_data_tvalid           (fir_valid                    ), // output wire m_axis_data_tvalid          (* filtered valid *)
-    .m_axis_data_tlast            (end_of_frame                 ), // output wire m_axis_data_tlast
-    .m_axis_data_tuser            (chNo_to_spkDet               ), // output wire [3 : 0] m_axis_data_tuser
-    .m_axis_data_tdata            (mua_to_host                  ), // output wire [31 : 0] m_axis_data_tdata  (* filtered data *)
-    .event_s_data_tlast_missing   (event_s_data_tlast_missing   ),
-    .event_s_data_tlast_unexpected(event_s_data_tlast_unexpected),
-    .event_s_data_chanid_incorrect(event_s_data_chanid_incorrect)
-  );
+//  fir_compiler_0 fir_band_pass (
+//    .aresetn                      (!xike_reset                  ), // input wire !reset, 0 to reset, 1 to work: active low
+//    .aclk                         (bus_clk                      ), // input wire aclk
+//    .s_axis_data_tvalid           (!fifo0_empty                 ), // input wire s_axis_data_tvalid
+//    .s_axis_data_tready           (fir_ready                    ), // output wire s_axis_data_tready
+//    .s_axis_data_tlast            (tlast_in                     ), // input wire s_axis_data_tlast
+//    .s_axis_data_tuser            (chNo_to_FIR                  ), // input wire [3 : 0] s_axis_data_tuser
+//    .s_axis_data_tdata            (fir_in                       ), // input wire [15 : 0] s_axis_data_tdata
+//    .m_axis_data_tvalid           (fir_valid                    ), // output wire m_axis_data_tvalid          (* filtered valid *)
+//    .m_axis_data_tlast            (end_of_frame                 ), // output wire m_axis_data_tlast
+//    .m_axis_data_tuser            (chNo_to_spkDet               ), // output wire [3 : 0] m_axis_data_tuser
+//    .m_axis_data_tdata            (mua_to_host                  ), // output wire [31 : 0] m_axis_data_tdata  (* filtered data *)
+//    .event_s_data_tlast_missing   (event_s_data_tlast_missing   ),
+//    .event_s_data_tlast_unexpected(event_s_data_tlast_unexpected),
+//    .event_s_data_chanid_incorrect(event_s_data_chanid_incorrect)
+//  );
 
-  fifo_32x512 fifo_32_mua_out (
-    .clk  (bus_clk                    ),
-    .srst (!user_r_mua_32_open        ),
-    .wr_en(fir_valid && !fifo_mua_full), // AXI4 valid and ready
-    .din  (mua_to_host                ),
-    .rd_en(user_r_mua_32_rden         ),
-    .dout (user_r_mua_32_data         ),
-    .full (fifo_mua_full              ),
-    .empty(user_r_mua_32_empty        )
-  );
+//  fifo_32x512 fifo_32_mua_out (
+//    .clk  (bus_clk                    ),
+//    .srst (!user_r_mua_32_open        ),
+//    .wr_en(fir_valid && !fifo_mua_full), // AXI4 valid and ready
+//    .din  (fifo0_dout                 ), // mua_to_host
+//    .rd_en(user_r_mua_32_rden         ),
+//    .dout (user_r_mua_32_data         ),
+//    .full (fifo_mua_full              ),
+//    .empty(user_r_mua_32_empty        )
+//  );
 
 endmodule
