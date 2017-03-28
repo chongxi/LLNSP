@@ -54,6 +54,7 @@ module spi_intan_interface_4_bank (
   output reg        FIFO_DATA_STREAM_WEN          ,
 
   // To Xike
+  output reg        XIKE_ENABLE                   ,
   output reg [15:0] FIFO_DATA_TO_XIKE             ,
   output reg        FIFO_DATA_TO_XIKE_WEN         ,
   output reg [5:0 ] CHANNEL_TO_XIKE
@@ -97,6 +98,8 @@ module spi_intan_interface_4_bank (
   reg DSP_settle;
   reg [31:0] max_timestep_in;
   reg [3:0] delay_A, delay_B, delay_C, delay_D;
+
+  reg THRES_ENABLE;
 
   //Control registers
   always @(posedge bus_clk)
@@ -205,6 +208,11 @@ module spi_intan_interface_4_bank (
                     delay_B <= user_w_control_regs_16_data[7:4];
                     delay_C <= user_w_control_regs_16_data[11:8];
                     delay_D <= user_w_control_regs_16_data[15:12];
+                end
+                5'h05:
+                begin
+                    XIKE_ENABLE  <= user_w_control_regs_16_data[0];
+                    THRES_ENABLE <= user_w_control_regs_16_data[1];
                 end
                 5'h08:
                 begin

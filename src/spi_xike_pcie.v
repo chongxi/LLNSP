@@ -438,6 +438,7 @@ module spi_xike_pcie (
     .FIFO_DATA_STREAM              (FIFO_DATA_STREAM              ),
     .FIFO_DATA_STREAM_WEN          (FIFO_DATA_STREAM_WEN          ),
     
+    .XIKE_ENABLE                   (XIKE_ENABLE                   ),
     .FIFO_DATA_TO_XIKE             (FIFO_DATA_TO_XIKE             ),
     .FIFO_DATA_TO_XIKE_WEN         (FIFO_DATA_TO_XIKE_WEN         ),
     .CHANNEL_TO_XIKE               (FIFO_CHNO_TO_XIKE             )
@@ -473,20 +474,21 @@ spi_xillybus_interface  SPI_2_XILLYBUS (
   (* mark_debug = "true" *) wire xike_spk_eof;
   (* mark_debug = "true" *) wire thr_en;
 
-  mem_reg_16 mem_reg_16 (
-    .clk   (bus_clk           ),
-    .din   (user_w_mem_16_data),
-    .we    (user_w_mem_16_wren),
-    .re    (user_r_mem_16_rden),
-    .addr  (user_mem_16_addr  ),
-    .dout  (user_r_mem_16_data),
-    .thr_en(thr_en            ),
-    .eof   (xike_spk_eof      )
-  );
+//  mem_reg_16 mem_reg_16 (
+//    .clk   (bus_clk           ),
+//    .din   (user_w_mem_16_data),
+//    .we    (user_w_mem_16_wren),
+//    .re    (user_r_mem_16_rden),
+//    .addr  (user_mem_16_addr  ),
+//    .dout  (user_r_mem_16_data),
+//    .thr_en(thr_en            ),
+//    .eof   (xike_spk_eof      )
+//  );
 
-  assign user_r_mua_32_eof          = xike_spk_eof;
-  assign user_r_spk_sort_32_eof     = xike_spk_eof;
-  assign user_r_spk_realtime_32_eof = xike_spk_eof;
+  assign xike_spk_eof               = XIKE_ENABLE;
+  assign user_r_mua_32_eof          = XIKE_ENABLE;   // flag to stop RAM FIFO
+  assign user_r_spk_sort_32_eof     = XIKE_ENABLE;
+  assign user_r_spk_realtime_32_eof = XIKE_ENABLE;
 
   wire [15:0] fifo0_dout;
   wire [15:0] fir_in;
