@@ -330,7 +330,7 @@ module spi_xike_pcie (
   wire bus_clk;   // 250MHz PCIe clock
   wire sys_clk;   // on-board 200 MHz clock
   wire spi_clk;   // programmable frequency clock (f = 2800 * per-channel amplifier sampling rate) for SPI
-  wire reset = ~user_w_control_regs_16_open;
+  wire reset = ~user_w_control_regs_16_open;   // once open-ephys GUI load pcieRhythm module, the reset would goes to 0
 
   IBUFDS clkbuf (
       .I(SYSCLK_P),
@@ -471,108 +471,70 @@ spi_xillybus_interface  SPI_2_XILLYBUS (
 
 // Xike
 
+  wire        xike_reset    ;
   (* mark_debug = "true" *) wire xike_spk_eof;
-  wire thr_en;
+  wire spkDet_en;
+  wire spkClf_en;
 
-//  mem_reg_16 mem_reg_16 (
-//    .clk   (bus_clk           ),
-//    .din   (user_w_mem_16_data),
-//    .we    (user_w_mem_16_wren),
-//    .re    (user_r_mem_16_rden),
-//    .addr  (user_mem_16_addr  ),
-//    .dout  (user_r_mem_16_data),
-//    .thr_en(thr_en            ),
-//    .eof   (xike_spk_eof      )
-//  );
+  mem_reg_16 mem_reg_16 (
+    .clk   (bus_clk           ),
+    .din   (user_w_mem_16_data),
+    .we    (user_w_mem_16_wren),
+    .re    (user_r_mem_16_rden),
+    .addr  (user_mem_16_addr  ),
+    .dout  (user_r_mem_16_data),
+    .spkDet_en(spkDet_en      ),
+    .spkClf_en(spkClf_en      )
+  );
 
   assign xike_spk_eof               = XIKE_ENABLE;
   assign user_r_mua_32_eof          = XIKE_ENABLE;   // flag to stop RAM FIFO
-  assign user_r_spk_sort_32_eof     = XIKE_ENABLE;
-  assign user_r_spk_realtime_32_eof = XIKE_ENABLE;
+//  assign user_r_spk_sort_32_eof     = XIKE_ENABLE;
+//  assign user_r_spk_realtime_32_eof = XIKE_ENABLE;
 
   wire [31:0] fifo0_dout;
-  (* mark_debug = "true" *) wire [16:0] fir_in;
-  wire [31:0] mua_to_spkDet;
-  (* mark_debug = "true" *) wire fir_valid;
-  (* mark_debug = "true" *) wire [31:0] mua_to_host   ;
+  (* mark_debug = "true" *) wire [16:0] raw_data;  // 17 bits with MSB=0, so this is a signed int17 now
+  (* mark_debug = "true" *) wire mua_valid;
+  (* mark_debug = "true" *) wire [31:0] mua_data;
   (* mark_debug = "true" *) wire fifo0_empty;
-  wire [ 5:0] chNo_to_FIR   ;
-  wire [ 5:0] chNo_to_spkDet;
   wire [31:0] threshold     ;
   wire [31:0] ch_unigroup   ;
-  wire        xike_reset    ; // = !user_w_write_32_open;
-  assign fir_in = fifo0_dout[16:0];
-  // assign user_r_mua_32_eof = !SPI_running;
+  assign raw_data = fifo0_dout[16:0];
   assign xike_reset = reset;
 
-//  fwft_fifo fifo_to_fir (
-//    .rst   (xike_reset               ), // input wire rst
-//    .wr_clk(spi_clk                  ), // input wire wr_clk
-//    .rd_clk(bus_clk                  ), // input wire rd_clk
-//    .din   (FIFO_DATA_TO_XIKE        ), // input wire [31 : 0] din
-//    .wr_en (FIFO_DATA_TO_XIKE_WEN    ), // input wire wr_en
-//    .rd_en (user_r_mua_32_rden       ), // input wire rd_en 
-//    .dout  (user_r_mua_32_data       ), // output wire [31 : 0] dout
-//    .full  (fifo0_full               ), // output wire full
-//    .empty (user_r_mua_32_empty      )  // output wire empty
-//  );
-
-  fwft_fifo fifo_to_fir (
+  fwft_fifo fifo_spi_to_fir (
     .rst   (xike_reset               ), // input wire rst
     .wr_clk(spi_clk                  ), // input wire wr_clk
     .rd_clk(bus_clk                  ), // input wire rd_clk
     .din   (FIFO_DATA_TO_XIKE        ), // input wire [31 : 0] din
     .wr_en (FIFO_DATA_TO_XIKE_WEN    ), // input wire wr_en
-    .rd_en (fir_ready && !fifo0_empty), // input wire rd_en 
+    .rd_en (raw_ready && !fifo0_empty), // input wire rd_en 
     .dout  (fifo0_dout               ), // output wire [31 : 0] dout
     .full  (fifo0_full               ), // output wire full
     .empty (fifo0_empty              )  // output wire empty
   );
 
-//  channel_counter channel_gen (
-//    .rst       (xike_reset               ),
-//    .clk       (bus_clk                  ), // input wire clk
-//    .en        (fir_ready && !fifo0_empty), // cnt enable == tvalid && tready
-//    .tlast     (tlast_in                 ), // output tlast generator
-//    .channel_No(chNo_to_FIR              )
-//  );
-    wire [4:0] fir_ch_in = FIFO_CHNO_TO_XIKE - 1;
-    (* mark_debug = "true" *) wire [4 : 0] fir_ch_out;
+    wire [4:0] raw_ch = FIFO_CHNO_TO_XIKE - 1;
+
+    (* mark_debug = "true" *) wire [4 : 0] mua_ch;
     fir_compiler_0 fir_band_pass (
       .aresetn(!xike_reset),                                              // input wire aresetn
       .aclk(bus_clk),                                                    // input wire aclk
       .s_axis_data_tvalid(!fifo0_empty),                        // input wire s_axis_data_tvalid
-      .s_axis_data_tready(fir_ready),                        // output wire s_axis_data_tready
-      .s_axis_data_tuser(fir_ch_in),                          // input wire [4 : 0] s_axis_data_tuser
-      .s_axis_data_tdata(fir_in),                          // input wire [15 : 0] s_axis_data_tdata
-      .m_axis_data_tvalid(fir_valid),                        // output wire m_axis_data_tvalid
-      .m_axis_data_tuser(fir_ch_out),                          // output wire [4 : 0] m_axis_data_tuser
-      .m_axis_data_tdata(mua_to_host),                          // output wire [31 : 0] m_axis_data_tdata
+      .s_axis_data_tready(raw_ready),                        // output wire s_axis_data_tready
+      .s_axis_data_tuser(raw_ch),                          // input wire [4 : 0] s_axis_data_tuser
+      .s_axis_data_tdata(raw_data),                          // input wire [15 : 0] s_axis_data_tdata
+      .m_axis_data_tvalid(mua_valid),                        // output wire m_axis_data_tvalid
+      .m_axis_data_tuser(mua_ch),                          // output wire [4 : 0] m_axis_data_tuser
+      .m_axis_data_tdata(mua_data),                          // output wire [31 : 0] m_axis_data_tdata
       .event_s_data_chanid_incorrect(event_s_data_chanid_incorrect)  // output wire event_s_data_chanid_incorrect
     );
 
-//  fir_compiler_0 fir_band_pass (
-//    .aresetn                      (!xike_reset                  ), // input wire !reset, 0 to reset, 1 to work: active low
-//    .aclk                         (bus_clk                      ), // input wire aclk
-//    .s_axis_data_tvalid           (!fifo0_empty                 ), // input wire s_axis_data_tvalid
-//    .s_axis_data_tready           (fir_ready                    ), // output wire s_axis_data_tready
-//    .s_axis_data_tlast            (tlast_in                     ), // input wire s_axis_data_tlast
-//    .s_axis_data_tuser            (chNo_to_FIR                  ), // input wire [3 : 0] s_axis_data_tuser
-//    .s_axis_data_tdata            (fir_in                       ), // input wire [15 : 0] s_axis_data_tdata
-//    .m_axis_data_tvalid           (fir_valid                    ), // output wire m_axis_data_tvalid          (* filtered valid *)
-//    .m_axis_data_tlast            (end_of_frame                 ), // output wire m_axis_data_tlast
-//    .m_axis_data_tuser            (chNo_to_spkDet               ), // output wire [3 : 0] m_axis_data_tuser
-//    .m_axis_data_tdata            (mua_to_host                  ), // output wire [31 : 0] m_axis_data_tdata  (* filtered data *)
-//    .event_s_data_tlast_missing   (event_s_data_tlast_missing   ),
-//    .event_s_data_tlast_unexpected(event_s_data_tlast_unexpected),
-//    .event_s_data_chanid_incorrect(event_s_data_chanid_incorrect)
-//  );
-
-  fifo_32x512 fifo_32_mua_out (
+  fifo_32x512 fifo_to_host (
     .clk  (bus_clk                    ),
     .srst (!user_r_mua_32_open        ),
-    .wr_en(fir_valid && !fifo_mua_full), // AXI4 valid and ready
-    .din  (mua_to_host                ), // mua_to_host
+    .wr_en(mua_valid && !fifo_mua_full), // AXI4 valid and ready
+    .din  (mua_data                   ), // mua_data
     .rd_en(user_r_mua_32_rden         ),
     .dout (user_r_mua_32_data         ),
     .full (fifo_mua_full              ),

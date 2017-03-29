@@ -45,8 +45,8 @@ module mem_reg_16 (
     input             re    ,
     input      [ 4:0] addr  ,
     output reg [15:0] dout  ,
-    output            thr_en,
-    output            eof
+    output            spkDet_en,
+    output            spkClf_en
 );
 
 (* ram_style = "distributed" *)
@@ -59,7 +59,7 @@ always @(posedge clk) begin
         dout <= mem_reg_16[addr];
 end
 
-assign thr_en = mem_reg_16[1][0];
-assign eof    = mem_reg_16[0][0];
+assign spkDet_en = mem_reg_16[0][0];
+assign spkClf_en = mem_reg_16[1][0];
 
 endmodule // mem_cmd
