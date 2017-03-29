@@ -439,8 +439,10 @@ module spi_xike_pcie (
     .FIFO_DATA_STREAM_WEN          (FIFO_DATA_STREAM_WEN          ),
     
     .XIKE_ENABLE                   (XIKE_ENABLE                   ),
+    .TIME_TO_XIKE                  (FIFO_TIME_TO_XIKE             ),
     .FIFO_DATA_TO_XIKE             (FIFO_DATA_TO_XIKE             ),
     .FIFO_DATA_TO_XIKE_WEN         (FIFO_DATA_TO_XIKE_WEN         ),
+    .STREAM_TO_XIKE                (FIFO_STREAMNO_TO_XIKE         ),
     .CHANNEL_TO_XIKE               (FIFO_CHNO_TO_XIKE             )
   );
 
@@ -470,11 +472,14 @@ spi_xillybus_interface  SPI_2_XILLYBUS (
   assign OVERFLOW_LED = fifo_overflow;
 
 // Xike
-
-  wire        xike_reset    ;
+  wire xike_reset = reset;
   (* mark_debug = "true" *) wire xike_spk_eof;
   wire spkDet_en;
   wire spkClf_en;
+  assign xike_spk_eof               = XIKE_ENABLE;
+  assign user_r_mua_32_eof          = XIKE_ENABLE;   // flag to stop RAM FIFO
+//  assign user_r_spk_sort_32_eof     = XIKE_ENABLE;
+//  assign user_r_spk_realtime_32_eof = XIKE_ENABLE;
 
   mem_reg_16 mem_reg_16 (
     .clk   (bus_clk           ),
@@ -487,20 +492,9 @@ spi_xillybus_interface  SPI_2_XILLYBUS (
     .spkClf_en(spkClf_en      )
   );
 
-  assign xike_spk_eof               = XIKE_ENABLE;
-  assign user_r_mua_32_eof          = XIKE_ENABLE;   // flag to stop RAM FIFO
-//  assign user_r_spk_sort_32_eof     = XIKE_ENABLE;
-//  assign user_r_spk_realtime_32_eof = XIKE_ENABLE;
-
-  wire [31:0] fifo0_dout;
-  (* mark_debug = "true" *) wire [16:0] raw_data;  // 17 bits with MSB=0, so this is a signed int17 now
-  (* mark_debug = "true" *) wire mua_valid;
-  (* mark_debug = "true" *) wire [31:0] mua_data;
-  (* mark_debug = "true" *) wire fifo0_empty;
-  wire [31:0] threshold     ;
-  wire [31:0] ch_unigroup   ;
+  wire [31:0] fifo0_dout ;
+  wire        fifo0_empty;
   assign raw_data = fifo0_dout[16:0];
-  assign xike_reset = reset;
 
   fwft_fifo fifo_spi_to_fir (
     .rst   (xike_reset               ), // input wire rst
@@ -508,27 +502,35 @@ spi_xillybus_interface  SPI_2_XILLYBUS (
     .rd_clk(bus_clk                  ), // input wire rd_clk
     .din   (FIFO_DATA_TO_XIKE        ), // input wire [31 : 0] din
     .wr_en (FIFO_DATA_TO_XIKE_WEN    ), // input wire wr_en
-    .rd_en (raw_ready && !fifo0_empty), // input wire rd_en 
+    .rd_en (raw_ready && !fifo0_empty), // input wire rd_en
     .dout  (fifo0_dout               ), // output wire [31 : 0] dout
     .full  (fifo0_full               ), // output wire full
     .empty (fifo0_empty              )  // output wire empty
   );
 
-    wire [4:0] raw_ch = FIFO_CHNO_TO_XIKE - 1;
+  (* mark_debug = "true" *) wire [31:0] frame     = FIFO_TIME_TO_XIKE;
+  (* mark_debug = "true" *) wire [3 :0] stream    = FIFO_STREAMNO_TO_XIKE;
+  (* mark_debug = "true" *) wire [4 :0] raw_ch    = FIFO_CHNO_TO_XIKE;
+  (* mark_debug = "true" *) wire [16:0] raw_data;  // 17 bits with MSB=0, so this is a signed int17 now
+  (* mark_debug = "true" *) wire        mua_valid;
+  (* mark_debug = "true" *) wire [31:0] mua_data;
+  (* mark_debug = "true" *) wire [4 :0] mua_ch;
 
-    (* mark_debug = "true" *) wire [4 : 0] mua_ch;
-    fir_compiler_0 fir_band_pass (
-      .aresetn(!xike_reset),                                              // input wire aresetn
-      .aclk(bus_clk),                                                    // input wire aclk
-      .s_axis_data_tvalid(!fifo0_empty),                        // input wire s_axis_data_tvalid
-      .s_axis_data_tready(raw_ready),                        // output wire s_axis_data_tready
-      .s_axis_data_tuser(raw_ch),                          // input wire [4 : 0] s_axis_data_tuser
-      .s_axis_data_tdata(raw_data),                          // input wire [15 : 0] s_axis_data_tdata
-      .m_axis_data_tvalid(mua_valid),                        // output wire m_axis_data_tvalid
-      .m_axis_data_tuser(mua_ch),                          // output wire [4 : 0] m_axis_data_tuser
-      .m_axis_data_tdata(mua_data),                          // output wire [31 : 0] m_axis_data_tdata
-      .event_s_data_chanid_incorrect(event_s_data_chanid_incorrect)  // output wire event_s_data_chanid_incorrect
-    );
+  fir_compiler_0 fir_band_pass (
+    .aresetn                      (!xike_reset                  ), // input wire aresetn
+    .aclk                         (bus_clk                      ), // input wire aclk
+    .s_axis_data_tvalid           (!fifo0_empty                 ), // input wire s_axis_data_tvalid
+    .s_axis_data_tready           (raw_ready                    ), // output wire s_axis_data_tready
+    .s_axis_data_tuser            (raw_ch                       ), // input wire [4 : 0] s_axis_data_tuser
+    .s_axis_data_tdata            (raw_data                     ), // input wire [15 : 0] s_axis_data_tdata
+    .m_axis_data_tvalid           (mua_valid                    ), // output wire m_axis_data_tvalid
+    .m_axis_data_tuser            (mua_ch                       ), // output wire [4 : 0] m_axis_data_tuser
+    .m_axis_data_tdata            (mua_data                     ), // output wire [31 : 0] m_axis_data_tdata
+    .event_s_data_chanid_incorrect(event_s_data_chanid_incorrect)  // output wire event_s_data_chanid_incorrect
+  );
+
+  wire [31:0] threshold  ;
+  wire [31:0] ch_unigroup;
 
   fifo_32x512 fifo_to_host (
     .clk  (bus_clk                    ),
