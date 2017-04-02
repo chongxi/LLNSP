@@ -940,7 +940,7 @@ module spi_intan_interface_4_bank (
                           if (channel == 0) begin
                               FIFO_DATA_STREAM <= timestamp[31:16];
                               FIFO_DATA_STREAM_WEN <= 1'b1;
-                              TIME_TO_XIKE <= timestamp;
+                              TIME_TO_XIKE[31:0] <= timestamp[31:0];
                           end
       
                           SCLK <= 1'b1;
