@@ -392,9 +392,8 @@ module spi_xike_pcie (
   
   wire [31:0] FIFO_TIME_TO_XIKE    ;
   (* mark_debug = "true" *) wire [15:0] FIFO_DATA_TO_XIKE    ;
-  (* mark_debug = "true" *) wire        FIFO_DATA_TO_XIKE_WEN;
   (* mark_debug = "true" *) wire [3 :0] FIFO_STREAMNO_TO_XIKE;
-  (* mark_debug = "true" *) wire [5 :0] FIFO_CHNO_TO_XIKE    ;
+  (* mark_debug = "true" *) wire [9 :0] FIFO_CHNO_TO_XIKE    ;
 
   spi_intan_interface_4_bank INTAN_2_SPI (
     .bus_clk                       (bus_clk                       ),
@@ -497,14 +496,15 @@ spi_xillybus_interface  SPI_2_XILLYBUS (
 
   wire [31:0] fifo0_dout ;
   wire        fifo0_empty;
-  wire [31:0] SPI_TO_XIKE_BUNDLE = {FIFO_STREAMNO_TO_XIKE, FIFO_CHNO_TO_XIKE, 1'b0, FIFO_DATA_TO_XIKE};
+  wire        SPI_TO_XIKE_BUNDLE_EN = FIFO_DATA_TO_XIKE_WEN;
+  wire [31:0] SPI_TO_XIKE_BUNDLE = {FIFO_STREAMNO_TO_XIKE, FIFO_CHNO_TO_XIKE, 1'b0, FIFO_DATA_TO_XIKE}; // 1'b for signed int17 data
 
   fwft_fifo fifo_spi_to_fir (
     .rst   (xike_reset               ), // input wire rst
     .wr_clk(spi_clk                  ), // input wire wr_clk
     .rd_clk(bus_clk                  ), // input wire rd_clk
+    .wr_en (SPI_TO_XIKE_BUNDLE_EN    ), // input wire wr_en
     .din   (SPI_TO_XIKE_BUNDLE       ), // input wire [31 : 0] din
-    .wr_en (FIFO_DATA_TO_XIKE_WEN    ), // input wire wr_en
     .rd_en (raw_ready && !fifo0_empty), // input wire rd_en
     .dout  (fifo0_dout               ), // output wire [31 : 0] dout
     .full  (fifo0_full               ), // output wire full
@@ -512,13 +512,13 @@ spi_xillybus_interface  SPI_2_XILLYBUS (
   );
   
   (* mark_debug = "true" *) wire [31:0] frame      = FIFO_TIME_TO_XIKE;
-  (* mark_debug = "true" *) wire [3 :0] raw_stream = fifo0_dout[26:23];
-  (* mark_debug = "true" *) wire [5 :0] raw_ch     = fifo0_dout[22:17];
+  (* mark_debug = "true" *) wire [3 :0] raw_stream = fifo0_dout[31:27];
+  (* mark_debug = "true" *) wire [9 :0] raw_ch     = fifo0_dout[26:17];
   (* mark_debug = "true" *) wire [16:0] raw_data   = fifo0_dout[16: 0];  // 17 bits with MSB=0, so this is a signed int17 now
 
   (* mark_debug = "true" *) wire        mua_valid;
   (* mark_debug = "true" *) wire [3 :0] mua_stream;
-  (* mark_debug = "true" *) wire [5 :0] mua_ch;
+  (* mark_debug = "true" *) wire [9 :0] mua_ch;
   (* mark_debug = "true" *) wire [31:0] mua_data;
 
 fir_compiler_0 fir_band_pass (
@@ -536,7 +536,7 @@ fir_compiler_0 fir_band_pass (
 //fir_compiler_0 fir_band_pass (
 //  .aresetn(!xike_reset),                        // input wire aresetn
 //  .aclk(spi_clk),                              // input wire aclk
-//  .s_axis_data_tvalid(FIFO_DATA_TO_XIKE_WEN),  // input wire s_axis_data_tvalid
+//  .s_axis_data_tvalid(SPI_TO_XIKE_BUNDLE_EN),  // input wire s_axis_data_tvalid
 //  .s_axis_data_tready(raw_ready),  // output wire s_axis_data_tready
 //  .s_axis_data_tuser({raw_stream, raw_ch}),    // input wire [8 : 0] s_axis_data_tuser
 //  .s_axis_data_tdata({0,FIFO_DATA_TO_XIKE}),    // input wire [23 : 0] s_axis_data_tdata
