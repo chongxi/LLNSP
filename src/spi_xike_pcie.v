@@ -285,9 +285,9 @@ module spi_xike_pcie (
   wire        user_mem_16_addr_update;
 
   // Wires related to /dev/xillybus_mua_32
-  (* mark_debug = "true" *) wire        user_r_mua_32_rden ;
+  wire        user_r_mua_32_rden ;
   wire        user_r_mua_32_empty;
-  (* mark_debug = "true" *) wire [31:0] user_r_mua_32_data ;
+  wire [31:0] user_r_mua_32_data ;
   wire        user_r_mua_32_eof  ;
   wire        user_r_mua_32_open ;
 
@@ -472,22 +472,22 @@ module spi_xike_pcie (
 
 // spi_xillybus_interface ------------------------------------------------------------------------------------------------------
 
-spi_xillybus_interface  SPI_2_XILLYBUS (
-  .bus_clk                         (bus_clk                       ),
-  .spi_clk                         (spi_clk                       ),
-  .reset                           (reset                         ),   
-
-  .FIFO_DATA_STREAM                (FIFO_DATA_STREAM              ),   // intan => spi    (16 bits data)
-  .FIFO_DATA_STREAM_WEN            (FIFO_DATA_STREAM_WEN          ),   // intan => spi
-
-  .user_r_neural_data_32_open      (user_r_neural_data_32_open    ),   // xillybus => spi 
-  .user_r_neural_data_32_rden      (user_r_neural_data_32_rden    ),   // xillybus => spi 
-  .user_r_neural_data_32_eof       (user_r_neural_data_32_eof     ),   // spi => xillybus
-  .user_r_neural_data_32_empty     (user_r_neural_data_32_empty   ),   // spi => xillybus
-  .user_r_neural_data_32_data      (user_r_neural_data_32_data    ),   // spi => xillybus (32 bits data)
-
-  .fifo_overflow                   (fifo_overflow                 )
-);
+  spi_xillybus_interface SPI_2_XILLYBUS (
+    .bus_clk                    (bus_clk                    ),
+    .spi_clk                    (spi_clk                    ),
+    .reset                      (reset                      ),
+    
+    .FIFO_DATA_STREAM           (FIFO_DATA_STREAM           ), // intan => spi    (16 bits data)
+    .FIFO_DATA_STREAM_WEN       (FIFO_DATA_STREAM_WEN       ), // intan => spi
+    
+    .user_r_neural_data_32_open (user_r_neural_data_32_open ), // xillybus => spi
+    .user_r_neural_data_32_rden (user_r_neural_data_32_rden ), // xillybus => spi
+    .user_r_neural_data_32_eof  (user_r_neural_data_32_eof  ), // spi => xillybus
+    .user_r_neural_data_32_empty(user_r_neural_data_32_empty), // spi => xillybus
+    .user_r_neural_data_32_data (user_r_neural_data_32_data ), // spi => xillybus (32 bits data)
+    
+    .fifo_overflow              (fifo_overflow              )
+  );
 
 // SPI related LED 
   assign SPI_CLK      = spi_clk;
@@ -497,7 +497,7 @@ spi_xillybus_interface  SPI_2_XILLYBUS (
 
 // Xike
   wire xike_reset = reset;
-  (* mark_debug = "true" *) wire xike_spk_eof;
+  wire xike_spk_eof;
   wire spkDet_en;
   wire spkClf_en;
   assign xike_spk_eof               = XIKE_ENABLE;
@@ -516,49 +516,63 @@ spi_xillybus_interface  SPI_2_XILLYBUS (
     .spkClf_en(spkClf_en      )
   );
 
-  wire [31:0] fifo0_dout ;
-  wire        fifo0_empty;
-  wire        SPI_TO_XIKE_BUNDLE_EN = FIFO_DATA_TO_XIKE_WEN;
-  wire [31:0] SPI_TO_XIKE_BUNDLE = {FIFO_CHNO_TO_XIKE, 1'b0, FIFO_DATA_TO_XIKE}; // 1'b for signed int17 data
+  // wire [31:0] fifo0_dout ;
+  // wire        fifo0_empty;
+  // wire        SPI_TO_XIKE_BUNDLE_EN = FIFO_DATA_TO_XIKE_WEN;
+  // wire [31:0] SPI_TO_XIKE_BUNDLE = {FIFO_CHNO_TO_XIKE, 1'b0, FIFO_DATA_TO_XIKE}; // 1'b for signed int17 data
   // FIFO_STREAMNO_TO_XIKE
 
-  fwft_fifo fifo_spi_to_fir (
-    .rst   (xike_reset               ), // input wire rst
-    .wr_clk(spi_clk                  ), // input wire wr_clk
-    .rd_clk(bus_clk                  ), // input wire rd_clk
-    .wr_en (SPI_TO_XIKE_BUNDLE_EN    ), // input wire wr_en
-    .din   (SPI_TO_XIKE_BUNDLE       ), // input wire [31 : 0] din
-    .rd_en (raw_ready && !fifo0_empty), // input wire rd_en
-    .dout  (fifo0_dout               ), // output wire [31 : 0] dout
-    .full  (fifo0_full               ), // output wire full
-    .empty (fifo0_empty              )  // output wire empty
-  );
+  // fwft_fifo fifo_spi_to_fir (
+  //   .rst   (xike_reset               ), // input wire rst
+  //   .wr_clk(spi_clk                  ), // input wire wr_clk
+  //   .rd_clk(bus_clk                  ), // input wire rd_clk
+  //   .wr_en (SPI_TO_XIKE_BUNDLE_EN    ), // input wire wr_en
+  //   .din   (SPI_TO_XIKE_BUNDLE       ), // input wire [31 : 0] din
+  //   .rd_en (raw_ready && !fifo0_empty), // input wire rd_en
+  //   .dout  (fifo0_dout               ), // output wire [31 : 0] dout
+  //   .full  (fifo0_full               ), // output wire full
+  //   .empty (fifo0_empty              )  // output wire empty
+  // );
   
-  (* mark_debug = "true" *) wire [31:0] frame      = FIFO_TIME_TO_XIKE;
+  // (* mark_debug = "true" *) wire [31:0] frame      = FIFO_TIME_TO_XIKE;
 //  (* mark_debug = "true" *) wire [3 :0] raw_stream = fifo0_dout[31:27];
-  (* mark_debug = "true" *) wire [9 :0] raw_ch     = fifo0_dout[26:17];
-  (* mark_debug = "true" *) wire [15:0] raw_data   = fifo0_dout[15: 0];  // 17 bits with MSB=0, so this is a signed int17 now
+//   (* mark_debug = "true" *) wire [9 :0] raw_ch     = fifo0_dout[26:17];
+//   (* mark_debug = "true" *) wire [15:0] raw_data   = fifo0_dout[15: 0];  // 17 bits with MSB=0, so this is a signed int17 now
 
-  (* mark_debug = "true" *) wire        mua_valid;
-//  (* mark_debug = "true" *) wire [3 :0] mua_stream;
-  (* mark_debug = "true" *) wire [9 :0] mua_ch;
-  (* mark_debug = "true" *) wire [31:0] mua_data;
 
-fir_compiler_0 fir_band_pass (
-  .aresetn(!xike_reset),                        // input wire aresetn
-  .aclk(bus_clk),                              // input wire aclk
-  .s_axis_data_tvalid(!fifo0_empty),  // input wire s_axis_data_tvalid
-  .s_axis_data_tready(raw_ready),  // output wire s_axis_data_tready
-  .s_axis_data_tuser(raw_ch),    // input wire [8 : 0] s_axis_data_tuser
-  .s_axis_data_tdata(raw_data),    // input wire [23 : 0] s_axis_data_tdata
-  .m_axis_data_tvalid(mua_valid),  // output wire m_axis_data_tvalid
-  .m_axis_data_tuser(mua_ch),    // output wire [8 : 0] m_axis_data_tuser
-  .m_axis_data_tdata(mua_data)    // output wire [31 : 0] m_axis_data_tdata
-);
+// //  (* mark_debug = "true" *) wire [3 :0] mua_stream;
+//   (* mark_debug = "true" *) wire [9 :0] mua_ch;
+  wire         mua_valid;
+  (* mark_debug = "true" *) wire [159:0] mua_data;
+
+  (* mark_debug = "true" *) wire [79:0] raw_comb_data ;
+
+  raw_comb_5_streams i_raw_comb_5_streams (
+    .spi_clk              (spi_clk                   ),
+    .bus_clk              (bus_clk                   ),
+    .xike_reset           (xike_reset                ),
+    .FIFO_STREAMNO_TO_XIKE(FIFO_STREAMNO_TO_XIKE[4:0]),
+    .FIFO_DATA_TO_XIKE    (FIFO_DATA_TO_XIKE         ),
+    .raw_comb_ready       (raw_comb_ready            ),
+    .raw_comb_valid       (raw_comb_valid            ),
+    .raw_comb_data        (raw_comb_data             )
+  );
+
+  // TODO1: parallel 5 path
+  fir_compiler_0 fir_band_pass (
+    .aresetn           (!xike_reset ), // input wire aresetn
+    .aclk              (bus_clk     ), // input wire aclk
+    .s_axis_data_tvalid(raw_comb_valid), // input wire s_axis_data_tvalid
+    .s_axis_data_tready(raw_comb_ready), // output wire s_axis_data_tready
+    .s_axis_data_tdata (raw_comb_data ), // input wire [23 : 0] s_axis_data_tdata
+    .m_axis_data_tvalid(mua_valid   ), // output wire m_axis_data_tvalid
+    .m_axis_data_tdata (mua_data    )  // output wire [31 : 0] m_axis_data_tdata
+    );
 
   wire [31:0] threshold  ;
   wire [31:0] ch_unigroup;
 
+  // TODO2: Bitwidth for 5 Path
   fifo_32x512 fifo_to_host (
     .clk  (bus_clk                    ),
     .srst (!user_r_mua_32_open        ),
