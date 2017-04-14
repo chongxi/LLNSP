@@ -69,41 +69,56 @@ set_property IOSTANDARD LVDS [get_ports SYSCLK_N]
 
 
 ###############   PORT A #################################
-#set_property PACKAGE_PIN AF20 [get_ports MISO_C1_PORT]
-#set_property IOSTANDARD LVCMOS33 [get_ports MISO_C1_PORT]
+set_property PACKAGE_PIN AF20 [get_ports MISO_A1_PORT]
+set_property IOSTANDARD LVCMOS33 [get_ports MISO_A1_PORT]
 
-#set_property PACKAGE_PIN AF21 [get_ports MISO_C2_PORT]
-#set_property IOSTANDARD LVCMOS33 [get_ports MISO_C2_PORT]
+set_property PACKAGE_PIN AF21 [get_ports MISO_A2_PORT]
+set_property IOSTANDARD LVCMOS33 [get_ports MISO_A2_PORT]
 
-#set_property PACKAGE_PIN AH21 [get_ports MOSI_C_PORT]
-#set_property IOSTANDARD LVCMOS33 [get_ports MOSI_C_PORT]
+set_property PACKAGE_PIN AH21 [get_ports MOSI_A_PORT]
+set_property IOSTANDARD LVCMOS33 [get_ports MOSI_A_PORT]
 
-#set_property PACKAGE_PIN AJ21 [get_ports SCLK_C_PORT]
-#set_property IOSTANDARD LVCMOS33 [get_ports SCLK_C_PORT]
+set_property PACKAGE_PIN AJ21 [get_ports SCLK_A_PORT]
+set_property IOSTANDARD LVCMOS33 [get_ports SCLK_A_PORT]
 
-#set_property PACKAGE_PIN AG25 [get_ports CS_C_PORT]
-#set_property IOSTANDARD LVCMOS33 [get_ports CS_C_PORT]
+set_property PACKAGE_PIN AG25 [get_ports CS_A_PORT]
+set_property IOSTANDARD LVCMOS33 [get_ports CS_A_PORT]
 
 
 ###############   PORT B #################################
-set_property PACKAGE_PIN AE25 [get_ports MISO_C1_PORT]
-set_property IOSTANDARD LVCMOS33 [get_ports MISO_C1_PORT]
+set_property PACKAGE_PIN AE25 [get_ports MISO_B1_PORT]
+set_property IOSTANDARD LVCMOS33 [get_ports MISO_B1_PORT]
 
-set_property PACKAGE_PIN AF25 [get_ports MISO_C2_PORT]
-set_property IOSTANDARD LVCMOS33 [get_ports MISO_C2_PORT]
+set_property PACKAGE_PIN AF25 [get_ports MISO_B2_PORT]
+set_property IOSTANDARD LVCMOS33 [get_ports MISO_B2_PORT]
 
-set_property PACKAGE_PIN AC24 [get_ports MOSI_C_PORT]
-set_property IOSTANDARD LVCMOS33 [get_ports MOSI_C_PORT]
+set_property PACKAGE_PIN AC24 [get_ports MOSI_B_PORT]
+set_property IOSTANDARD LVCMOS33 [get_ports MOSI_B_PORT]
 
-set_property PACKAGE_PIN AD24 [get_ports SCLK_C_PORT]
-set_property IOSTANDARD LVCMOS33 [get_ports SCLK_C_PORT]
+set_property PACKAGE_PIN AD24 [get_ports SCLK_B_PORT]
+set_property IOSTANDARD LVCMOS33 [get_ports SCLK_B_PORT]
 
-set_property PACKAGE_PIN AJ26 [get_ports CS_C_PORT]
-set_property IOSTANDARD LVCMOS33 [get_ports CS_C_PORT]
+set_property PACKAGE_PIN AJ26 [get_ports CS_B_PORT]
+set_property IOSTANDARD LVCMOS33 [get_ports CS_B_PORT]
 
 
 
 ###############   PORT C #################################
+set_property PACKAGE_PIN AG27 [get_ports MISO_C1_PORT]
+set_property IOSTANDARD LVCMOS33 [get_ports MISO_C1_PORT]
+
+set_property PACKAGE_PIN AG28 [get_ports MISO_C2_PORT]
+set_property IOSTANDARD LVCMOS33 [get_ports MISO_C2_PORT]
+
+set_property PACKAGE_PIN AG30 [get_ports MOSI_C_PORT]
+set_property IOSTANDARD LVCMOS33 [get_ports MOSI_C_PORT]
+
+set_property PACKAGE_PIN AH30 [get_ports SCLK_C_PORT]
+set_property IOSTANDARD LVCMOS33 [get_ports SCLK_C_PORT]
+
+set_property PACKAGE_PIN AK26 [get_ports CS_C_PORT]
+set_property IOSTANDARD LVCMOS33 [get_ports CS_C_PORT]
+
 
 
 

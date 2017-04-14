@@ -13,6 +13,19 @@ module spi_xike_pcie (
   output       SPI_LED         ,
   output       SPI_CLK         ,
   output       OVERFLOW_LED    ,
+    
+  input        MISO_A1_PORT    ,
+  input        MISO_A2_PORT    ,
+  output       MOSI_A_PORT     ,
+  output       SCLK_A_PORT     ,
+  output       CS_A_PORT       ,
+ 
+  input        MISO_B1_PORT    ,
+  input        MISO_B2_PORT    ,
+  output       MOSI_B_PORT     ,
+  output       SCLK_B_PORT     ,
+  output       CS_B_PORT       ,
+
   input        MISO_C1_PORT    ,
   input        MISO_C2_PORT    ,
   output       MOSI_C_PORT     ,
@@ -363,16 +376,25 @@ module spi_xike_pcie (
   //IO signals assignment
   assign MISO_A1 = 1'b0;
   assign MISO_A2 = 1'b0;
-  assign MISO_B1 = 1'b0;
-  assign MISO_B2 = 1'b0;
-  assign MISO_C1 = MISO_C1_PORT;
-  assign MISO_C2 = MISO_C2_PORT;
-  assign MISO_D1 = 1'b0;
-  assign MISO_D2 = 1'b0;
+  assign MISO_B1 = MISO_A1_PORT;
+  assign MISO_B2 = MISO_A2_PORT;
+  assign MISO_C1 = MISO_B1_PORT;
+  assign MISO_C2 = MISO_B2_PORT;
+  assign MISO_D1 = MISO_C1_PORT;
+  assign MISO_D2 = MISO_C2_PORT;
+
+  assign SCLK_A_PORT = SCLK;
+  assign MOSI_A_PORT = MOSI_B;
+  assign CS_A_PORT   = CS;
+
+  assign SCLK_B_PORT = SCLK;
+  assign MOSI_B_PORT = MOSI_C;
+  assign CS_B_PORT   = CS;
 
   assign SCLK_C_PORT = SCLK;
-  assign MOSI_C_PORT = MOSI_C;
+  assign MOSI_C_PORT = MOSI_D;
   assign CS_C_PORT   = CS;
+
 
   assign user_w_auxcmd1_membank_16_full = 1'b0;
   assign user_w_auxcmd2_membank_16_full = 1'b0;
@@ -392,7 +414,7 @@ module spi_xike_pcie (
   
   wire [31:0] FIFO_TIME_TO_XIKE    ;
   (* mark_debug = "true" *) wire [15:0] FIFO_DATA_TO_XIKE    ;
-  (* mark_debug = "true" *) wire [3 :0] FIFO_STREAMNO_TO_XIKE;
+  (* mark_debug = "true" *) wire [15:0] FIFO_STREAMNO_TO_XIKE;
   (* mark_debug = "true" *) wire [9 :0] FIFO_CHNO_TO_XIKE    ;
 
   spi_intan_interface_4_bank INTAN_2_SPI (
@@ -497,7 +519,8 @@ spi_xillybus_interface  SPI_2_XILLYBUS (
   wire [31:0] fifo0_dout ;
   wire        fifo0_empty;
   wire        SPI_TO_XIKE_BUNDLE_EN = FIFO_DATA_TO_XIKE_WEN;
-  wire [31:0] SPI_TO_XIKE_BUNDLE = {FIFO_STREAMNO_TO_XIKE, FIFO_CHNO_TO_XIKE, 1'b0, FIFO_DATA_TO_XIKE}; // 1'b for signed int17 data
+  wire [31:0] SPI_TO_XIKE_BUNDLE = {FIFO_CHNO_TO_XIKE, 1'b0, FIFO_DATA_TO_XIKE}; // 1'b for signed int17 data
+  // FIFO_STREAMNO_TO_XIKE
 
   fwft_fifo fifo_spi_to_fir (
     .rst   (xike_reset               ), // input wire rst
@@ -512,12 +535,12 @@ spi_xillybus_interface  SPI_2_XILLYBUS (
   );
   
   (* mark_debug = "true" *) wire [31:0] frame      = FIFO_TIME_TO_XIKE;
-  (* mark_debug = "true" *) wire [3 :0] raw_stream = fifo0_dout[31:27];
+//  (* mark_debug = "true" *) wire [3 :0] raw_stream = fifo0_dout[31:27];
   (* mark_debug = "true" *) wire [9 :0] raw_ch     = fifo0_dout[26:17];
-  (* mark_debug = "true" *) wire [16:0] raw_data   = fifo0_dout[16: 0];  // 17 bits with MSB=0, so this is a signed int17 now
+  (* mark_debug = "true" *) wire [15:0] raw_data   = fifo0_dout[15: 0];  // 17 bits with MSB=0, so this is a signed int17 now
 
   (* mark_debug = "true" *) wire        mua_valid;
-  (* mark_debug = "true" *) wire [3 :0] mua_stream;
+//  (* mark_debug = "true" *) wire [3 :0] mua_stream;
   (* mark_debug = "true" *) wire [9 :0] mua_ch;
   (* mark_debug = "true" *) wire [31:0] mua_data;
 
@@ -526,24 +549,12 @@ fir_compiler_0 fir_band_pass (
   .aclk(bus_clk),                              // input wire aclk
   .s_axis_data_tvalid(!fifo0_empty),  // input wire s_axis_data_tvalid
   .s_axis_data_tready(raw_ready),  // output wire s_axis_data_tready
-  .s_axis_data_tuser({raw_stream, raw_ch}),    // input wire [8 : 0] s_axis_data_tuser
+  .s_axis_data_tuser(raw_ch),    // input wire [8 : 0] s_axis_data_tuser
   .s_axis_data_tdata(raw_data),    // input wire [23 : 0] s_axis_data_tdata
   .m_axis_data_tvalid(mua_valid),  // output wire m_axis_data_tvalid
-  .m_axis_data_tuser({mua_stream, mua_ch}),    // output wire [8 : 0] m_axis_data_tuser
+  .m_axis_data_tuser(mua_ch),    // output wire [8 : 0] m_axis_data_tuser
   .m_axis_data_tdata(mua_data)    // output wire [31 : 0] m_axis_data_tdata
 );
-
-//fir_compiler_0 fir_band_pass (
-//  .aresetn(!xike_reset),                        // input wire aresetn
-//  .aclk(spi_clk),                              // input wire aclk
-//  .s_axis_data_tvalid(SPI_TO_XIKE_BUNDLE_EN),  // input wire s_axis_data_tvalid
-//  .s_axis_data_tready(raw_ready),  // output wire s_axis_data_tready
-//  .s_axis_data_tuser({raw_stream, raw_ch}),    // input wire [8 : 0] s_axis_data_tuser
-//  .s_axis_data_tdata({0,FIFO_DATA_TO_XIKE}),    // input wire [23 : 0] s_axis_data_tdata
-//  .m_axis_data_tvalid(mua_valid),  // output wire m_axis_data_tvalid
-//  .m_axis_data_tuser({mua_stream, mua_ch}),    // output wire [8 : 0] m_axis_data_tuser
-//  .m_axis_data_tdata(mua_data)    // output wire [31 : 0] m_axis_data_tdata
-//);
 
   wire [31:0] threshold  ;
   wire [31:0] ch_unigroup;
