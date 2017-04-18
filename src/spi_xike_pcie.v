@@ -415,7 +415,7 @@ module spi_xike_pcie (
   wire [31:0] FIFO_TIME_TO_XIKE    ;
   (* mark_debug = "true" *) wire [15:0] FIFO_DATA_TO_XIKE    ;
   (* mark_debug = "true" *) wire [15:0] FIFO_STREAMNO_TO_XIKE;
-  (* mark_debug = "true" *) wire [9 :0] FIFO_CHNO_TO_XIKE    ;
+  (* mark_debug = "true" *) wire [11:0] FIFO_CHNO_TO_XIKE    ;
 
   spi_intan_interface_4_bank INTAN_2_SPI (
     .bus_clk                       (bus_clk                       ),
@@ -518,8 +518,8 @@ module spi_xike_pcie (
 
   // wire [31:0] fifo0_dout ;
   // wire        fifo0_empty;
-  // wire        SPI_TO_XIKE_BUNDLE_EN = FIFO_DATA_TO_XIKE_WEN;
-  // wire [31:0] SPI_TO_XIKE_BUNDLE = {FIFO_CHNO_TO_XIKE, 1'b0, FIFO_DATA_TO_XIKE}; // 1'b for signed int17 data
+//  wire        SPI_TO_XIKE_BUNDLE_EN = FIFO_DATA_TO_XIKE_WEN;
+  wire [31:0] SPI_TO_XIKE_BUNDLE = {FIFO_CHNO_TO_XIKE, 1'b0, FIFO_DATA_TO_XIKE}; // 1'b for signed int17 data
   // FIFO_STREAMNO_TO_XIKE
 
   // fwft_fifo fifo_spi_to_fir (
@@ -541,47 +541,72 @@ module spi_xike_pcie (
 
 
 // //  (* mark_debug = "true" *) wire [3 :0] mua_stream;
-//   (* mark_debug = "true" *) wire [9 :0] mua_ch;
-  wire         mua_valid;
-  (* mark_debug = "true" *) wire [159:0] mua_data;
 
+  (* mark_debug = "true" *) wire        raw_comb_ready;
+  (* mark_debug = "true" *) wire        raw_comb_valid;
   (* mark_debug = "true" *) wire [79:0] raw_comb_data ;
+  (* mark_debug = "true" *) wire [59:0] raw_comb_ch;
+
+  (* mark_debug = "true" *) wire         mua_comb_valid;
+  (* mark_debug = "true" *) wire [159:0] mua_comb_data;
+  (* mark_debug = "true" *) wire [59 :0] mua_comb_ch;
 
   raw_comb_5_streams i_raw_comb_5_streams (
     .spi_clk              (spi_clk                   ),
     .bus_clk              (bus_clk                   ),
     .xike_reset           (xike_reset                ),
-    .FIFO_STREAMNO_TO_XIKE(FIFO_STREAMNO_TO_XIKE[4:0]),
-    .FIFO_DATA_TO_XIKE    (FIFO_DATA_TO_XIKE         ),
+    .FIFO_STREAMNO_TO_XIKE(FIFO_STREAMNO_TO_XIKE[4:0]),  // 5 streams
+    .SPI_TO_XIKE_BUNDLE   (SPI_TO_XIKE_BUNDLE        ),  // {chNo,1'b0,data}
     .raw_comb_ready       (raw_comb_ready            ),
     .raw_comb_valid       (raw_comb_valid            ),
-    .raw_comb_data        (raw_comb_data             )
+    .raw_comb_data        (raw_comb_data             ),
+    .raw_comb_ch          (raw_comb_ch               )
   );
 
-  // TODO1: parallel 5 path
   fir_compiler_0 fir_band_pass (
     .aresetn           (!xike_reset ), // input wire aresetn
     .aclk              (bus_clk     ), // input wire aclk
     .s_axis_data_tvalid(raw_comb_valid), // input wire s_axis_data_tvalid
     .s_axis_data_tready(raw_comb_ready), // output wire s_axis_data_tready
-    .s_axis_data_tdata (raw_comb_data ), // input wire [23 : 0] s_axis_data_tdata
-    .m_axis_data_tvalid(mua_valid   ), // output wire m_axis_data_tvalid
-    .m_axis_data_tdata (mua_data    )  // output wire [31 : 0] m_axis_data_tdata
+    .s_axis_data_tdata (raw_comb_data ), // input wire [79 : 0] s_axis_data_tdata
+    .s_axis_data_tuser (raw_comb_ch   ),    // input wire [59 : 0] s_axis_data_tuser
+    .m_axis_data_tvalid(mua_comb_valid   ), // output wire m_axis_data_tvalid
+    .m_axis_data_tdata (mua_comb_data    ),  // output wire [159 : 0] m_axis_data_tdata
+    .m_axis_data_tuser (mua_comb_ch)    // output wire [59 : 0] m_axis_data_tdata
     );
 
-  wire [31:0] threshold  ;
-  wire [31:0] ch_unigroup;
+  (* mark_debug = "true" *) wire        mua_valid;
+  (* mark_debug = "true" *) wire [31:0] mua_data;
+  (* mark_debug = "true" *) wire [11:0] mua_ch;
 
-  // TODO2: Bitwidth for 5 Path
+axis_dwidth_converter mua_comb_2_mua (
+  .aclk(bus_clk),                    // input wire aclk
+  .aresetn(!xike_reset),              // input wire aresetn
+  .s_axis_tvalid(mua_comb_valid),  // input wire s_axis_tvalid
+  .s_axis_tready(s_axis_tready),  // output wire s_axis_tready
+  .s_axis_tdata(mua_comb_data),    // input wire [159 : 0] s_axis_tdata
+  .s_axis_tuser(mua_comb_ch),    // input wire [59 : 0] s_axis_tuser
+  .m_axis_tvalid(mua_valid),  // output wire m_axis_tvalid
+  .m_axis_tready(!fifo_mua_full),  // input wire m_axis_tready
+  .m_axis_tdata(mua_data),    // output wire [31 : 0] m_axis_tdata
+  .m_axis_tuser(mua_ch)    // output wire [11 : 0] m_axis_tuser
+);
+
   fifo_32x512 fifo_to_host (
     .clk  (bus_clk                    ),
     .srst (!user_r_mua_32_open        ),
     .wr_en(mua_valid && !fifo_mua_full), // AXI4 valid and ready
-    .din  (mua_data                   ), // mua_data
+    .din  (mua_data                ), // mua_data
     .rd_en(user_r_mua_32_rden         ),
     .dout (user_r_mua_32_data         ),
     .full (fifo_mua_full              ),
     .empty(user_r_mua_32_empty        )
   );
+
+// spike detection 
+
+  wire [31:0] threshold  ;
+  wire [31:0] ch_unigroup;
+
 
 endmodule
