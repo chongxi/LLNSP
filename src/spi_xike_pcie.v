@@ -403,7 +403,7 @@ module spi_xike_pcie (
   assign user_r_control_regs_16_empty = 1'b0;
   assign user_r_control_regs_16_eof = 1'b0;
   assign user_w_control_regs_16_full = 1'b0;
-  
+
   assign user_r_status_regs_16_empty = 1'b0;
   assign user_r_status_regs_16_eof = 1'b0;
 
@@ -575,38 +575,85 @@ module spi_xike_pcie (
     .m_axis_data_tuser (mua_comb_ch)    // output wire [59 : 0] m_axis_data_tdata
     );
 
-  (* mark_debug = "true" *) wire        mua_valid;
-  (* mark_debug = "true" *) wire [31:0] mua_data;
-  (* mark_debug = "true" *) wire [11:0] mua_ch;
+  //fifo_32x512 fifo_to_host (
+    //.clk  (bus_clk                    ),
+    //.srst (!user_r_mua_32_open        ),
+    //.wr_en(mua_valid && !fifo_mua_full), // AXI4 valid and ready
+    //.din  (mua_data                ), // mua_data
+    //.rd_en(user_r_mua_32_rden         ),
+    //.dout (user_r_mua_32_data         ),
+    //.full (fifo_mua_full              ),
+    //.empty(user_r_mua_32_empty        )
+  /*);*/
 
-axis_dwidth_converter mua_comb_2_mua (
-  .aclk(bus_clk),                    // input wire aclk
-  .aresetn(!xike_reset),              // input wire aresetn
-  .s_axis_tvalid(mua_comb_valid),  // input wire s_axis_tvalid
-  .s_axis_tready(s_axis_tready),  // output wire s_axis_tready
-  .s_axis_tdata(mua_comb_data),    // input wire [159 : 0] s_axis_tdata
-  .s_axis_tuser(mua_comb_ch),    // input wire [59 : 0] s_axis_tuser
-  .m_axis_tvalid(mua_valid),  // output wire m_axis_tvalid
-  .m_axis_tready(!fifo_mua_full),  // input wire m_axis_tready
-  .m_axis_tdata(mua_data),    // output wire [31 : 0] m_axis_tdata
-  .m_axis_tuser(mua_ch)    // output wire [11 : 0] m_axis_tuser
-);
+// TODO: spike detection 
 
-  fifo_32x512 fifo_to_host (
-    .clk  (bus_clk                    ),
-    .srst (!user_r_mua_32_open        ),
-    .wr_en(mua_valid && !fifo_mua_full), // AXI4 valid and ready
-    .din  (mua_data                ), // mua_data
-    .rd_en(user_r_mua_32_rden         ),
-    .dout (user_r_mua_32_data         ),
-    .full (fifo_mua_full              ),
-    .empty(user_r_mua_32_empty        )
+// Threshold generator based on ...
+// Block-RAM that contains the threshold of each channel
+// Send thershold out according to chNo_to_spkDet (out of FIR module)
+  
+  wire [159:0] threshold_comb  ;
+  wire [159:0] ch_unigroup_comb;
+  wire [159:0] off_set_comb    ;
+  
+  bram_thres bram_thres (
+    .clk        (bus_clk           ),
+    .we         (user_w_thr_32_wren),
+    .re         (user_r_thr_32_rden),
+    .addr       (user_thr_32_addr  ),
+    .din        (user_w_thr_32_data),
+    .dout       (user_r_thr_32_data),
+    // for detection threshold and channal mapping
+    .ch_comb          (mua_comb_ch            ),     // FROM FIR 
+    .thr_out_comb     (threshold_comb         ),
+    .ch_hash_out_comb (ch_unigroup_comb       ),
+    .off_set_out_comb (off_set_comb           )
   );
-
-// spike detection 
-
-  wire [31:0] threshold  ;
-  wire [31:0] ch_unigroup;
-
-
+  
+  wire [159:0] muap_comb_data;
+  wire [ 59:0] muap_comb_ch  ;
+  wire         muap_comb_valid;
+  
+  spkDet spkDet_comb(
+    .bus_clk (bus_clk),
+    .spkDet_en (spkDet_en),
+    .mua_comb_valid (mua_comb_valid), 
+    .mua_comb_ch (mua_comb_ch),
+    .mua_comb_data (mua_comb_data),    
+    .threshold_comb (threshold_comb),
+    .ch_unigroup_comb (ch_unigroup_comb),
+    .off_set_comb   (off_set_comb),
+    .muap_comb_data (muap_comb_data),
+    .muap_comb_ch   (muap_comb_ch)  ,
+    .muap_comb_valid (muap_comb_valid)
+  );
+  
+  (* mark_debug = "true" *) wire        muap_valid;
+  (* mark_debug = "true" *) wire [31:0] muap_data;
+  (* mark_debug = "true" *) wire [11:0] muap_ch;
+  
+  axis_dwidth_converter mua_comb_2_mua (
+    .aclk(bus_clk),                    // input wire aclk
+    .aresetn(!xike_reset),              // input wire aresetn
+    .s_axis_tvalid(muap_comb_valid),  // input wire s_axis_tvalid
+    .s_axis_tready(s_axis_tready),  // output wire s_axis_tready
+    .s_axis_tdata(muap_comb_data),    // input wire [159 : 0] s_axis_tdata
+    .s_axis_tuser(muap_comb_ch),    // input wire [59 : 0] s_axis_tuser
+    .m_axis_tvalid(muap_valid),  // output wire m_axis_tvalid
+    .m_axis_tready(!fifo_mua_full),  // input wire m_axis_tready
+    .m_axis_tdata(muap_data),    // output wire [31 : 0] m_axis_tdata
+    .m_axis_tuser(muap_ch)    // output wire [11 : 0] m_axis_tuser
+  );
+  
+   fifo_32x512 fifo_to_host (
+    .clk  (bus_clk                     ),
+    .srst (!user_r_mua_32_open         ),
+    .wr_en(muap_valid && !fifo_mua_full), // AXI4 valid and ready
+    .din  (muap_data                   ), // mua_data
+    .rd_en(user_r_mua_32_rden          ),
+    .dout (user_r_mua_32_data          ),
+    .full (fifo_mua_full               ),
+    .empty(user_r_mua_32_empty         )
+  );
+  
 endmodule
