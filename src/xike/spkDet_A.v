@@ -50,24 +50,24 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module spkDet_A (
-      input                clk            , // <-- use fir_valid for the first version trial
-      input                rst            ,
-      input                thr_enable     ,
-      input                valid_in       , // <-- fir_valid
-      input                end_of_frame   , // <-- end_of_frame
-      input         [ 7:0] ch_No          , // <-- chNo_out
-      input         [31:0] ch_unigroup    ,
-      input  signed [31:0] threshold_in   , // <-- threshold
-      input  signed [31:0] v_in           , // <-- fir_out
-      //
-      output        [ 7:0] ch_out         ,
-      output        [31:0] ch_unigroup_out,
-      output               eof_out        ,
-      output               valid_out      , // (spkDet_valid && !fifo1_full) --> fifo1_wr_en
-      output signed [31:0] v_out          , // --> tohost
-      output signed [31:0] min_out        ,
-      output        [ 1:0] state_out      ,
-      output               is_peak_out
+  input                clk            , // <-- use fir_valid for the first version trial
+  input                rst            ,
+  input                thr_enable     ,
+  input                valid_in       , // <-- fir_valid
+  input                end_of_frame   , // <-- end_of_frame
+  input         [ 7:0] ch_No          , // <-- chNo_out
+  input         [31:0] ch_unigroup    ,
+  input  signed [31:0] threshold_in   , // <-- threshold
+  input  signed [31:0] v_in           , // <-- fir_out
+                                        //
+  output        [ 7:0] ch_out         ,
+  output        [31:0] ch_unigroup_out,
+  output               eof_out        ,
+  output               valid_out      , // (spkDet_valid && !fifo1_full) --> fifo1_wr_en
+  output signed [31:0] v_out          , // --> tohost
+  output signed [31:0] min_out        ,
+  output        [ 1:0] state_out      ,
+  output               is_peak_out
 );
 
 
@@ -133,18 +133,18 @@ always @(posedge clk) begin : pipeline_buffer_input_internal_output
   // spike detection
   else begin
     // input buff for processing
-    valid_in_buf       <= valid_in;
-    ch_in_buf          <= ch_No;
-    v_in_buf           <= v_in;
-    eof_in_buf         <= end_of_frame;
+    valid_in_buf    <= valid_in;
+    ch_in_buf       <= ch_No;
+    v_in_buf        <= v_in;
+    eof_in_buf      <= end_of_frame;
     // get internal buffer (where computation depends on)
-    valid_buf          <= valid_in_buf;
-    ch_buf             <= ch_in_buf;
-    ch_unigroup_buf    <= ch_unigroup;
-    v_buf              <= v_in_buf;
-    eof_buf            <= eof_in_buf;
+    valid_buf       <= valid_in_buf;
+    ch_buf          <= ch_in_buf;
+    ch_unigroup_buf <= ch_unigroup;
+    v_buf           <= v_in_buf;
+    eof_buf         <= eof_in_buf;
 
-    threshold          <= threshold_in;
+    threshold <= threshold_in;
 
     // output buff
     if (v_buf < threshold) begin
@@ -167,14 +167,14 @@ end
 
 // Mn for PeakDet FSM
 always @(posedge clk) begin : proc_Min_Array
-    if (valid_buf) begin
-        if  (v_buf >= threshold) begin
-            Mn[ch_buf] <= 0;
-        end
-        else if (v_buf < threshold && v_buf < Mn[ch_buf]) begin
-            Mn[ch_buf] <= v_buf;
-        end
+  if (valid_buf) begin
+    if  (v_buf >= threshold) begin
+      Mn[ch_buf] <= 0;
     end
+    else if (v_buf < threshold && v_buf < Mn[ch_buf]) begin
+      Mn[ch_buf] <= v_buf;
+    end
+  end
 end
 
 

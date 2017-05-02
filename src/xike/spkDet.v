@@ -19,18 +19,19 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module spkDet (
-    input          bus_clk,
-    input          spkDet_en, 
-    input          mua_comb_valid, 
-    input [59 :0]  mua_comb_ch,
-    input [159:0]  mua_comb_data,    
-    input [159:0]  threshold_comb,
-    input [159:0]  ch_unigroup_comb,
-    input [159:0]  off_set_comb,
-
-    output [159:0] muap_comb_data,
-    output [ 59:0] muap_comb_ch  ,
-    output         muap_comb_valid
+  input          bus_clk           ,
+  input          reset             ,
+  input          spkDet_en         ,
+  input          mua_comb_valid    ,
+  input  [ 59:0] mua_comb_ch       ,
+  input  [159:0] mua_comb_data     ,
+  input  [159:0] threshold_comb    ,
+  input  [159:0] ch_unigroup_comb  ,
+  input  [159:0] off_set_comb      ,
+  output [159:0] muap_comb_data    ,
+  output [ 59:0] muap_comb_ch      ,
+  output         muap_comb_valid   ,
+  output [ 31:0] muap_comb_frame_No
 );
 
   // spkDet_A, detect spikes according to channel No and threshold
@@ -101,14 +102,14 @@ module spkDet (
   assign muap_comb_valid         = spkA_valid_out[0];
 
   spkDet_A #(.NUM_CH(32)) spkDet_A_bank_0 (
-    .clk            (bus_clk             ),
-    .thr_enable     (spkDet_en           ),
-    .valid_in       (mua_comb_valid           ), // <-- fir_valid
-    .end_of_frame   (end_of_frame        ), // <-- end_of_frame
+    .clk            (bus_clk                ),
+    .thr_enable     (spkDet_en              ),
+    .valid_in       (mua_comb_valid         ), // <-- fir_valid
+    .end_of_frame   (end_of_frame           ), // <-- end_of_frame
     .ch_No          (mua_ch[0]              ), // <-- chNo_to_spkDet
     .ch_unigroup    (ch_unigroup[0]         ),
     .threshold_in   (threshold[0]           ), // <-- threshold
-    .v_in           (mua_in[0]            ), // <-- fir_out
+    .v_in           (mua_in[0]              ), // <-- fir_out
     .ch_out         (spkA_ch_out[0]         ),
     .ch_unigroup_out(spkA_ch_unigroup_out[0]),
     .eof_out        (spkA_eof_out[0]        ), // --> end_of_frame
@@ -120,14 +121,14 @@ module spkDet (
   );
 
   spkDet_A #(.NUM_CH(32)) spkDet_A_bank_1 (
-    .clk            (bus_clk             ),
-    .thr_enable     (spkDet_en           ),
-    .valid_in       (mua_comb_valid           ), // <-- fir_valid
-    .end_of_frame   (end_of_frame        ), // <-- end_of_frame
+    .clk            (bus_clk                ),
+    .thr_enable     (spkDet_en              ),
+    .valid_in       (mua_comb_valid         ), // <-- fir_valid
+    .end_of_frame   (end_of_frame           ), // <-- end_of_frame
     .ch_No          (mua_ch[1]              ), // <-- chNo_to_spkDet
     .ch_unigroup    (ch_unigroup[1]         ),
     .threshold_in   (threshold[1]           ), // <-- threshold
-    .v_in           (mua_in[1]            ), // <-- fir_out
+    .v_in           (mua_in[1]              ), // <-- fir_out
     .ch_out         (spkA_ch_out[1]         ),
     .ch_unigroup_out(spkA_ch_unigroup_out[1]),
     .eof_out        (spkA_eof_out[1]        ), // --> end_of_frame
@@ -137,16 +138,16 @@ module spkDet (
     .state_out      (spkA_state_out[1]      ),
     .is_peak_out    (spkA_is_peak[1]        )
   );
-  
+
   spkDet_A #(.NUM_CH(32)) spkDet_A_bank_2 (
-    .clk            (bus_clk             ),
-    .thr_enable     (spkDet_en           ),
-    .valid_in       (mua_comb_valid           ), // <-- fir_valid
-    .end_of_frame   (end_of_frame        ), // <-- end_of_frame
+    .clk            (bus_clk                ),
+    .thr_enable     (spkDet_en              ),
+    .valid_in       (mua_comb_valid         ), // <-- fir_valid
+    .end_of_frame   (end_of_frame           ), // <-- end_of_frame
     .ch_No          (mua_ch[2]              ), // <-- chNo_to_spkDet
     .ch_unigroup    (ch_unigroup[2]         ),
     .threshold_in   (threshold[2]           ), // <-- threshold
-    .v_in           (mua_in[2]            ), // <-- fir_out
+    .v_in           (mua_in[2]              ), // <-- fir_out
     .ch_out         (spkA_ch_out[2]         ),
     .ch_unigroup_out(spkA_ch_unigroup_out[2]),
     .eof_out        (spkA_eof_out[2]        ), // --> end_of_frame
@@ -156,16 +157,16 @@ module spkDet (
     .state_out      (spkA_state_out[2]      ),
     .is_peak_out    (spkA_is_peak[2]        )
   );
-  
+
   spkDet_A #(.NUM_CH(32)) spkDet_A_bank_3 (
-    .clk            (bus_clk             ),
-    .thr_enable     (spkDet_en           ),
-    .valid_in       (mua_comb_valid           ), // <-- fir_valid
-    .end_of_frame   (end_of_frame        ), // <-- end_of_frame
+    .clk            (bus_clk                ),
+    .thr_enable     (spkDet_en              ),
+    .valid_in       (mua_comb_valid         ), // <-- fir_valid
+    .end_of_frame   (end_of_frame           ), // <-- end_of_frame
     .ch_No          (mua_ch[3]              ), // <-- chNo_to_spkDet
     .ch_unigroup    (ch_unigroup[3]         ),
     .threshold_in   (threshold[3]           ), // <-- threshold
-    .v_in           (mua_in[3]            ), // <-- fir_out
+    .v_in           (mua_in[3]              ), // <-- fir_out
     .ch_out         (spkA_ch_out[3]         ),
     .ch_unigroup_out(spkA_ch_unigroup_out[3]),
     .eof_out        (spkA_eof_out[3]        ), // --> end_of_frame
@@ -175,16 +176,16 @@ module spkDet (
     .state_out      (spkA_state_out[3]      ),
     .is_peak_out    (spkA_is_peak[3]        )
   );
-  
+
   spkDet_A #(.NUM_CH(32)) spkDet_A_bank_4 (
-    .clk            (bus_clk             ),
-    .thr_enable     (spkDet_en           ),
-    .valid_in       (mua_comb_valid           ), // <-- fir_valid
-    .end_of_frame   (end_of_frame        ), // <-- end_of_frame
+    .clk            (bus_clk                ),
+    .thr_enable     (spkDet_en              ),
+    .valid_in       (mua_comb_valid         ), // <-- fir_valid
+    .end_of_frame   (end_of_frame           ), // <-- end_of_frame
     .ch_No          (mua_ch[4]              ), // <-- chNo_to_spkDet
     .ch_unigroup    (ch_unigroup[4]         ),
     .threshold_in   (threshold[4]           ), // <-- threshold
-    .v_in           (mua_in[4]            ), // <-- fir_out
+    .v_in           (mua_in[4]              ), // <-- fir_out
     .ch_out         (spkA_ch_out[4]         ),
     .ch_unigroup_out(spkA_ch_unigroup_out[4]),
     .eof_out        (spkA_eof_out[4]        ), // --> end_of_frame
@@ -193,6 +194,13 @@ module spkDet (
     .min_out        (spkA_min_out[4]        ),
     .state_out      (spkA_state_out[4]      ),
     .is_peak_out    (spkA_is_peak[4]        )
+  );
+
+  frame_counter #(.NUM_CH(32)) spk_frame_counter (
+    .clk               (bus_clk           ),
+    .rst               (reset             ),
+    .spkA_ch_out_bank_0(spkA_ch_out[0]    ),
+    .frame_No          (muap_comb_frame_No)
   );
 
 endmodule 
