@@ -1,5 +1,5 @@
 ./vivado
 ./Xil
 ./IP/.Xil
-./IP/.Xil/*.*
+IP/.Xil/*.*
 vivado*.*
