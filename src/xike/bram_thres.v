@@ -44,11 +44,11 @@ output [BITWIDTH*BANK_NUM-1:0] ch_hash_out_comb;
 output [BITWIDTH*BANK_NUM-1:0] off_set_out_comb;
 
 // These are 5 channels at this moment given by ch_comb
-wire ch_0 = ch_comb[11:0 ];
-wire ch_1 = ch_comb[23:12];
-wire ch_2 = ch_comb[35:24];
-wire ch_3 = ch_comb[47:36];
-wire ch_4 = ch_comb[59:48];
+(* mark_debug = "true" *) wire [11:0] ch_0 = ch_comb[11:0 ];
+(* mark_debug = "true" *) wire [11:0] ch_1 = ch_comb[23:12];
+(* mark_debug = "true" *) wire [11:0] ch_2 = ch_comb[35:24];
+(* mark_debug = "true" *) wire [11:0] ch_3 = ch_comb[47:36];
+(* mark_debug = "true" *) wire [11:0] ch_4 = ch_comb[59:48];
 
 // threshold, channel hash, and offset according to 5 channel No
 reg [BITWIDTH*BANK_NUM-1:0] thr_out_buf;

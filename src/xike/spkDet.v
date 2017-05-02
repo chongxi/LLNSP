@@ -32,14 +32,14 @@ module spkDet (
     output [ 59:0] muap_comb_ch  ,
     output         muap_comb_valid
 );
- 
+
   // spkDet_A, detect spikes according to channel No and threshold
   // output spike state value indicate there is a spike happen
   // (* mark_debug = "true" *) 
   parameter NUM_BANK=5;
-   
+  
   // input structure
-  wire [31:0] threshold   [0:NUM_BANK-1];
+  (* mark_debug = "true" *) wire [31:0] threshold   [0:NUM_BANK-1];
   wire [31:0] ch_unigroup [0:NUM_BANK-1];
   wire [31:0] off_set     [0:NUM_BANK-1];
   wire [31:0] mua_in      [0:NUM_BANK-1];

@@ -542,14 +542,14 @@ module spi_xike_pcie (
 
 // //  (* mark_debug = "true" *) wire [3 :0] mua_stream;
 
-  (* mark_debug = "true" *) wire        raw_comb_ready;
-  (* mark_debug = "true" *) wire        raw_comb_valid;
-  (* mark_debug = "true" *) wire [79:0] raw_comb_data ;
-  (* mark_debug = "true" *) wire [59:0] raw_comb_ch;
+  wire        raw_comb_ready;
+  wire        raw_comb_valid;
+  wire [79:0] raw_comb_data ;
+  wire [59:0] raw_comb_ch;
 
-  (* mark_debug = "true" *) wire         mua_comb_valid;
-  (* mark_debug = "true" *) wire [159:0] mua_comb_data;
-  (* mark_debug = "true" *) wire [59 :0] mua_comb_ch;
+  wire         mua_comb_valid;
+  wire [159:0] mua_comb_data;
+  wire [59 :0] mua_comb_ch;
 
   raw_comb_5_streams i_raw_comb_5_streams (
     .spi_clk              (spi_clk                   ),

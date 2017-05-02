@@ -77,14 +77,14 @@ parameter S0 = 2'b00,
           S2 = 2'b10,
           S3 = 2'b11;
 
-
+(* ram_style = "distributed" *)
 reg [1:0] state[0:NUM_CH-1];
-// reg [1:0] nextstate[0:NUM_CH-1];
+
 reg [NUM_CH-1:0] ispeak;
 reg peak_bufo;
 reg [1:0] state_bufo;
 
-//(* ram_style = "distributed" *)
+(* ram_style = "distributed" *)
 reg signed [31:0] Mn[0:NUM_CH-1];
 reg signed [31:0] Min[0:NUM_CH-1];
 // reg signed [31:0] Min_bufo;

@@ -127,17 +127,17 @@ module raw_comb_5_streams (
     .empty (fifo_empty[4]                 )  // output wire empty
   );
 
-  (* mark_debug = "true" *) wire [15:0] raw_data_0 = fifo0_dout[15: 0];
-  (* mark_debug = "true" *) wire [15:0] raw_data_1 = fifo1_dout[15: 0];
-  (* mark_debug = "true" *) wire [15:0] raw_data_2 = fifo2_dout[15: 0];
-  (* mark_debug = "true" *) wire [15:0] raw_data_3 = fifo3_dout[15: 0];
-  (* mark_debug = "true" *) wire [15:0] raw_data_4 = fifo4_dout[15: 0];
+  wire [15:0] raw_data_0 = fifo0_dout[15: 0];
+  wire [15:0] raw_data_1 = fifo1_dout[15: 0];
+  wire [15:0] raw_data_2 = fifo2_dout[15: 0];
+  wire [15:0] raw_data_3 = fifo3_dout[15: 0];
+  wire [15:0] raw_data_4 = fifo4_dout[15: 0];
   
-  (* mark_debug = "true" *) wire [11:0] raw_ch_0   = fifo0_dout[28:17];
-  (* mark_debug = "true" *) wire [11:0] raw_ch_1   = fifo1_dout[28:17];
-  (* mark_debug = "true" *) wire [11:0] raw_ch_2   = fifo2_dout[28:17];
-  (* mark_debug = "true" *) wire [11:0] raw_ch_3   = fifo3_dout[28:17];
-  (* mark_debug = "true" *) wire [11:0] raw_ch_4   = fifo4_dout[28:17];  
+  wire [11:0] raw_ch_0   = fifo0_dout[28:17];
+  wire [11:0] raw_ch_1   = fifo1_dout[28:17];
+  wire [11:0] raw_ch_2   = fifo2_dout[28:17];
+  wire [11:0] raw_ch_3   = fifo3_dout[28:17];
+  wire [11:0] raw_ch_4   = fifo4_dout[28:17];  
 
   assign raw_data = {raw_data_4, raw_data_3, raw_data_2, raw_data_1, raw_data_0};
   assign raw_ch   = {raw_ch_4,   raw_ch_3,   raw_ch_2,   raw_ch_1,   raw_ch_0};
