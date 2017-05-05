@@ -21,25 +21,29 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
 module frame_counter (
-  input         clk               ,
-  input         rst               ,
-  input  [ 7:0] spkA_ch_out_bank_0,
+  input         clk     ,
+  input         rst     ,
+  input  [ 7:0] muap_ch ,
   output [31:0] frame_No
 );
 
-parameter NUM_CH=32;
+parameter NUM_CH=160;
 
 reg [31:0] cnt = {32{1'b0}};
 assign frame_No = cnt;
 
+(* mark_debug = "true" *) wire reset = rst;   
+(* mark_debug = "true" *) reg  [7:0] ch;
+
 always @(posedge clk or posedge rst) begin
   if (rst) begin
     cnt <= 0;
+    ch  <= 0;
   end
   else begin
-    if(spkA_ch_out_bank_0==NUM_CH) begin
+    ch <= muap_ch;
+    if(ch==NUM_CH-1) begin
       cnt <= cnt + 1'b1;
     end
   end

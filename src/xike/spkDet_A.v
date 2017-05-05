@@ -70,7 +70,6 @@ module spkDet_A (
   output               is_peak_out
 );
 
-
 parameter NUM_CH=32;
 parameter S0 = 2'b00,
           S1 = 2'b01,
@@ -86,13 +85,9 @@ reg [1:0] state_bufo;
 
 (* ram_style = "distributed" *)
 reg signed [31:0] Mn[0:NUM_CH-1];
-reg signed [31:0] Min[0:NUM_CH-1];
-// reg signed [31:0] Min_bufo;
-
 
 // threshold buffer by 1 clock
-reg signed [31:0] threshold;
-
+reg signed [31:0] threshold_buf;
 
 // other inputs buffer by 2 clocks
 reg valid_in_buf;
@@ -143,24 +138,14 @@ always @(posedge clk) begin : pipeline_buffer_input_internal_output
     ch_unigroup_buf <= ch_unigroup;
     v_buf           <= v_in_buf;
     eof_buf         <= eof_in_buf;
-
-    threshold <= threshold_in;
+    threshold_buf   <= threshold_in;
 
     // output buff
-    if (v_buf < threshold) begin
-      valid_bufo       <= valid_buf;
-      ch_bufo          <= ch_buf;
-      ch_unigroup_bufo <= ch_unigroup_buf;
-      v_bufo           <= v_buf;
-      eof_bufo         <= eof_buf;
-    end
-    else begin
-      valid_bufo       <= valid_buf;
-      ch_bufo          <= ch_buf;
-      ch_unigroup_bufo <= ch_unigroup_buf;
-      v_bufo           <= v_buf;   // change `v_buf` to 0 would remove signal above threshold
-      eof_bufo         <= eof_buf;
-    end
+    valid_bufo       <= valid;
+    ch_bufo          <= ch;
+    ch_unigroup_bufo <= ch_hash;
+    v_bufo           <= v;
+    eof_bufo         <= eof;
   end
 end
 
@@ -168,15 +153,40 @@ end
 // Mn for PeakDet FSM
 always @(posedge clk) begin : proc_Min_Array
   if (valid_buf) begin
-    if  (v_buf >= threshold) begin
+    if  (v_buf >= threshold_buf) begin
       Mn[ch_buf] <= 0;
     end
-    else if (v_buf < threshold && v_buf < Mn[ch_buf]) begin
+    else if (v_buf < threshold_buf && v_buf < Mn[ch_buf]) begin
       Mn[ch_buf] <= v_buf;
     end
   end
 end
 
+reg               valid;
+reg        [7:0]  ch;
+reg        [31:0] ch_hash;
+reg signed [31:0] v;
+reg signed [31:0] thr;
+reg               eof;
+reg signed [31:0] Min;
+reg signed [31:0] Min_nn0;
+reg signed [31:0] Min_nn1;
+reg signed [31:0] Min_nn2;
+
+always @(posedge clk) begin
+  if(thr_enable) begin
+    thr     <= threshold_buf;
+    v       <= v_buf;
+    valid   <= valid_buf;
+    ch      <= ch_buf;
+    ch_hash <= ch_unigroup_buf;
+    eof     <= eof_buf;
+    Min     <= Mn[ch_buf];
+    Min_nn0 <= Mn[ch_nn0];
+    Min_nn1 <= Mn[ch_nn1];
+    Min_nn2 <= Mn[ch_nn2];
+  end
+end
 
 //------------------------------------------------
 // PeakDet FSM:                                  |
@@ -186,72 +196,70 @@ end
 // state:   state[ch_buf] --> nextstate[ch_buf]  |
 // -----------------------------------------------
 always @(posedge clk) begin : nextstate_and_output_logic
-    if (valid_buf) begin
+    if (valid) begin
       (* full_case *)
-      case (state[ch_buf])
+      case (state[ch])
 
-       S0 : if(v_buf >= threshold) begin                             // keep above thres:  S0-->S0
-              state[ch_buf]  <= S0;
-              state_bufo     <= S0;
-              ispeak[ch_buf] <= 0;
-              peak_bufo      <= 0;
+       S0 : if(v >= thr) begin                             // keep above thres:  S0-->S0
+              state[ch]  <= S0;
+              state_bufo <= S0;
+              ispeak[ch] <= 0;
+              peak_bufo  <= 0;
             end
-            else if(v_buf < threshold) begin                         // down to threshold: S0-->S1
-              state[ch_buf]  <= S1;
-              state_bufo     <= S1;
-              ispeak[ch_buf] <= 0;
-              peak_bufo      <= 0;
+            else if(v < thr) begin                         // down to threshold: S0-->S1
+              state[ch]  <= S1;
+              state_bufo <= S1;
+              ispeak[ch] <= 0;
+              peak_bufo  <= 0;
             end
 
-       S1 : if(v_buf < threshold && v_buf < Mn[ch_buf]) begin        // keep going down:   S1-->S1
-              state[ch_buf]  <= S1;
-              state_bufo     <= S1;
-              ispeak[ch_buf] <= 0;
-              peak_bufo      <= 0;
+       S1 : if(v < thr && v < Min) begin        // keep going down:   S1-->S1
+              state[ch]  <= S1;
+              state_bufo <= S1;
+              ispeak[ch] <= 0;
+              peak_bufo  <= 0;
             end
-            else if(v_buf < threshold && v_buf >= Mn[ch_buf]) begin  // stop going down:   S1-->S2 (peak)
-              state[ch_buf]  <= S2;
-              state_bufo     <= S2;
+            else if(v < thr && v >= Min) begin  // stop going down:   S1-->S2 (peak)
+              state[ch]  <= S2;
+              state_bufo <= S2;
               // This is a tricky point, if ch_buf+1 is critical point, then Mn[ch_buf+1] < v_buf@ch_buf+1, 
               // Then if Mn[ch_buf] < Mn[ch_buf+1] proves that ch_buf is critical
-              if(Mn[ch_buf] < Mn[ch_nn0] && Mn[ch_buf] < Mn[ch_nn1]) begin 
-                ispeak[ch_buf] <= 1;
-                peak_bufo      <= 1;
+              if(Mn[ch] < Min_nn0 && Mn[ch] < Min_nn1) begin 
+                ispeak[ch] <= 1;
+                peak_bufo  <= 1;
               end
               else begin
-                ispeak[ch_buf] <= 0;
-                peak_bufo      <= 0;
+                ispeak[ch] <= 0;
+                peak_bufo  <= 0;
               end
             end
-            else if(v_buf >= threshold) begin
-              state[ch_buf]  <= S0;
-              state_bufo     <= S0;
-              ispeak[ch_buf] <= 0;
-              peak_bufo      <= 0;
+            else if(v >= thr) begin
+              state[ch]  <= S0;
+              state_bufo <= S0;
+              ispeak[ch] <= 0;
+              peak_bufo  <= 0;
             end
 
-       S2 : if(v_buf < threshold && v_buf >= Mn[ch_buf]) begin      // between Mn and thres:           S2-->S2
-              state[ch_buf]  <= S2;
-              state_bufo     <= S2;
-              ispeak[ch_buf] <= 0;
-              peak_bufo      <= 0;
+       S2 : if(v < thr && v >= Min) begin      // between Mn and thres:           S2-->S2
+              state[ch]  <= S2;
+              state_bufo <= S2;
+              ispeak[ch] <= 0;
+              peak_bufo  <= 0;
             end
-            else if(v_buf < threshold && v_buf < Mn[ch_buf]) begin  // going down even lower somehow:  S2-->S1
-              state[ch_buf]  <= S1;
-              state_bufo     <= S1;
-              ispeak[ch_buf] <= 0;
-              peak_bufo      <= 0;
+            else if(v < thr && v < Min) begin  // going down even lower somehow:  S2-->S1
+              state[ch]  <= S1;
+              state_bufo <= S1;
+              ispeak[ch] <= 0;
+              peak_bufo  <= 0;
             end
-            else if(v_buf >= threshold) begin                       // going up above thres:           S2-->S0
-              state[ch_buf]  <= S0;
-              state_bufo     <= S0;
-              ispeak[ch_buf] <= 0;
-              peak_bufo      <= 0;
-              Min[ch_buf]    <= 0;
+            else if(v >= thr) begin                       // going up above thres:           S2-->S0
+              state[ch]  <= S0;
+              state_bufo <= S0;
+              ispeak[ch] <= 0;
+              peak_bufo  <= 0;
+//              Min[ch_buf]    <= 0;
             end
-
       endcase
-
     end
 end
 

@@ -20,7 +20,6 @@
 //////////////////////////////////////////////////////////////////////////////////
 module spkDet (
   input          bus_clk           ,
-  input          reset             ,
   input          spkDet_en         ,
   input          mua_comb_valid    ,
   input  [ 59:0] mua_comb_ch       ,
@@ -30,8 +29,7 @@ module spkDet (
   input  [159:0] off_set_comb      ,
   output [159:0] muap_comb_data    ,
   output [ 59:0] muap_comb_ch      ,
-  output         muap_comb_valid   ,
-  output [ 31:0] muap_comb_frame_No
+  output         muap_comb_valid   
 );
 
   // spkDet_A, detect spikes according to channel No and threshold
@@ -40,7 +38,7 @@ module spkDet (
   parameter NUM_BANK=5;
   
   // input structure
-  (* mark_debug = "true" *) wire [31:0] threshold   [0:NUM_BANK-1];
+  wire [31:0] threshold   [0:NUM_BANK-1];
   wire [31:0] ch_unigroup [0:NUM_BANK-1];
   wire [31:0] off_set     [0:NUM_BANK-1];
   wire [31:0] mua_in      [0:NUM_BANK-1];
@@ -75,7 +73,6 @@ module spkDet (
   assign mua_ch[2] = mua_comb_ch[35:24];
   assign mua_ch[3] = mua_comb_ch[47:36];
   assign mua_ch[4] = mua_comb_ch[59:48];    
-  
   
   // output structure
   wire [ 7:0] spkA_ch_out [0:NUM_BANK-1];
@@ -194,13 +191,6 @@ module spkDet (
     .min_out        (spkA_min_out[4]        ),
     .state_out      (spkA_state_out[4]      ),
     .is_peak_out    (spkA_is_peak[4]        )
-  );
-
-  frame_counter #(.NUM_CH(32)) spk_frame_counter (
-    .clk               (bus_clk           ),
-    .rst               (reset             ),
-    .spkA_ch_out_bank_0(spkA_ch_out[0]    ),
-    .frame_No          (muap_comb_frame_No)
   );
 
 endmodule 

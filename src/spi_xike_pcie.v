@@ -412,10 +412,10 @@ module spi_xike_pcie (
   wire [15:0] FIFO_DATA_STREAM     ;
   wire        FIFO_DATA_STREAM_WEN ;
   
-  wire [31:0] FIFO_TIME_TO_XIKE    ;
-  wire [15:0] FIFO_DATA_TO_XIKE    ;
-  wire [15:0] FIFO_STREAMNO_TO_XIKE;
-  wire [11:0] FIFO_CHNO_TO_XIKE    ;
+  (* mark_debug = "true" *) wire [31:0] FIFO_TIME_TO_XIKE    ;
+  (* mark_debug = "true" *) wire [15:0] FIFO_DATA_TO_XIKE    ;
+  (* mark_debug = "true" *) wire [15:0] FIFO_STREAMNO_TO_XIKE;
+  (* mark_debug = "true" *) wire [11:0] FIFO_CHNO_TO_XIKE    ;
 
   spi_intan_interface_4_bank INTAN_2_SPI (
     .bus_clk                       (bus_clk                       ),
@@ -497,13 +497,11 @@ module spi_xike_pcie (
 
 // Xike
   wire xike_reset = reset;
-  wire xike_spk_eof;
   wire spkDet_en;
   wire spkClf_en;
-  assign xike_spk_eof               = XIKE_ENABLE;
   assign user_r_mua_32_eof          = XIKE_ENABLE;   // flag to stop RAM FIFO
-//  assign user_r_spk_sort_32_eof     = XIKE_ENABLE;
-//  assign user_r_spk_realtime_32_eof = XIKE_ENABLE;
+  assign user_r_spk_sort_32_eof     = XIKE_ENABLE;
+  assign user_r_spk_realtime_32_eof = XIKE_ENABLE;
 
   mem_reg_16 mem_reg_16 (
     .clk   (bus_clk           ),
@@ -609,11 +607,9 @@ module spi_xike_pcie (
   wire [159:0] muap_comb_data    ;
   wire [ 59:0] muap_comb_ch      ;
   wire         muap_comb_valid   ;
-  (* mark_debug = "true" *) wire [ 31:0] muap_comb_frame_No;
   
   spkDet spkDet_comb (
     .bus_clk           (bus_clk           ),
-    .reset             (!SPI_running      ),
     .spkDet_en         (spkDet_en         ),
     .mua_comb_valid    (mua_comb_valid    ),
     .mua_comb_ch       (mua_comb_ch       ),
@@ -623,28 +619,37 @@ module spi_xike_pcie (
     .off_set_comb      (off_set_comb      ),
     .muap_comb_data    (muap_comb_data    ),
     .muap_comb_ch      (muap_comb_ch      ),
-    .muap_comb_valid   (muap_comb_valid   ),
-    .muap_comb_frame_No(muap_comb_frame_No)
+    .muap_comb_valid   (muap_comb_valid   )
   );
 
   (* mark_debug = "true" *) wire        muap_valid;
   (* mark_debug = "true" *) wire [31:0] muap_data;
   (* mark_debug = "true" *) wire [11:0] muap_ch;
-  
+
   axis_dwidth_converter mua_comb_2_mua (
-    .aclk         (bus_clk        ), // input wire aclk
-    .aresetn      (!xike_reset    ), // input wire aresetn
-    .s_axis_tvalid(muap_comb_valid), // input wire s_axis_tvalid
-    .s_axis_tready(s_axis_tready  ), // output wire s_axis_tready
-    .s_axis_tdata (muap_comb_data ), // input wire [159 : 0] s_axis_tdata
-    .s_axis_tuser (muap_comb_ch   ), // input wire [59 : 0] s_axis_tuser
-    .m_axis_tvalid(muap_valid     ), // output wire m_axis_tvalid
-    .m_axis_tready(!fifo_mua_full ), // input wire m_axis_tready
-    .m_axis_tdata (muap_data      ), // output wire [31 : 0] m_axis_tdata
-    .m_axis_tuser (muap_ch        )  // output wire [11 : 0] m_axis_tuser
+    .aclk(bus_clk),                    // input wire aclk
+    .aresetn(!xike_reset),              // input wire aresetn
+    .s_axis_tvalid(muap_comb_valid),  // input wire s_axis_tvalid
+    .s_axis_tready(s_axis_tready),  // output wire s_axis_tready
+    .s_axis_tdata(muap_comb_data),    // input wire [159 : 0] s_axis_tdata
+    .s_axis_tuser(muap_comb_ch),    // input wire [59 : 0] s_axis_tuser
+    .m_axis_tvalid(muap_valid),  // output wire m_axis_tvalid
+    .m_axis_tready(!fifo_mua_full),  // input wire m_axis_tready
+    .m_axis_tdata(muap_data),    // output wire [31 : 0] m_axis_tdata
+    .m_axis_tuser(muap_ch)    // output wire [11 : 0] m_axis_tuser
   );
   
-   fifo_32x512 fifo_to_host (
+  wire frame_count_rst = !SPI_running;
+  (* mark_debug = "true" *) wire [31:0] muap_frame_No;
+ 
+  frame_counter #(.NUM_CH(160)) spk_frame_counter (
+    .clk               (bus_clk           ),
+    .rst               (frame_count_rst   ),
+    .muap_ch           (muap_ch           ),
+    .frame_No          (muap_frame_No     )
+  );
+
+  fifo_32x512 muap_to_host (
     .clk  (bus_clk                     ),
     .srst (!user_r_mua_32_open         ),
     .wr_en(muap_valid && !fifo_mua_full), // AXI4 valid and ready
@@ -654,5 +659,19 @@ module spi_xike_pcie (
     .full (fifo_mua_full               ),
     .empty(user_r_mua_32_empty         )
   );
-  
+
+  wire spk_info_valid = muap_valid && muap_data[0] && !fifo_spk_sort_full;
+  wire [63:0] spk_info_data  = {muap_ch, muap_frame_No};
+
+  fifo_64_to_32 spk_info_to_host (
+    .clk(bus_clk),      // input wire clk
+    .srst(!user_r_spk_sort_32_open),    // input wire srst
+    .din(spk_info_data),      // input wire [63 : 0] din
+    .wr_en(spk_info_valid ),  // input wire wr_en
+    .rd_en(user_r_spk_sort_32_rden),  // input wire rd_en
+    .dout(user_r_spk_sort_32_data),    // output wire [31 : 0] dout
+    .full(fifo_spk_sort_full),    // output wire full
+    .empty(user_r_spk_sort_32_empty)  // output wire empty
+  );
+
 endmodule
