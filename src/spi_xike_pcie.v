@@ -623,49 +623,33 @@ module spi_xike_pcie (
     .muap_comb_ch      (muap_comb_ch      ),
     .muap_comb_valid   (muap_comb_valid   )
   );
-
-  (* mark_debug = "true" *) wire        muap_valid;
-  (* mark_debug = "true" *) wire        muap_ch_hash_valid;
-  (* mark_debug = "true" *) wire [31:0] muap_data;
-  (* mark_debug = "true" *) wire [31:0] muap_ch_hash;
-  (* mark_debug = "true" *) wire [11:0] muap_ch;
-
-  axis_dwidth_converter mua_comb_2_mua_data_ch (
-    .aclk(bus_clk),                    // input wire aclk
-    .aresetn(!xike_reset),              // input wire aresetn
-    .s_axis_tvalid(muap_comb_valid),  // input wire s_axis_tvalid
-    .s_axis_tready(s_axis_tready),  // output wire s_axis_tready
-    .s_axis_tdata(muap_comb_data),    // input wire [159 : 0] s_axis_tdata
-    .s_axis_tuser(muap_comb_ch),    // input wire [59 : 0] s_axis_tuser
-    .m_axis_tvalid(muap_valid),  // output wire m_axis_tvalid
-    .m_axis_tready(!fifo_mua_full),  // input wire m_axis_tready
-    .m_axis_tdata(muap_data),    // output wire [31 : 0] m_axis_tdata
-    .m_axis_tuser(muap_ch)    // output wire [11 : 0] m_axis_tuser
-  );
-
-  axis_dwidth_converter mua_ch_hash (
-    .aclk(bus_clk),                    // input wire aclk
-    .aresetn(!xike_reset),              // input wire aresetn
-    .s_axis_tvalid(muap_comb_valid),  // input wire s_axis_tvalid
-    .s_axis_tready(s_axis_tready_1),  // output wire s_axis_tready
-    .s_axis_tdata(muap_comb_ch_hash),    // input wire [159 : 0] s_axis_tdata
-    .s_axis_tuser(muap_comb_ch),    // input wire [59 : 0] s_axis_tuser
-    .m_axis_tvalid(muap_ch_hash_valid),  // output wire m_axis_tvalid
-    .m_axis_tready(!fifo_mua_full),  // input wire m_axis_tready
-    .m_axis_tdata(muap_ch_hash),    // output wire [31 : 0] m_axis_tdata
-    .m_axis_tuser(muap_ch_1)    // output wire [11 : 0] m_axis_tuser
-  );
   
   wire frame_count_rst = !SPI_running;
+  
+  (* mark_debug = "true" *) wire        muap_valid;
+  (* mark_debug = "true" *) wire [11:0] muap_ch;
+  (* mark_debug = "true" *) wire [31:0] muap_data;
+  (* mark_debug = "true" *) wire [31:0] muap_ch_hash;
   (* mark_debug = "true" *) wire [31:0] muap_frame_No;
- 
-  frame_counter #(.NUM_CH(160)) spk_frame_counter (
-    .clk               (bus_clk           ),
-    .rst               (frame_count_rst   ),
-    .muap_ch           (muap_ch           ),
-    .frame_No          (muap_frame_No     )
+
+
+  mua_2_muap i_mua_2_muap (
+    .bus_clk          (bus_clk          ),
+    .xike_reset       (xike_reset       ),
+    .frame_count_rst  (frame_count_rst  ),
+    .muap_comb_valid  (muap_comb_valid  ),
+    .muap_comb_ch     (muap_comb_ch     ),
+    .muap_comb_data   (muap_comb_data   ),
+    .muap_comb_ch_hash(muap_comb_ch_hash),
+    .fifo_mua_full    (fifo_mua_full    ),
+    .muap_valid       (muap_valid       ),
+    .muap_ch          (muap_ch          ),
+    .muap_data        (muap_data        ),
+    .muap_ch_hash     (muap_ch_hash     ),
+    .muap_frame_No    (muap_frame_No    )
   );
 
+ 
   fifo_32x512 muap_to_host (
     .clk  (bus_clk                     ),
     .srst (!user_r_mua_32_open         ),
