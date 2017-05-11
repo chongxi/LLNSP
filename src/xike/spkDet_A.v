@@ -87,7 +87,7 @@ reg [1:0] state_bufo;
 reg signed [31:0] Mn[0:NUM_CH-1];
 
 // threshold buffer by 1 clock
-reg signed [31:0] threshold_buf;
+(* mark_debug = "true" *) reg signed [31:0] threshold_buf;
 
 // other inputs buffer by 2 clocks
 reg valid_in_buf;
@@ -96,8 +96,8 @@ reg [31:0] ch_unigroup_in_buf;
 reg signed [31:0] v_in_buf;
 reg eof_in_buf;
 // second buf for processing 
-reg valid_buf;    // (*) which is enable signal to FSM, so is important
-reg [7:0] ch_buf; 
+(* mark_debug = "true" *) reg valid_buf;    // (*) which is enable signal to FSM, so is important
+(* mark_debug = "true" *) reg [7:0] ch_buf; 
 reg [31:0] ch_unigroup_buf;
 reg signed [31:0] v_buf;
 reg eof_buf;
@@ -109,15 +109,15 @@ reg signed [31:0] v_bufo;
 reg eof_bufo;
 
 // ch_unigroup is a hash_code, which contains 4 bytes: 0. streamNo; 1-3: 3 nearest electrodes
-wire [7:0] streamNo;
-wire signed [7:0] ch_nn0;
-wire signed [7:0] ch_nn1;
-wire signed [7:0] ch_nn2;
+(* mark_debug = "true" *) wire [7:0] ch_nn0;
+(* mark_debug = "true" *) wire [7:0] ch_nn1;
+(* mark_debug = "true" *) wire [7:0] ch_nn2;
+(* mark_debug = "true" *) wire [7:0] ch_nn3;
 
-assign streamNo = ch_unigroup_buf[ 7:0 ];
-assign ch_nn0   = ch_unigroup_buf[15:8 ];
-assign ch_nn1   = ch_unigroup_buf[23:16];
-assign ch_nn2   = ch_unigroup_buf[31:24];
+assign ch_nn0 = ch_unigroup_buf[ 7:0 ];
+assign ch_nn1 = ch_unigroup_buf[15:8 ];
+assign ch_nn2 = ch_unigroup_buf[23:16];
+assign ch_nn3 = ch_unigroup_buf[31:24];
 
 // Input and Output pipeline buffer for timing
 always @(posedge clk) begin : pipeline_buffer_input_internal_output
@@ -162,16 +162,20 @@ always @(posedge clk) begin : proc_Min_Array
   end
 end
 
+
 reg               valid;
 reg        [7:0]  ch;
 reg        [31:0] ch_hash;
 reg signed [31:0] v;
 reg signed [31:0] thr;
 reg               eof;
+
+
 reg signed [31:0] Min;
 reg signed [31:0] Min_nn0;
 reg signed [31:0] Min_nn1;
 reg signed [31:0] Min_nn2;
+reg signed [31:0] Min_nn3;
 
 always @(posedge clk) begin
   if(thr_enable) begin
@@ -185,6 +189,7 @@ always @(posedge clk) begin
     Min_nn0 <= Mn[ch_nn0];
     Min_nn1 <= Mn[ch_nn1];
     Min_nn2 <= Mn[ch_nn2];
+    Min_nn3 <= Mn[ch_nn3];
   end
 end
 
@@ -224,7 +229,7 @@ always @(posedge clk) begin : nextstate_and_output_logic
               state_bufo <= S2;
               // This is a tricky point, if ch_buf+1 is critical point, then Mn[ch_buf+1] < v_buf@ch_buf+1, 
               // Then if Mn[ch_buf] < Mn[ch_buf+1] proves that ch_buf is critical
-              if(Mn[ch] < Min_nn0 && Mn[ch] < Min_nn1) begin 
+              if(Mn[ch] <= Min_nn0 && Mn[ch] <= Min_nn1 && Mn[ch] <= Min_nn2 && Mn[ch] <= Min_nn3) begin 
                 ispeak[ch] <= 1;
                 peak_bufo  <= 1;
               end

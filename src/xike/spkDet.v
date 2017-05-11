@@ -28,6 +28,7 @@ module spkDet (
   input  [159:0] ch_unigroup_comb  ,
   input  [159:0] off_set_comb      ,
   output [159:0] muap_comb_data    ,
+  output [159:0] muap_comb_ch_hash ,
   output [ 59:0] muap_comb_ch      ,
   output         muap_comb_valid   
 );
@@ -89,7 +90,13 @@ module spkDet (
   assign muap_comb_data[95:64]   = spkA_v_out[2];
   assign muap_comb_data[127:96]  = spkA_v_out[3];
   assign muap_comb_data[159:128] = spkA_v_out[4];
-  
+
+  assign muap_comb_ch_hash[31:0]    = spkA_ch_unigroup_out[0];
+  assign muap_comb_ch_hash[63:32]   = spkA_ch_unigroup_out[1];
+  assign muap_comb_ch_hash[95:64]   = spkA_ch_unigroup_out[2];
+  assign muap_comb_ch_hash[127:96]  = spkA_ch_unigroup_out[3];
+  assign muap_comb_ch_hash[159:128] = spkA_ch_unigroup_out[4];
+ 
   assign muap_comb_ch[11: 0]     = spkA_ch_out[0];
   assign muap_comb_ch[23:12]     = spkA_ch_out[1];
   assign muap_comb_ch[35:24]     = spkA_ch_out[2];
