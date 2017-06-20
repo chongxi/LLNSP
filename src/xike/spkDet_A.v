@@ -96,8 +96,9 @@ reg [31:0] ch_unigroup_in_buf;
 reg signed [31:0] v_in_buf;
 reg eof_in_buf;
 // second buf for processing 
-(* mark_debug = "true" *) reg valid_buf;    // (*) which is enable signal to FSM, so is important
-(* mark_debug = "true" *) reg [7:0] ch_buf; 
+// (* mark_debug = "true" *) 
+reg valid_buf;    // (*) which is enable signal to FSM, so is important
+reg [7:0] ch_buf; 
 reg [31:0] ch_unigroup_buf;
 reg signed [31:0] v_buf;
 reg eof_buf;
@@ -109,10 +110,11 @@ reg signed [31:0] v_bufo;
 reg eof_bufo;
 
 // ch_unigroup is a hash_code, which contains 4 bytes: 0. streamNo; 1-3: 3 nearest electrodes
-(* mark_debug = "true" *) wire [7:0] ch_nn0;
-(* mark_debug = "true" *) wire [7:0] ch_nn1;
-(* mark_debug = "true" *) wire [7:0] ch_nn2;
-(* mark_debug = "true" *) wire [7:0] ch_nn3;
+// (* mark_debug = "true" *) 
+wire [7:0] ch_nn0;
+wire [7:0] ch_nn1;
+wire [7:0] ch_nn2;
+wire [7:0] ch_nn3;
 
 assign ch_nn0 = ch_unigroup_buf[ 7:0 ];
 assign ch_nn1 = ch_unigroup_buf[15:8 ];

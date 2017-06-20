@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="spk_packet_rx" xd:componentRef="spk_packet_rx" xd:initiationInterval="35" xd:clockPeriod="4.000000" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
+  <xd:controlReg xd:name="control" xd:interfaceRef="ap_ctrl" xd:busTypeRef="acc_handshake" xd:type="acc_handshake"/>
+  <xd:arg xd:name="pre_in.user" xd:originalName="pre_in" xd:direction="in" xd:interfaceRef="pre_in" xd:busTypeRef="axis" xd:dataWidth="5"/>
+  <xd:arg xd:name="pre_in.last" xd:originalName="pre_in" xd:direction="in" xd:interfaceRef="pre_in" xd:busTypeRef="axis" xd:dataWidth="1"/>
+  <xd:arg xd:name="pre_in.id" xd:originalName="pre_in" xd:direction="in" xd:interfaceRef="pre_in" xd:busTypeRef="axis" xd:dataWidth="12"/>
+  <xd:arg xd:name="pre_in.data" xd:originalName="pre_in" xd:direction="in" xd:interfaceRef="pre_in" xd:busTypeRef="axis" xd:dataWidth="128"/>
+  <xd:arg xd:name="post_in.user" xd:originalName="post_in" xd:direction="in" xd:interfaceRef="post_in" xd:busTypeRef="axis" xd:dataWidth="5"/>
+  <xd:arg xd:name="post_in.last" xd:originalName="post_in" xd:direction="in" xd:interfaceRef="post_in" xd:busTypeRef="axis" xd:dataWidth="1"/>
+  <xd:arg xd:name="post_in.id" xd:originalName="post_in" xd:direction="in" xd:interfaceRef="post_in" xd:busTypeRef="axis" xd:dataWidth="12"/>
+  <xd:arg xd:name="post_in.data" xd:originalName="post_in" xd:direction="in" xd:interfaceRef="post_in" xd:busTypeRef="axis" xd:dataWidth="128"/>
+  <xd:arg xd:name="time_stamp" xd:originalName="time_stamp" xd:direction="in" xd:interfaceRef="time_stamp_V" xd:busTypeRef="axis" xd:dataWidth="32"/>
+  <xd:arg xd:name="spk_out_stream.id" xd:originalName="spk_out_stream" xd:direction="out" xd:interfaceRef="spk_out_stream" xd:busTypeRef="axis" xd:dataWidth="12"/>
+  <xd:arg xd:name="spk_out_stream.user" xd:originalName="spk_out_stream" xd:direction="out" xd:interfaceRef="spk_out_stream" xd:busTypeRef="axis" xd:dataWidth="32"/>
+  <xd:arg xd:name="spk_out_stream.data" xd:originalName="spk_out_stream" xd:direction="out" xd:interfaceRef="spk_out_stream" xd:busTypeRef="axis" xd:dataWidth="128"/>
+  <xd:arg xd:name="spk_out_stream.dest" xd:originalName="spk_out_stream" xd:direction="out" xd:interfaceRef="spk_out_stream" xd:busTypeRef="axis" xd:dataWidth="16"/>
+  <xd:latencyEstimates xd:best-case="4" xd:worst-case="34" xd:average-case="14"/>
+  <xd:resourceEstimates xd:LUT="836" xd:FF="1208" xd:BRAM="30" xd:DSP="2"/>
+</xd:acceleratorMap>

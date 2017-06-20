@@ -632,7 +632,6 @@ module spi_xike_pcie (
   (* mark_debug = "true" *) wire [31:0] muap_ch_hash;
   (* mark_debug = "true" *) wire [31:0] muap_frame_No;
 
-
   mua_2_muap i_mua_2_muap (
     .bus_clk          (bus_clk          ),
     .xike_reset       (xike_reset       ),
@@ -649,7 +648,45 @@ module spi_xike_pcie (
     .muap_frame_No    (muap_frame_No    )
   );
 
- 
+  wire valid_mua_out;
+  wire signed [31:0] v_mua_out;
+  wire valid_spk_out;
+  wire signed [31:0] v_spk_t_out;
+  wire signed [31:0] v_spk_ch_out;
+
+  // spk_packet 
+  wire spk_stream_TVALID;
+  wire [ 11:0] spk_stream_CH;
+  wire [ 31:0] spk_stream_TIME;
+  wire [ 15:0] spk_stream_TDEST;
+  wire [127:0] spk_stream_TDATA;
+  wire spk_stream_pulse;
+
+  spkPack i_spkPack (
+    // input 
+    .clk              (bus_clk          ),
+    .rst              (frame_count_rst  ),
+    .frame_No_in      (muap_frame_No    ),
+    .ch_in            (muap_ch          ),
+    .ch_unigroup_in   (muap_ch_hash     ),
+    .valid_in         (muap_valid       ),
+    .v_in             (muap_data        ),
+    .is_peak_in       (muap_data[0]     ),
+    // output
+    .valid_mua_out    (valid_mua_out    ),
+    .v_mua_out        (v_mua_out        ),
+    .valid_spk_out    (valid_spk_out    ),
+    .v_spk_t_out      (v_spk_t_out      ),
+    .v_spk_ch_out     (v_spk_ch_out     ),
+    .spk_stream_TVALID(spk_stream_TVALID),
+    .spk_stream_CH    (spk_stream_CH    ),
+    .spk_stream_TIME  (spk_stream_TIME  ),
+    .spk_stream_TDEST (spk_stream_TDEST ),
+    .spk_stream_TDATA (spk_stream_TDATA ),
+    .spk_stream_pulse (spk_stream_pulse )
+  );
+
+
   fifo_32x512 muap_to_host (
     .clk  (bus_clk                     ),
     .srst (!user_r_mua_32_open         ),
@@ -674,5 +711,18 @@ module spi_xike_pcie (
     .full(fifo_spk_sort_full),    // output wire full
     .empty(user_r_spk_sort_32_empty)  // output wire empty
   );
+  
+  fifo_generator_spk spk_wav_to_host (
+    .clk(bus_clk),      // input wire clk
+    .srst(!user_r_spk_realtime_32_open),    // input wire srst
+    .din(spk_stream_TDATA),      // input wire [127 : 0] din
+    .wr_en(spk_stream_TVALID && !fifo_spk_realtime_full),  // input wire wr_en
+    .rd_en(user_r_spk_realtime_32_rden),  // input wire rd_en
+    .dout(user_r_spk_realtime_32_data),    // output wire [31 : 0] dout
+    .full(fifo_spk_realtime_full),    // output wire full
+    .empty(user_r_spk_realtime_32_empty)  // output wire empty
+  );
+  
+//  user_r_spk_realtime_32_data
 
 endmodule
