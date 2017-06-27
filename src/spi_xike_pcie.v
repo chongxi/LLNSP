@@ -672,12 +672,15 @@ module spi_xike_pcie (
     .valid_in         (muap_valid       ),
     .v_in             (muap_data        ),
     .is_peak_in       (muap_data[0]     ),
-    // output
-    .valid_mua_out    (valid_mua_out    ),
-    .v_mua_out        (v_mua_out        ),
-    .valid_spk_out    (valid_spk_out    ),
-    .v_spk_t_out      (v_spk_t_out      ),
-    .v_spk_ch_out     (v_spk_ch_out     ),
+    
+    // mua output
+//    .valid_mua_out    (valid_mua_out    ),
+//    .v_mua_out        (v_mua_out        ),
+//    .valid_spk_out    (valid_spk_out    ),
+//    .v_spk_t_out      (v_spk_t_out      ),
+//    .v_spk_ch_out     (v_spk_ch_out     ),
+    
+    // spike info and waveform output
     .spk_stream_TVALID(spk_stream_TVALID),
     .spk_stream_CH    (spk_stream_CH    ),
     .spk_stream_TIME  (spk_stream_TIME  ),

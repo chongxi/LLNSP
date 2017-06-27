@@ -29,13 +29,13 @@ module spkPack (
   input                 valid_in         ,
   input  signed [ 31:0] v_in             ,
   input                 is_peak_in       ,
-  // mua
-  output                valid_mua_out    ,
-  output signed [ 31:0] v_mua_out        ,
-  output                valid_spk_out    ,
-  // spk (t,ch)
-  output signed [ 31:0] v_spk_t_out      ,
-  output signed [ 31:0] v_spk_ch_out     ,
+//  // mua
+//  output                valid_mua_out    ,
+//  output signed [ 31:0] v_mua_out        ,
+//  output                valid_spk_out    ,
+//  // spk (t,ch)
+//  output signed [ 31:0] v_spk_t_out      ,
+//  output signed [ 31:0] v_spk_ch_out     ,
   // spk waveform
   output                spk_stream_TVALID,
   output        [ 11:0] spk_stream_CH    ,
@@ -91,30 +91,30 @@ always @(posedge clk)
 
 /////////////////////////////////////////////////////////////////
 // spk_ch output
-reg               valid_spk_buf;
-reg signed [31:0] v_spk_t_buf     ;   
-reg signed [31:0] v_spk_ch_buf    ;
+//reg               valid_spk_buf;
+//reg signed [31:0] v_spk_t_buf     ;   
+//reg signed [31:0] v_spk_ch_buf    ;
 
-always @(posedge clk) begin : proc_spk_output
-    if(peak_bufo) begin
-        valid_spk_buf   <= peak_bufo;
-        v_spk_t_buf     <= frame_No_bufo;
-        v_spk_ch_buf    <= ch_bufo;
-    end
-    else begin
-        valid_spk_buf   <= 0;
-        v_spk_t_buf     <= 0;
-        v_spk_ch_buf    <= 0;
-    end
-end
+//always @(posedge clk) begin : proc_spk_output
+//    if(peak_bufo) begin
+//        valid_spk_buf   <= peak_bufo;
+//        v_spk_t_buf     <= frame_No_bufo;
+//        v_spk_ch_buf    <= ch_bufo;
+//    end
+//    else begin
+//        valid_spk_buf   <= 0;
+//        v_spk_t_buf     <= 0;
+//        v_spk_ch_buf    <= 0;
+//    end
+//end
 
-assign valid_spk_out    = valid_spk_buf;
-assign v_spk_t_out      = v_spk_t_buf;
-assign v_spk_ch_out     = v_spk_ch_buf;
+//assign valid_spk_out    = valid_spk_buf;
+//assign v_spk_t_out      = v_spk_t_buf;
+//assign v_spk_ch_out     = v_spk_ch_buf;
 
-// mua output
-assign valid_mua_out    = valid_bufo;
-assign v_mua_out        = v_bufo;
+//// mua output
+//assign valid_mua_out    = valid_bufo;
+//assign v_mua_out        = v_bufo;
 
 
 
@@ -238,6 +238,7 @@ wire [7 :0] out_pre_TUSER;
 wire [11:0] out_pre_TID;
 wire [0:0 ] out_pre_TVALID;
 wire [0:0 ] out_pre_TLAST;
+wire [0:0 ] out_pre_TDEST;
 
 // post output
 wire [127:0] out_post_TDATA;
@@ -246,6 +247,7 @@ wire [127:0] out_post_TDATA;
 (* mark_debug = "true" *) wire [11:0] out_post_TID;
 (* mark_debug = "true" *) wire [0:0 ] out_post_TVALID;
 (* mark_debug = "true" *) wire [0:0 ] out_post_TLAST;
+(* mark_debug = "true" *) wire [0:0 ] out_post_TDEST;
 
 // time output
 wire [31:0] time_stamp_TDATA;
@@ -307,6 +309,7 @@ spk_packet_tx_0 spk_packet_tx (
   .out_pre_TUSER      (out_pre_TUSER      ), // output wire [7 : 0] out_pre_TUSER
   .out_pre_TDATA      (out_pre_TDATA      ), // output wire [127 : 0] out_pre_TDATA
   .out_pre_TID        (out_pre_TID        ), // output wire [11 : 0] out_pre_TID
+  .out_pre_TDEST      (out_pre_TDEST      ), // output wire [0 : 0] out_pre_TDEST
   .out_pre_TLAST      (out_pre_TLAST      ), // output wire [0 : 0] out_pre_TLAST
 
   .out_post_TVALID    (out_post_TVALID    ), // output wire out_post_TVALID
@@ -314,14 +317,15 @@ spk_packet_tx_0 spk_packet_tx (
   .out_post_TUSER     (out_post_TUSER     ), // output wire [7 : 0] out_post_TUSER
   .out_post_TDATA     (out_post_TDATA     ), // output wire [127 : 0] out_post_TDATA
   .out_post_TID       (out_post_TID       ), // output wire [11 : 0] out_post_TID
+  .out_post_TDEST     (out_post_TDEST     ), // output wire [0 : 0] out_post_TDEST
   .out_post_TLAST     (out_post_TLAST     ), // output wire [0 : 0] out_post_TLAST
   
   .time_stamp_V_TVALID(time_stamp_TVALID  ), // output wire time_stamp_V_TVALID
   .time_stamp_V_TREADY(time_in_TREADY     ), // *** input wire time_stamp_V_TREADY ***
-  .time_stamp_V_TDATA (time_stamp_TDATA   ), // output wire [31 : 0] time_stamp_V_TDATA
+  .time_stamp_V_TDATA (time_stamp_TDATA   ) // output wire [31 : 0] time_stamp_V_TDATA
   
-  .busy_V             (busy_A             ), // output wire [31 : 0] busy_V
-  .busy_V_ap_vld      (busy_A_vld         )
+//  .busy_V             (busy_A             ), // output wire [31 : 0] busy_V
+//  .busy_V_ap_vld      (busy_A_vld         )
 );
 
 // RX: 
@@ -354,6 +358,7 @@ spk_packet_rx_0 spk_packet_rx (
   .pre_in_TDATA         (out_pre_TDATA         ), // input wire [127 : 0] pre_in_TDATA
   .pre_in_TLAST         (out_pre_TLAST         ), // input wire [0 : 0] pre_in_TLAST
   .pre_in_TID           (out_pre_TID           ), // input wire [11 : 0] pre_in_TID
+  .pre_in_TDEST         (out_pre_TDEST         ), // input wire [0 : 0] pre_in_TDEST
 
   .post_in_TVALID       (out_post_TVALID       ), // input wire post_in_TVALID
   .post_in_TREADY       (post_in_TREADY        ), // output wire post_in_TREADY
@@ -361,6 +366,7 @@ spk_packet_rx_0 spk_packet_rx (
   .post_in_TDATA        (out_post_TDATA        ), // input wire [127 : 0] post_in_TDATA
   .post_in_TLAST        (out_post_TLAST        ), // input wire [0 : 0] post_in_TLAST
   .post_in_TID          (out_post_TID          ), // input wire [11 : 0] post_in_TID
+  .post_in_TDEST        (out_post_TDEST        ), // input wire [0 : 0] post_in_TDEST
 
   .time_stamp_V_TVALID  (time_stamp_TVALID     ), // input wire time_stamp_V_TVALID
   .time_stamp_V_TREADY  (time_in_TREADY        ), // output wire time_stamp_V_TREADY

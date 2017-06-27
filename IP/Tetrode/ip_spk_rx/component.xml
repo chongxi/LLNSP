@@ -139,10 +139,10 @@
         </spirit:portMap>
         <spirit:portMap>
           <spirit:logicalPort>
-            <spirit:name>TDATA</spirit:name>
+            <spirit:name>TDEST</spirit:name>
           </spirit:logicalPort>
           <spirit:physicalPort>
-            <spirit:name>pre_in_TDATA</spirit:name>
+            <spirit:name>pre_in_TDEST</spirit:name>
           </spirit:physicalPort>
         </spirit:portMap>
         <spirit:portMap>
@@ -161,15 +161,27 @@
             <spirit:name>pre_in_TID</spirit:name>
           </spirit:physicalPort>
         </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>pre_in_TDATA</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
       </spirit:portMaps>
       <spirit:parameters>
         <spirit:parameter>
           <spirit:name>SIGNAL_SET</spirit:name>
-          <spirit:value spirit:id="BUSIFPARAM_VALUE.PRE_IN.SIGNAL_SET">10110011</spirit:value>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.PRE_IN.SIGNAL_SET">11110011</spirit:value>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>TDATA_NUM_BYTES</spirit:name>
           <spirit:value spirit:id="BUSIFPARAM_VALUE.PRE_IN.TDATA_NUM_BYTES">16</spirit:value>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>TDEST_WIDTH</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.PRE_IN.TDEST_WIDTH">1</spirit:value>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>TID_WIDTH</spirit:name>
@@ -217,10 +229,10 @@
         </spirit:portMap>
         <spirit:portMap>
           <spirit:logicalPort>
-            <spirit:name>TDATA</spirit:name>
+            <spirit:name>TDEST</spirit:name>
           </spirit:logicalPort>
           <spirit:physicalPort>
-            <spirit:name>post_in_TDATA</spirit:name>
+            <spirit:name>post_in_TDEST</spirit:name>
           </spirit:physicalPort>
         </spirit:portMap>
         <spirit:portMap>
@@ -239,15 +251,27 @@
             <spirit:name>post_in_TID</spirit:name>
           </spirit:physicalPort>
         </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>post_in_TDATA</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
       </spirit:portMaps>
       <spirit:parameters>
         <spirit:parameter>
           <spirit:name>SIGNAL_SET</spirit:name>
-          <spirit:value spirit:id="BUSIFPARAM_VALUE.POST_IN.SIGNAL_SET">10110011</spirit:value>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.POST_IN.SIGNAL_SET">11110011</spirit:value>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>TDATA_NUM_BYTES</spirit:name>
           <spirit:value spirit:id="BUSIFPARAM_VALUE.POST_IN.TDATA_NUM_BYTES">16</spirit:value>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>TDEST_WIDTH</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.POST_IN.TDEST_WIDTH">1</spirit:value>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>TID_WIDTH</spirit:name>
@@ -605,11 +629,11 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>pre_in_TDATA</spirit:name>
+        <spirit:name>pre_in_TDEST</spirit:name>
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">127</spirit:left>
+            <spirit:left spirit:format="long">0</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -619,6 +643,9 @@
               <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
         </spirit:wire>
       </spirit:port>
       <spirit:port>
@@ -659,6 +686,23 @@
           <spirit:driver>
             <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
           </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>pre_in_TDATA</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">127</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
         </spirit:wire>
       </spirit:port>
       <spirit:port>
@@ -708,11 +752,11 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>post_in_TDATA</spirit:name>
+        <spirit:name>post_in_TDEST</spirit:name>
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">127</spirit:left>
+            <spirit:left spirit:format="long">0</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -722,6 +766,9 @@
               <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
         </spirit:wire>
       </spirit:port>
       <spirit:port>
@@ -762,6 +809,23 @@
           <spirit:driver>
             <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
           </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>post_in_TDATA</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">127</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
         </spirit:wire>
       </spirit:port>
       <spirit:port>
@@ -916,19 +980,15 @@
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/spk_packet_rx_mac_muladd_12ns_6ns_5ns_13_3.v</spirit:name>
+        <spirit:name>hdl/verilog/spk_packet_rx_mux_19to1_sel5_128_1.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/spk_packet_rx_mul_12ns_6ns_13_3.v</spirit:name>
+        <spirit:name>hdl/verilog/spk_packet_rx_spk_V_0.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/spk_packet_rx_spk_V.v</spirit:name>
-        <spirit:fileType>verilogSource</spirit:fileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>hdl/verilog/spk_packet_rx_spk_V_ram.dat</spirit:name>
+        <spirit:name>hdl/verilog/spk_packet_rx_spk_V_0_ram.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
@@ -940,22 +1000,17 @@
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/spk_packet_rx_mac_muladd_12ns_6ns_5ns_13_3.v</spirit:name>
+        <spirit:name>hdl/verilog/spk_packet_rx_mux_19to1_sel5_128_1.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/spk_packet_rx_mul_12ns_6ns_13_3.v</spirit:name>
+        <spirit:name>hdl/verilog/spk_packet_rx_spk_V_0.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/spk_packet_rx_spk_V.v</spirit:name>
-        <spirit:fileType>verilogSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>hdl/verilog/spk_packet_rx_spk_V_ram.dat</spirit:name>
+        <spirit:name>hdl/verilog/spk_packet_rx_spk_V_0_ram.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
@@ -971,17 +1026,13 @@
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/spk_packet_rx_mac_muladd_12ns_6ns_5ns_13_3.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/spk_packet_rx_mux_19to1_sel5_128_1.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/spk_packet_rx_mul_12ns_6ns_13_3.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/spk_packet_rx_spk_V_0.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>hdl/vhdl/spk_packet_rx_spk_V.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_fd669122</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_b4b782c6</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -992,17 +1043,12 @@
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/spk_packet_rx_mac_muladd_12ns_6ns_5ns_13_3.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/spk_packet_rx_mux_19to1_sel5_128_1.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/spk_packet_rx_mul_12ns_6ns_13_3.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>hdl/vhdl/spk_packet_rx_spk_V.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/spk_packet_rx_spk_V_0.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
@@ -1083,8 +1129,8 @@
       </xilinx:taxonomies>
       <xilinx:displayName>Spk_packet_rx</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>1706190028</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2017-06-19T04:29:01Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>1706271432</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2017-06-27T18:32:31Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2016.1</xilinx:xilinxVersion>

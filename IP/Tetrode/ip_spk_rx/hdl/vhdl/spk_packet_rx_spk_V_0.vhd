@@ -10,12 +10,12 @@ library ieee;
 use ieee.std_logic_1164.all; 
 use ieee.std_logic_unsigned.all;
 
-entity spk_packet_rx_spk_V_ram is 
+entity spk_packet_rx_spk_V_0_ram is 
     generic(
             mem_type    : string := "block"; 
             dwidth     : integer := 128; 
-            awidth     : integer := 12; 
-            mem_size    : integer := 3040
+            awidth     : integer := 9; 
+            mem_size    : integer := 320
     ); 
     port (
           addr0     : in std_logic_vector(awidth-1 downto 0); 
@@ -30,7 +30,7 @@ entity spk_packet_rx_spk_V_ram is
 end entity; 
 
 
-architecture rtl of spk_packet_rx_spk_V_ram is 
+architecture rtl of spk_packet_rx_spk_V_0_ram is 
 
 signal addr0_tmp : std_logic_vector(awidth-1 downto 0); 
 type mem_array is array (0 to mem_size-1) of std_logic_vector (dwidth-1 downto 0); 
@@ -85,11 +85,11 @@ end rtl;
 Library IEEE;
 use IEEE.std_logic_1164.all;
 
-entity spk_packet_rx_spk_V is
+entity spk_packet_rx_spk_V_0 is
     generic (
         DataWidth : INTEGER := 128;
-        AddressRange : INTEGER := 3040;
-        AddressWidth : INTEGER := 12);
+        AddressRange : INTEGER := 320;
+        AddressWidth : INTEGER := 9);
     port (
         reset : IN STD_LOGIC;
         clk : IN STD_LOGIC;
@@ -102,8 +102,8 @@ entity spk_packet_rx_spk_V is
         d1 : IN STD_LOGIC_VECTOR(DataWidth - 1 DOWNTO 0));
 end entity;
 
-architecture arch of spk_packet_rx_spk_V is
-    component spk_packet_rx_spk_V_ram is
+architecture arch of spk_packet_rx_spk_V_0 is
+    component spk_packet_rx_spk_V_0_ram is
         port (
             clk : IN STD_LOGIC;
             addr0 : IN STD_LOGIC_VECTOR;
@@ -118,7 +118,7 @@ architecture arch of spk_packet_rx_spk_V is
 
 
 begin
-    spk_packet_rx_spk_V_ram_U :  component spk_packet_rx_spk_V_ram
+    spk_packet_rx_spk_V_0_ram_U :  component spk_packet_rx_spk_V_0_ram
     port map (
         clk => clk,
         addr0 => address0,

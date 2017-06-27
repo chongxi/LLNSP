@@ -6,11 +6,11 @@
 // ==============================================================
 
 `timescale 1 ns / 1 ps
-module spk_packet_rx_spk_V_ram (addr0, ce0, q0, addr1, ce1, d1, we1,  clk);
+module spk_packet_rx_spk_V_0_ram (addr0, ce0, q0, addr1, ce1, d1, we1,  clk);
 
 parameter DWIDTH = 128;
-parameter AWIDTH = 12;
-parameter MEM_SIZE = 3040;
+parameter AWIDTH = 9;
+parameter MEM_SIZE = 320;
 
 input[AWIDTH-1:0] addr0;
 input ce0;
@@ -24,7 +24,7 @@ input clk;
 (* ram_style = "block" *)reg [DWIDTH-1:0] ram[MEM_SIZE-1:0];
 
 initial begin
-    $readmemh("./spk_packet_rx_spk_V_ram.dat", ram);
+    $readmemh("./spk_packet_rx_spk_V_0_ram.dat", ram);
 end
 
 
@@ -54,7 +54,7 @@ endmodule
 
 
 `timescale 1 ns / 1 ps
-module spk_packet_rx_spk_V(
+module spk_packet_rx_spk_V_0(
     reset,
     clk,
     address0,
@@ -66,8 +66,8 @@ module spk_packet_rx_spk_V(
     d1);
 
 parameter DataWidth = 32'd128;
-parameter AddressRange = 32'd3040;
-parameter AddressWidth = 32'd12;
+parameter AddressRange = 32'd320;
+parameter AddressWidth = 32'd9;
 input reset;
 input clk;
 input[AddressWidth - 1:0] address0;
@@ -80,7 +80,7 @@ input[DataWidth - 1:0] d1;
 
 
 
-spk_packet_rx_spk_V_ram spk_packet_rx_spk_V_ram_U(
+spk_packet_rx_spk_V_0_ram spk_packet_rx_spk_V_0_ram_U(
     .clk( clk ),
     .addr0( address0 ),
     .ce0( ce0 ),
