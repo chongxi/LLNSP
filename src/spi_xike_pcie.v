@@ -541,10 +541,6 @@ module spi_xike_pcie (
   wire [79:0] raw_comb_data ;
   wire [59:0] raw_comb_ch;
 
-  wire         mua_comb_valid;
-  wire [159:0] mua_comb_data;
-  wire [59 :0] mua_comb_ch;
-
   raw_comb_5_streams i_raw_comb_5_streams (
     .spi_clk              (spi_clk                   ),
     .bus_clk              (bus_clk                   ),
@@ -557,6 +553,11 @@ module spi_xike_pcie (
     .raw_comb_ch          (raw_comb_ch               )
   );
 
+
+  wire         mua_comb_valid;
+  wire [159:0] mua_comb_data;
+  wire [59 :0] mua_comb_ch;
+
   fir_compiler_0 fir_band_pass (
     .aresetn           (!xike_reset ), // input wire aresetn
     .aclk              (bus_clk     ), // input wire aclk
@@ -568,19 +569,6 @@ module spi_xike_pcie (
     .m_axis_data_tdata (mua_comb_data    ),  // output wire [159 : 0] m_axis_data_tdata
     .m_axis_data_tuser (mua_comb_ch)    // output wire [59 : 0] m_axis_data_tdata
     );
-
-  //fifo_32x512 fifo_to_host (
-    //.clk  (bus_clk                    ),
-    //.srst (!user_r_mua_32_open        ),
-    //.wr_en(mua_valid && !fifo_mua_full), // AXI4 valid and ready
-    //.din  (mua_data                ), // mua_data
-    //.rd_en(user_r_mua_32_rden         ),
-    //.dout (user_r_mua_32_data         ),
-    //.full (fifo_mua_full              ),
-    //.empty(user_r_mua_32_empty        )
-  /*);*/
-
-// TODO: spike detection 
 
 // Threshold generator based on ...
 // Block-RAM that contains the threshold of each channel
@@ -604,55 +592,59 @@ module spi_xike_pcie (
     .off_set_out_comb(off_set_comb      )
   );
   
-  wire [159:0] muap_comb_data    ;
-  wire [159:0] muap_comb_ch_hash ;
-  wire [ 59:0] muap_comb_ch      ;
-  wire         muap_comb_valid   ;
-  
-  spkDet spkDet_comb (
-    .bus_clk           (bus_clk           ),
-    .spkDet_en         (spkDet_en         ),
-    .mua_comb_valid    (mua_comb_valid    ),
-    .mua_comb_ch       (mua_comb_ch       ),
-    .mua_comb_data     (mua_comb_data     ),
-    .threshold_comb    (threshold_comb    ),
-    .ch_unigroup_comb  (ch_unigroup_comb  ),
-    .off_set_comb      (off_set_comb      ),
-    .muap_comb_data    (muap_comb_data    ),
-    .muap_comb_ch_hash (muap_comb_ch_hash ),
-    .muap_comb_ch      (muap_comb_ch      ),
-    .muap_comb_valid   (muap_comb_valid   )
-  );
-  
   wire frame_count_rst = !SPI_running;
   
+  (* mark_debug = "true" *) wire        mua_valid;
+  (* mark_debug = "true" *) wire [11:0] mua_ch;
+  (* mark_debug = "true" *) wire [31:0] mua_data;
+  (* mark_debug = "true" *) wire [31:0] thr_data;  
+  (* mark_debug = "true" *) wire [31:0] mua_ch_hash;
+  (* mark_debug = "true" *) wire [31:0] mua_frame_No;
+
+  mua_parallel_to_serial mua_comb_to_mua(
+    .bus_clk          (bus_clk          ), // Clock
+    .xike_reset       (xike_reset       ), // Reset
+    .frame_count_rst  (frame_count_rst  ),
+  
+    .mua_comb_valid   (mua_comb_valid   ),
+    .mua_comb_ch      (mua_comb_ch      ),
+    .mua_comb_data    (mua_comb_data    ),
+    .mua_comb_ch_hash (ch_unigroup_comb ),
+    .threshold_comb   (threshold_comb   ),
+    .off_set_comb     (off_set_comb     ),
+    .fifo_mua_full    (fifo_mua_full    ),
+    
+    .mua_valid        (mua_valid       ),
+    .mua_ch           (mua_ch          ),
+    .mua_data         (mua_data        ),
+    .thr_data         (thr_data        ),
+    .mua_ch_hash      (mua_ch_hash     ),
+    .mua_frame_No     (mua_frame_No    )
+  );
+
   (* mark_debug = "true" *) wire        muap_valid;
   (* mark_debug = "true" *) wire [11:0] muap_ch;
   (* mark_debug = "true" *) wire [31:0] muap_data;
   (* mark_debug = "true" *) wire [31:0] muap_ch_hash;
   (* mark_debug = "true" *) wire [31:0] muap_frame_No;
-
-  mua_2_muap i_mua_2_muap (
-    .bus_clk          (bus_clk          ),
-    .xike_reset       (xike_reset       ),
-    .frame_count_rst  (frame_count_rst  ),
-    .muap_comb_valid  (muap_comb_valid  ),
-    .muap_comb_ch     (muap_comb_ch     ),
-    .muap_comb_data   (muap_comb_data   ),
-    .muap_comb_ch_hash(muap_comb_ch_hash),
-    .fifo_mua_full    (fifo_mua_full    ),
-    .muap_valid       (muap_valid       ),
-    .muap_ch          (muap_ch          ),
-    .muap_data        (muap_data        ),
-    .muap_ch_hash     (muap_ch_hash     ),
-    .muap_frame_No    (muap_frame_No    )
+  
+  spkDect i_spkDect (
+    .clk          (bus_clk        ),
+    .rst          (frame_count_rst),
+    // input
+    .mua_valid    (mua_valid      ),
+    .frameNo_in   (mua_frame_No   ),
+    .chNo_in      (mua_ch         ),
+    .ch_hash_in   (mua_ch_hash    ),
+    .thr_data     (thr_data       ),
+    .mua_data     (mua_data       ),
+    // output
+    .muap_valid   (muap_valid     ),
+    .muap_frame_No(muap_frame_No  ),
+    .muap_ch      (muap_ch        ),
+    .muap_ch_hash (muap_ch_hash   ),
+    .muap_data    (muap_data      )
   );
-
-  wire valid_mua_out;
-  wire signed [31:0] v_mua_out;
-  wire valid_spk_out;
-  wire signed [31:0] v_spk_t_out;
-  wire signed [31:0] v_spk_ch_out;
 
   // spk_packet 
   wire spk_stream_TVALID;
@@ -672,13 +664,6 @@ module spi_xike_pcie (
     .valid_in         (muap_valid       ),
     .v_in             (muap_data        ),
     .is_peak_in       (muap_data[0]     ),
-    
-    // mua output
-//    .valid_mua_out    (valid_mua_out    ),
-//    .v_mua_out        (v_mua_out        ),
-//    .valid_spk_out    (valid_spk_out    ),
-//    .v_spk_t_out      (v_spk_t_out      ),
-//    .v_spk_ch_out     (v_spk_ch_out     ),
     
     // spike info and waveform output
     .spk_stream_TVALID(spk_stream_TVALID),

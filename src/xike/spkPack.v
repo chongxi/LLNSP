@@ -121,7 +121,7 @@ always @(posedge clk)
 ////////////////////////////////////////////////////////////////
 // level to pulse
 // detect frameNo change
-wire frame_pulse;
+(* mark_debug = "true" *) wire frame_pulse;
 assign frame_pulse = frame_No_bufo[0] ^ frame_No_buf[0];
 
 ////////////////////////////////////////////////////////////////
@@ -141,8 +141,8 @@ assign ch_nn3 = ch_unigroup_buf[31:24];
 reg signed [31:0] buf_2d[0:1][0:NUM_CH-1]; // two frame of buffer
 reg [5:0] i;
 // (* mark_debug = "true" *) 
-reg j; 
-reg j_buf;
+(* mark_debug = "true" *)wire j = frame_No_in[0]; 
+//(* mark_debug = "true" *)reg j_buf;
 
 
 always @(posedge clk) begin : proc_buf_2d
@@ -157,17 +157,18 @@ always @(posedge clk) begin : proc_buf_2d
   end
 end
 
-always @(posedge clk) begin : proc_j
-  if(rst) begin
-    j_buf <= 0;
-  end else begin
-    if(frame_pulse) j_buf <= ~j_buf;
-  end
-end
+//always @(posedge clk) begin : proc_j
+//  if(rst) begin
+//    j_buf <= 0;
+//  end else begin
+//    if(frame_pulse) j_buf <= ~j_buf;
+//  end
+//end
 
-always @(posedge clk) begin
-    j <= j_buf;
-end
+//always @(posedge clk) begin
+//    j <= j_buf;
+//end
+
 
 wire [127:0] multi_channel_muao;
 (* mark_debug = "true" *) reg  [31:0] ch_nn0_value;   
@@ -273,7 +274,7 @@ end
 
 fifo_192_to_192 fifo_2_spk_tx (
   .clk(clk),      // input wire clk
-  .rst(rst),     // input wire srst
+  .srst(rst),     // input wire srst
 
   .wr_en(spk_tx_wen),    // input wire wr_en
   .din  (spk_tx_din),      // input wire [191 : 0] din
