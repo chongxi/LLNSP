@@ -972,8 +972,8 @@
       </xilinx:taxonomies>
       <xilinx:displayName>Spk_packet_tx</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>1706271420</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2017-06-27T18:20:44Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>1707071912</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2017-07-07T23:13:01Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2016.1</xilinx:xilinxVersion>
