@@ -1,6 +1,86 @@
 Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Sat Jul  8 12:27:06 2017
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_packet_rx_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_packet_rx_0 (xilinx.com:hls:spk_packet_rx:1.0) from (Rev. 1707072318) to (Rev. 1707081218)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Fri Jul  7 23:26:55 2017
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_packet_rx_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of spk_packet_rx_0 (xilinx.com:hls:spk_packet_rx:1.0) from (Rev. 1706271432) to (Rev. 1707072318)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Interface Information
+------------------------
+
+Detected external interface differences while upgrading 'spk_packet_rx_0'.
+
+
+-Upgrade has removed interface 'spk_out_stream'
+
+-Upgrade has added interface 'spk_out_stream_V_data_V' (xilinx.com:interface:axis:1.0)
+
+
+3. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'spk_packet_rx_0'. These changes may impact your design.
+
+
+-Upgrade has removed port 'spk_out_stream_TDATA'
+
+-Upgrade has removed port 'spk_out_stream_TDEST'
+
+-Upgrade has removed port 'spk_out_stream_TID'
+
+-Upgrade has removed port 'spk_out_stream_TREADY'
+
+-Upgrade has removed port 'spk_out_stream_TUSER'
+
+-Upgrade has removed port 'spk_out_stream_TVALID'
+
+-Upgrade has added port 'spk_out_stream_V_data_V_TDATA'
+
+-Upgrade has added port 'spk_out_stream_V_data_V_TREADY'
+
+-Upgrade has added port 'spk_out_stream_V_data_V_TVALID'
+
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
 | Date         : Fri Jul  7 19:20:33 2017
 | Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
 | Command      : upgrade_ip

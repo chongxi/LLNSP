@@ -663,13 +663,9 @@ module spi_xike_pcie (
     .ch_unigroup_in   (muap_ch_hash     ),
     .valid_in         (muap_valid       ),
     .v_in             (muap_data        ),
-    .is_peak_in       (muap_data[0]     ),
     
     // spike info and waveform output
     .spk_stream_TVALID(spk_stream_TVALID),
-    .spk_stream_CH    (spk_stream_CH    ),
-    .spk_stream_TIME  (spk_stream_TIME  ),
-    .spk_stream_TDEST (spk_stream_TDEST ),
     .spk_stream_TDATA (spk_stream_TDATA ),
     .spk_stream_pulse (spk_stream_pulse )
   );
