@@ -29,8 +29,8 @@ wire [31:0]  mua_stream_V_thr = mua_stream_V_data_V_dout[63:32];
 wire [31:0]  mua_stream_V_ch_hash = mua_stream_V_data_V_dout[95:64];
 wire [31:0]  mua_stream_V_ch = mua_stream_V_data_V_dout[127:96];
 wire [31:0]  mua_stream_V_t  = mua_stream_V_data_V_dout[159:128];
-wire         mua_stream_V_data_V_empty  ; // spk_dect => fifo
-wire         mua_stream_V_data_V_read   ; // spk_dect => fifo
+(* mark_debug = "true" *) wire         mua_stream_V_data_V_empty  ; // spk_dect => fifo
+(* mark_debug = "true" *) wire         mua_stream_V_data_V_read   ; // spk_dect => fifo
 
 fifo_160_to_160 fifo_to_spk_dect (
   .clk(clk),      // input wire clk
@@ -50,14 +50,14 @@ wire [7 :0] muap_stream_TID   ; // ch
 wire [31:0] muap_stream_TDEST ; // (ch_nn3, ch_nn2, ch_nn1, ch_nn0)
 wire [31:0] muap_stream_TDATA ; // muap
 
-wire ap_clk, ap_rst_n, ap_start; // to   spk_dect
-wire ap_done, ap_idle, ap_ready; // from spk_dect
-assign ap_clk   = clk;
-assign ap_rst_n = !rst;
+wire ap_start;
+(* mark_debug = "true" *) wire ap_rst_n; // to   spk_dect
+(* mark_debug = "true" *) wire ap_done, ap_idle, ap_ready; // from spk_dect
+assign ap_rst_n = !rst;   // Under Test
 assign ap_start = 1;
 
 spk_dect_0 spk_dect (
-  .ap_clk(ap_clk),                                            // input wire ap_clk
+  .ap_clk(clk),                                            // input wire ap_clk
   .ap_rst_n(ap_rst_n),                                        // input wire ap_rst_n
   .ap_start(ap_start),                                        // input wire ap_start
   .ap_done(ap_done),                                          // output wire ap_done

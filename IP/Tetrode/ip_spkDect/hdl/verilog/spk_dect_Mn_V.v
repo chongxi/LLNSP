@@ -6,7 +6,7 @@
 // ==============================================================
 
 `timescale 1 ns / 1 ps
-module spk_dect_Mn_V_ram (addr0, ce0, q0, addr1, ce1, d1, we1, q1,  clk);
+module spk_dect_Mn_V_ram (addr0, ce0, d0, we0, q0, addr1, ce1, d1, we1, q1,  clk);
 
 parameter DWIDTH = 32;
 parameter AWIDTH = 8;
@@ -14,6 +14,8 @@ parameter MEM_SIZE = 160;
 
 input[AWIDTH-1:0] addr0;
 input ce0;
+input[DWIDTH-1:0] d0;
+input we0;
 output reg[DWIDTH-1:0] q0;
 input[AWIDTH-1:0] addr1;
 input ce1;
@@ -34,6 +36,12 @@ always @(posedge clk)
 begin 
     if (ce0) 
     begin
+        if (we0) 
+        begin 
+            ram[addr0] <= d0; 
+            q0 <= d0;
+        end 
+        else 
             q0 <= ram[addr0];
     end
 end
@@ -63,6 +71,8 @@ module spk_dect_Mn_V(
     clk,
     address0,
     ce0,
+    we0,
+    d0,
     q0,
     address1,
     ce1,
@@ -77,6 +87,8 @@ input reset;
 input clk;
 input[AddressWidth - 1:0] address0;
 input ce0;
+input we0;
+input[DataWidth - 1:0] d0;
 output[DataWidth - 1:0] q0;
 input[AddressWidth - 1:0] address1;
 input ce1;
@@ -90,6 +102,8 @@ spk_dect_Mn_V_ram spk_dect_Mn_V_ram_U(
     .clk( clk ),
     .addr0( address0 ),
     .ce0( ce0 ),
+    .d0( d0 ),
+    .we0( we0 ),
     .q0( q0 ),
     .addr1( address1 ),
     .ce1( ce1 ),

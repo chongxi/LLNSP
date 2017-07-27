@@ -6,8 +6,4 @@
 # ==============================================================
 
 
-Family       : kintex7
-Device       : xc7k325t
-Package      : ffg900
-Speed Grade  : -2
-Clock Period : 4.000 ns
+vivado  -notrace -mode batch -source run_ippack.tcl

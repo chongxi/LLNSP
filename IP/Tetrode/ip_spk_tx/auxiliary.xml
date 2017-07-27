@@ -13,5 +13,5 @@
   <xd:arg xd:name="out_post.dest" xd:originalName="out_post" xd:direction="out" xd:interfaceRef="out_post" xd:busTypeRef="axis" xd:dataWidth="1"/>
   <xd:arg xd:name="time_stamp" xd:originalName="time_stamp" xd:direction="out" xd:interfaceRef="time_stamp_V" xd:busTypeRef="axis" xd:dataWidth="32"/>
   <xd:latencyEstimates xd:best-case="7" xd:worst-case="12" xd:average-case="10"/>
-  <xd:resourceEstimates xd:LUT="333" xd:FF="880" xd:BRAM="64" xd:DSP="0"/>
+  <xd:resourceEstimates xd:LUT="353" xd:FF="883" xd:BRAM="64" xd:DSP="0"/>
 </xd:acceleratorMap>

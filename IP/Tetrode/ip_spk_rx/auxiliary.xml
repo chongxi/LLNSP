@@ -14,5 +14,5 @@
   <xd:arg xd:name="time_stamp" xd:originalName="time_stamp" xd:direction="in" xd:interfaceRef="time_stamp_V" xd:busTypeRef="axis" xd:dataWidth="32"/>
   <xd:arg xd:name="spk_out_stream.data" xd:originalName="spk_out_stream" xd:direction="out" xd:interfaceRef="spk_out_stream_V_data_V" xd:busTypeRef="axis" xd:dataWidth="128"/>
   <xd:latencyEstimates xd:best-case="4" xd:worst-case="34" xd:average-case="11"/>
-  <xd:resourceEstimates xd:LUT="911" xd:FF="1082" xd:BRAM="60" xd:DSP="2"/>
+  <xd:resourceEstimates xd:LUT="910" xd:FF="1082" xd:BRAM="60" xd:DSP="2"/>
 </xd:acceleratorMap>

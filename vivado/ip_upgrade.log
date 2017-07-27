@@ -1,6 +1,504 @@
 Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Wed Jul 26 12:53:10 2017
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_dect_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_dect_0 (xilinx.com:hls:spk_dect:1.0) from (Rev. 1707252341) to (Rev. 1707261248)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Tue Jul 25 23:46:40 2017
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_dect_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_dect_0 (xilinx.com:hls:spk_dect:1.0) from (Rev. 1707242202) to (Rev. 1707252341)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Mon Jul 24 22:08:25 2017
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_dect_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_dect_0 (xilinx.com:hls:spk_dect:1.0) from (Rev. 1707230037) to (Rev. 1707242202)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Sun Jul 23 00:42:09 2017
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_dect_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_dect_0 (xilinx.com:hls:spk_dect:1.0) from (Rev. 1707211856) to (Rev. 1707230037)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Fri Jul 21 19:00:21 2017
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_dect_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of spk_dect_0 (xilinx.com:hls:spk_dect:1.0) from (Rev. 1707211646) to (Rev. 1707211856)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'spk_dect_0'. These changes may impact your design.
+
+
+-Upgraded port order differs after port 'muap_stream_TUSER'
+
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Fri Jul 21 16:50:55 2017
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_dect_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_dect_0 (xilinx.com:hls:spk_dect:1.0) from (Rev. 1707201412) to (Rev. 1707211646)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Thu Jul 20 14:27:57 2017
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_packet_tx_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_packet_tx_0 (xilinx.com:hls:spk_packet_tx:1.0) from (Rev. 1707071912) to (Rev. 1707201418)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Thu Jul 20 14:27:55 2017
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_packet_rx_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_packet_rx_0 (xilinx.com:hls:spk_packet_rx:1.0) from (Rev. 1707081218) to (Rev. 1707201418)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Thu Jul 20 14:26:15 2017
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_dect_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of spk_dect_0 (xilinx.com:hls:spk_dect:1.0) from (Rev. 1707180008) to (Rev. 1707201412)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'spk_dect_0'. These changes may impact your design.
+
+
+-Upgraded port order differs after port 'muap_stream_TDEST'
+
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Tue Jul 18 00:12:25 2017
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_dect_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_dect_0 (xilinx.com:hls:spk_dect:1.0) from (Rev. 1707172250) to (Rev. 1707180008)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Mon Jul 17 22:53:51 2017
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_dect_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_dect_0 (xilinx.com:hls:spk_dect:1.0) from (Rev. 1707172022) to (Rev. 1707172250)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Mon Jul 17 20:25:29 2017
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_dect_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_dect_0 (xilinx.com:hls:spk_dect:1.0) from (Rev. 1707172014) to (Rev. 1707172022)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Mon Jul 17 20:18:28 2017
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_dect_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_dect_0 (xilinx.com:hls:spk_dect:1.0) from (Rev. 1707171617) to (Rev. 1707172014)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Mon Jul 17 16:23:02 2017
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_dect_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_dect_0 (xilinx.com:hls:spk_dect:1.0) from (Rev. 1707171458) to (Rev. 1707171617)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Mon Jul 17 15:02:18 2017
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_dect_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of spk_dect_0 (xilinx.com:hls:spk_dect:1.0) from (Rev. 1707171450) to (Rev. 1707171458)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Interface Information
+------------------------
+
+Detected external interface differences while upgrading 'spk_dect_0'.
+
+
+-Upgrade has removed interface 'ap_rst'
+
+-Upgrade has removed interface 'muap_stream_V_data_V'
+
+-Upgrade has removed interface 'muap_stream_V_dest_V'
+
+-Upgrade has removed interface 'muap_stream_V_id_V'
+
+-Upgrade has removed interface 'muap_stream_V_user_V'
+
+-Upgrade has added interface 'ap_rst_n' (xilinx.com:signal:reset:1.0)
+
+-Upgrade has added interface 'muap_stream' (xilinx.com:interface:axis:1.0)
+
+
+3. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'spk_dect_0'. These changes may impact your design.
+
+
+-Upgrade has removed port 'ap_rst'
+
+-Upgrade has removed port 'muap_stream_V_data_V_din'
+
+-Upgrade has removed port 'muap_stream_V_data_V_full_n'
+
+-Upgrade has removed port 'muap_stream_V_data_V_write'
+
+-Upgrade has removed port 'muap_stream_V_dest_V_din'
+
+-Upgrade has removed port 'muap_stream_V_dest_V_full_n'
+
+-Upgrade has removed port 'muap_stream_V_dest_V_write'
+
+-Upgrade has removed port 'muap_stream_V_id_V_din'
+
+-Upgrade has removed port 'muap_stream_V_id_V_full_n'
+
+-Upgrade has removed port 'muap_stream_V_id_V_write'
+
+-Upgrade has removed port 'muap_stream_V_user_V_din'
+
+-Upgrade has removed port 'muap_stream_V_user_V_full_n'
+
+-Upgrade has removed port 'muap_stream_V_user_V_write'
+
+-Upgrade has added port 'ap_rst_n'
+
+-Upgrade has added port 'muap_stream_TDATA'
+
+-Upgrade has added port 'muap_stream_TDEST'
+
+-Upgrade has added port 'muap_stream_TID'
+
+-Upgrade has added port 'muap_stream_TREADY'
+
+-Upgrade has added port 'muap_stream_TUSER'
+
+-Upgrade has added port 'muap_stream_TVALID'
+
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Mon Jul 17 14:55:27 2017
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_dect_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of spk_dect_0 (xilinx.com:hls:spk_dect:1.0) from (Rev. 1707012323) to (Rev. 1707171450)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Interface Information
+------------------------
+
+Detected external interface differences while upgrading 'spk_dect_0'.
+
+
+-Upgrade has removed interface 'ap_rst_n'
+
+-Upgrade has removed interface 'muap_stream'
+
+-Upgrade has added interface 'ap_rst' (xilinx.com:signal:reset:1.0)
+
+-Upgrade has added interface 'muap_stream_V_data_V' (xilinx.com:interface:acc_fifo_write:1.0)
+
+-Upgrade has added interface 'muap_stream_V_dest_V' (xilinx.com:interface:acc_fifo_write:1.0)
+
+-Upgrade has added interface 'muap_stream_V_id_V' (xilinx.com:interface:acc_fifo_write:1.0)
+
+-Upgrade has added interface 'muap_stream_V_user_V' (xilinx.com:interface:acc_fifo_write:1.0)
+
+
+3. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'spk_dect_0'. These changes may impact your design.
+
+
+-Upgrade has removed port 'ap_rst_n'
+
+-Upgrade has removed port 'muap_stream_TDATA'
+
+-Upgrade has removed port 'muap_stream_TDEST'
+
+-Upgrade has removed port 'muap_stream_TID'
+
+-Upgrade has removed port 'muap_stream_TREADY'
+
+-Upgrade has removed port 'muap_stream_TUSER'
+
+-Upgrade has removed port 'muap_stream_TVALID'
+
+-Upgrade has added port 'ap_rst'
+
+-Upgrade has added port 'muap_stream_V_data_V_din'
+
+-Upgrade has added port 'muap_stream_V_data_V_full_n'
+
+-Upgrade has added port 'muap_stream_V_data_V_write'
+
+-Upgrade has added port 'muap_stream_V_dest_V_din'
+
+-Upgrade has added port 'muap_stream_V_dest_V_full_n'
+
+-Upgrade has added port 'muap_stream_V_dest_V_write'
+
+-Upgrade has added port 'muap_stream_V_id_V_din'
+
+-Upgrade has added port 'muap_stream_V_id_V_full_n'
+
+-Upgrade has added port 'muap_stream_V_id_V_write'
+
+-Upgrade has added port 'muap_stream_V_user_V_din'
+
+-Upgrade has added port 'muap_stream_V_user_V_full_n'
+
+-Upgrade has added port 'muap_stream_V_user_V_write'
+
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
 | Date         : Sat Jul  8 12:27:06 2017
 | Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
 | Command      : upgrade_ip

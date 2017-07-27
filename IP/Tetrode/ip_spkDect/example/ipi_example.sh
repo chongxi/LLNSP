@@ -6,8 +6,4 @@
 # ==============================================================
 
 
-Family       : kintex7
-Device       : xc7k325t
-Package      : ffg900
-Speed Grade  : -2
-Clock Period : 4.000 ns
+/disk0/Xilinx/Vivado_HLS/2016.1/../../Vivado/2016.1/bin/vivado  -notrace -mode batch -source ipi_example.tcl -tclargs xc7k325tffg900-2 ../xilinx_com_hls_spk_dect_1_0.zip

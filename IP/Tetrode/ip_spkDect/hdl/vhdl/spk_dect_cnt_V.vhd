@@ -10,10 +10,10 @@ library ieee;
 use ieee.std_logic_1164.all; 
 use ieee.std_logic_unsigned.all;
 
-entity spk_dect_state_ram is 
+entity spk_dect_cnt_V_ram is 
     generic(
             mem_type    : string := "distributed"; 
-            dwidth     : integer := 2; 
+            dwidth     : integer := 3; 
             awidth     : integer := 8; 
             mem_size    : integer := 160
     ); 
@@ -28,7 +28,7 @@ entity spk_dect_state_ram is
 end entity; 
 
 
-architecture rtl of spk_dect_state_ram is 
+architecture rtl of spk_dect_cnt_V_ram is 
 
 signal addr0_tmp : std_logic_vector(awidth-1 downto 0); 
 type mem_array is array (0 to mem_size-1) of std_logic_vector (dwidth-1 downto 0); 
@@ -74,9 +74,9 @@ end rtl;
 Library IEEE;
 use IEEE.std_logic_1164.all;
 
-entity spk_dect_state is
+entity spk_dect_cnt_V is
     generic (
-        DataWidth : INTEGER := 2;
+        DataWidth : INTEGER := 3;
         AddressRange : INTEGER := 160;
         AddressWidth : INTEGER := 8);
     port (
@@ -89,8 +89,8 @@ entity spk_dect_state is
         q0 : OUT STD_LOGIC_VECTOR(DataWidth - 1 DOWNTO 0));
 end entity;
 
-architecture arch of spk_dect_state is
-    component spk_dect_state_ram is
+architecture arch of spk_dect_cnt_V is
+    component spk_dect_cnt_V_ram is
         port (
             clk : IN STD_LOGIC;
             addr0 : IN STD_LOGIC_VECTOR;
@@ -103,7 +103,7 @@ architecture arch of spk_dect_state is
 
 
 begin
-    spk_dect_state_ram_U :  component spk_dect_state_ram
+    spk_dect_cnt_V_ram_U :  component spk_dect_cnt_V_ram
     port map (
         clk => clk,
         addr0 => address0,

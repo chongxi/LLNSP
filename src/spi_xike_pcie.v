@@ -285,11 +285,11 @@ module spi_xike_pcie (
   wire        user_mem_16_addr_update;
 
   // Wires related to /dev/xillybus_mua_32
-  wire        user_r_mua_32_rden ;
+(* mark_debug = "true" *)    wire        user_r_mua_32_rden ;
   wire        user_r_mua_32_empty;
-  wire [31:0] user_r_mua_32_data ;
-  wire        user_r_mua_32_eof  ;
-  wire        user_r_mua_32_open ;
+(* mark_debug = "true" *)    wire [31:0] user_r_mua_32_data ;
+(* mark_debug = "true" *)    wire        user_r_mua_32_eof  ;
+(* mark_debug = "true" *)    wire        user_r_mua_32_open ;
 
   // Wires related to /dev/xillybus_spk_realtime_32
   wire        user_r_spk_realtime_32_rden ;
@@ -672,18 +672,19 @@ module spi_xike_pcie (
 
 
   fifo_32x512 muap_to_host (
-    .clk  (bus_clk                     ),
-    .srst (!user_r_mua_32_open         ),
-    .wr_en(muap_valid && !fifo_mua_full), // AXI4 valid and ready
-    .din  (muap_data                   ), // mua_data
-    .rd_en(user_r_mua_32_rden          ),
-    .dout (user_r_mua_32_data          ),
-    .full (fifo_mua_full               ),
-    .empty(user_r_mua_32_empty         )
+    .clk  (bus_clk                              ),
+    .srst (!user_r_mua_32_open                  ),
+    .wr_en(muap_valid && !fifo_mua_full         ), // AXI4 valid and ready
+    .din  (muap_data                            ), // mua_data
+    .rd_en(user_r_mua_32_rden                   ),
+    .dout (user_r_mua_32_data                   ),
+    .full (fifo_mua_full                        ),
+    .empty(user_r_mua_32_empty                  )
   );
 
   wire spk_info_valid = muap_valid && muap_data[0] && !fifo_spk_sort_full;
-  wire [63:0] spk_info_data  = {muap_ch, muap_frame_No};
+  wire [31:0] muap_ch_No = muap_ch;
+  wire [63:0] spk_info_data  = {muap_frame_No, muap_ch_No};
 
   fifo_64_to_32 spk_info_to_host (
     .clk(bus_clk),      // input wire clk
