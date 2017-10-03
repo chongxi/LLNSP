@@ -9,19 +9,22 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
-entity spk_packet_rx_mac_muladd_12ns_6ns_5ns_13_3_DSP48_0 is
+entity spk_packet_rx_mac_muladd_6ns_8ns_5ns_13_3_DSP48_0 is
 port (
     clk: in  std_logic;
     rst: in  std_logic;
     ce:  in  std_logic;
-    in0:  in  std_logic_vector(12 - 1 downto 0);
-    in1:  in  std_logic_vector(6 - 1 downto 0);
+    in0:  in  std_logic_vector(6 - 1 downto 0);
+    in1:  in  std_logic_vector(8 - 1 downto 0);
     in2:  in  std_logic_vector(5 - 1 downto 0);
     dout: out std_logic_vector(13 - 1 downto 0));
 
+    attribute use_dsp48 : string;
+    attribute use_dsp48 of spk_packet_rx_mac_muladd_6ns_8ns_5ns_13_3_DSP48_0 : entity is "yes";
+
 end entity;
 
-architecture behav of spk_packet_rx_mac_muladd_12ns_6ns_5ns_13_3_DSP48_0 is
+architecture behav of spk_packet_rx_mac_muladd_6ns_8ns_5ns_13_3_DSP48_0 is
     signal a       : signed(25-1 downto 0);
     signal b       : signed(18-1 downto 0);
     signal c       : signed(48-1 downto 0);
@@ -59,7 +62,7 @@ end architecture;
 Library IEEE;
 use IEEE.std_logic_1164.all;
 
-entity spk_packet_rx_mac_muladd_12ns_6ns_5ns_13_3 is
+entity spk_packet_rx_mac_muladd_6ns_8ns_5ns_13_3 is
     generic (
         ID : INTEGER;
         NUM_STAGE : INTEGER;
@@ -77,8 +80,8 @@ entity spk_packet_rx_mac_muladd_12ns_6ns_5ns_13_3 is
         dout : OUT STD_LOGIC_VECTOR(dout_WIDTH - 1 DOWNTO 0));
 end entity;
 
-architecture arch of spk_packet_rx_mac_muladd_12ns_6ns_5ns_13_3 is
-    component spk_packet_rx_mac_muladd_12ns_6ns_5ns_13_3_DSP48_0 is
+architecture arch of spk_packet_rx_mac_muladd_6ns_8ns_5ns_13_3 is
+    component spk_packet_rx_mac_muladd_6ns_8ns_5ns_13_3_DSP48_0 is
         port (
             clk : IN STD_LOGIC;
             rst : IN STD_LOGIC;
@@ -92,7 +95,7 @@ architecture arch of spk_packet_rx_mac_muladd_12ns_6ns_5ns_13_3 is
 
 
 begin
-    spk_packet_rx_mac_muladd_12ns_6ns_5ns_13_3_DSP48_0_U :  component spk_packet_rx_mac_muladd_12ns_6ns_5ns_13_3_DSP48_0
+    spk_packet_rx_mac_muladd_6ns_8ns_5ns_13_3_DSP48_0_U :  component spk_packet_rx_mac_muladd_6ns_8ns_5ns_13_3_DSP48_0
     port map (
         clk => clk,
         rst => reset,

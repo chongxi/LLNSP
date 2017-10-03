@@ -26,6 +26,7 @@ module spkPack (
   input         [ 31:0] frame_No_in      ,
   input         [ 11:0] ch_in            ,
   input         [ 31:0] ch_unigroup_in   ,
+  input         [  7:0] ch_gpno_in       ,
   input                 valid_in         ,
   input  signed [ 31:0] v_in             ,
 
@@ -56,12 +57,14 @@ reg                valid_buf      ;
 reg [        31:0] v_buf          ;
 reg [WIDTH_CH-1:0] ch_buf         ;
 reg [        31:0] ch_unigroup_buf;
+reg [         7:0] ch_gpno_buf    ;
 
 reg [        31:0] _frame_No_in   ;
 reg                _valid_in      ;
 reg [        31:0] _v_in          ;
 reg [WIDTH_CH-1:0] _ch_in         ;
 reg [        31:0] _ch_unigroup_in;
+reg [         7:0] _ch_gpno_in;
 
 always @(posedge clk)
   begin : pipeline_0 // 0 buf
@@ -70,6 +73,7 @@ always @(posedge clk)
     _v_in           <= v_in;
     _ch_in          <= ch_in;
     _ch_unigroup_in <= ch_unigroup_in;
+    _ch_gpno_in     <= ch_gpno_in;
   end
   
 always @(posedge clk)
@@ -79,6 +83,7 @@ always @(posedge clk)
     v_buf           <= _v_in;
     ch_buf          <= _ch_in;
     ch_unigroup_buf <= _ch_unigroup_in;
+    ch_gpno_buf     <= _ch_gpno_in;
   end
 
 (* mark_debug = "true" *) reg [        31:0] frame_No_bufo   ;
@@ -221,14 +226,14 @@ assign ap_start = ap_rst_n;
 
 wire [127:0] out_pre_TDATA; 
 wire [7 :0]  out_pre_TUSER;
-wire [11:0]  out_pre_TID;
+wire [15:0]  out_pre_TID;
 wire [0:0 ]  out_pre_TVALID;
 wire [0:0 ]  out_pre_TLAST;
 wire [0:0 ]  out_pre_TDEST;
 
 wire [127:0] out_post_TDATA;
 (* mark_debug = "true" *) wire [7 :0] out_post_TUSER;
-(* mark_debug = "true" *) wire [11:0] out_post_TID;
+(* mark_debug = "true" *) wire [15:0] out_post_TID;
 (* mark_debug = "true" *) wire [0:0 ] out_post_TVALID;
 (* mark_debug = "true" *) wire [0:0 ] out_post_TLAST;
 (* mark_debug = "true" *) wire [0:0 ] out_post_TDEST;
@@ -247,7 +252,7 @@ wire [191:0] spk_tx_dout;
 
 always @(posedge clk) begin : proc_bundle_input
     spk_tx_wen   <= valid_bufo;
-    spk_tx_din   <= {{8'b0, ch_last_bufo}, {8'b0, ch_bufo}, frame_No_bufo, multi_channel_muao};
+    spk_tx_din   <= {8'b0, ch_gpno_buf, ch_last_bufo, ch_bufo, frame_No_bufo, multi_channel_muao};
 end
 
 (* mark_debug = "true" *) wire spk_packet_tx_read;
@@ -267,10 +272,14 @@ fifo_192_to_192 fifo_2_spk_tx (
   .empty (fifo_2_spk_tx_empty)  // output wire empty
 );
 
-wire [127:0] tetrode_data = spk_tx_dout[127:0];
-(* mark_debug = "true" *) wire [31:0 ] t_in         = spk_tx_dout[159:128];
-(* mark_debug = "true" *) wire [15:0 ] channel      = spk_tx_dout[175:160];
-(* mark_debug = "true" *) wire [15:0 ] last_channel = spk_tx_dout[191:176];
+
+// check these in spk_packet_tx.cpp in the hls module//////////////////////////
+//wire [127:0] tetrode_data = spk_tx_dout[127:0];
+(* mark_debug = "true" *) wire [31:0] t_in         = spk_tx_dout[159:128];
+(* mark_debug = "true" *) wire [7:0 ] channel      = spk_tx_dout[167:160];
+(* mark_debug = "true" *) wire [7:0 ] last_channel = spk_tx_dout[175:168];
+(* mark_debug = "true" *) wire [7:0 ] group_No     = spk_tx_dout[183:176];
+///////////////////////////////////////////////////////////////////////////////
 
 spk_packet_tx_0 spk_packet_tx (
   .ap_clk             (clk                ), // input wire ap_clk
@@ -284,7 +293,7 @@ spk_packet_tx_0 spk_packet_tx (
   .out_pre_TREADY     (pre_in_TREADY      ), // *** input wire out_pre_TREADY ***
   .out_pre_TUSER      (out_pre_TUSER      ), // output wire [7 : 0] out_pre_TUSER
   .out_pre_TDATA      (out_pre_TDATA      ), // output wire [127 : 0] out_pre_TDATA
-  .out_pre_TID        (out_pre_TID        ), // output wire [11 : 0] out_pre_TID
+  .out_pre_TID        (out_pre_TID        ), // output wire [15 : 0] out_pre_TID
   .out_pre_TDEST      (out_pre_TDEST      ), // output wire [0 : 0] out_pre_TDEST
   .out_pre_TLAST      (out_pre_TLAST      ), // output wire [0 : 0] out_pre_TLAST
 
@@ -292,7 +301,7 @@ spk_packet_tx_0 spk_packet_tx (
   .out_post_TREADY    (post_in_TREADY     ), // *** input wire out_post_TREADY ***
   .out_post_TUSER     (out_post_TUSER     ), // output wire [7 : 0] out_post_TUSER
   .out_post_TDATA     (out_post_TDATA     ), // output wire [127 : 0] out_post_TDATA
-  .out_post_TID       (out_post_TID       ), // output wire [11 : 0] out_post_TID
+  .out_post_TID       (out_post_TID       ), // output wire [15 : 0] out_post_TID
   .out_post_TDEST     (out_post_TDEST     ), // output wire [0 : 0] out_post_TDEST
   .out_post_TLAST     (out_post_TLAST     ), // output wire [0 : 0] out_post_TLAST
   
@@ -328,7 +337,7 @@ spk_packet_rx_0 spk_packet_rx (
   .pre_in_TUSER         (out_pre_TUSER         ), // input wire [4 : 0] pre_in_TUSER
   .pre_in_TDATA         (out_pre_TDATA         ), // input wire [127 : 0] pre_in_TDATA
   .pre_in_TLAST         (out_pre_TLAST         ), // input wire [0 : 0] pre_in_TLAST
-  .pre_in_TID           (out_pre_TID           ), // input wire [11 : 0] pre_in_TID
+  .pre_in_TID           (out_pre_TID           ), // input wire [15 : 0] pre_in_TID
   .pre_in_TDEST         (out_pre_TDEST         ), // input wire [0 : 0] pre_in_TDEST
 
   .post_in_TVALID       (out_post_TVALID       ), // input wire post_in_TVALID
@@ -336,7 +345,7 @@ spk_packet_rx_0 spk_packet_rx (
   .post_in_TUSER        (out_post_TUSER        ), // input wire [4 : 0] post_in_TUSER
   .post_in_TDATA        (out_post_TDATA        ), // input wire [127 : 0] post_in_TDATA
   .post_in_TLAST        (out_post_TLAST        ), // input wire [0 : 0] post_in_TLAST
-  .post_in_TID          (out_post_TID          ), // input wire [11 : 0] post_in_TID
+  .post_in_TID          (out_post_TID          ), // input wire [15 : 0] post_in_TID
   .post_in_TDEST        (out_post_TDEST        ), // input wire [0 : 0] post_in_TDEST
 
   .time_stamp_V_TVALID  (time_stamp_TVALID     ), // input wire time_stamp_V_TVALID
@@ -349,10 +358,10 @@ spk_packet_rx_0 spk_packet_rx (
 );
 
 // (* mark_debug = "true" *) 
-wire signed [31:0] spk_stream_ch_nn0;
-wire signed [31:0] spk_stream_ch_nn1;
-wire signed [31:0] spk_stream_ch_nn2;
-wire signed [31:0] spk_stream_ch_nn3;
+(* mark_debug = "true" *) wire signed [31:0] spk_stream_ch_nn0;
+(* mark_debug = "true" *) wire signed [31:0] spk_stream_ch_nn1;
+(* mark_debug = "true" *) wire signed [31:0] spk_stream_ch_nn2;
+(* mark_debug = "true" *) wire signed [31:0] spk_stream_ch_nn3;
 assign spk_stream_ch_nn0 = spk_stream_TDATA[127:96] & {32{spk_stream_TVALID}};
 assign spk_stream_ch_nn1 = spk_stream_TDATA[ 95:64] & {32{spk_stream_TVALID}};
 assign spk_stream_ch_nn2 = spk_stream_TDATA[ 63:32] & {32{spk_stream_TVALID}};

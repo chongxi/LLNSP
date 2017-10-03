@@ -8,15 +8,15 @@
 
 `timescale 1 ns / 1 ps
 
-module spk_packet_rx_mul_12ns_6ns_13_3_MulnS_0(clk, ce, a, b, p);
+(* use_dsp48 = "yes" *) module spk_packet_rx_mul_6ns_8ns_13_3_MulnS_0(clk, ce, a, b, p);
 input clk;
 input ce;
-input[12 - 1 : 0] a; // synthesis attribute keep a "true"
-input[6 - 1 : 0] b; // synthesis attribute keep b "true"
+input[6 - 1 : 0] a; // synthesis attribute keep a "true"
+input[8 - 1 : 0] b; // synthesis attribute keep b "true"
 output[13 - 1 : 0] p;
 
-reg [12 - 1 : 0] a_reg0;
-reg [6 - 1 : 0] b_reg0;
+reg [6 - 1 : 0] a_reg0;
+reg [8 - 1 : 0] b_reg0;
 wire [13 - 1 : 0] tmp_product;
 reg [13 - 1 : 0] buff0;
 
@@ -32,7 +32,7 @@ end
 endmodule
 
 `timescale 1 ns / 1 ps
-module spk_packet_rx_mul_12ns_6ns_13_3(
+module spk_packet_rx_mul_6ns_8ns_13_3(
     clk,
     reset,
     ce,
@@ -54,7 +54,7 @@ output[dout_WIDTH - 1:0] dout;
 
 
 
-spk_packet_rx_mul_12ns_6ns_13_3_MulnS_0 spk_packet_rx_mul_12ns_6ns_13_3_MulnS_0_U(
+spk_packet_rx_mul_6ns_8ns_13_3_MulnS_0 spk_packet_rx_mul_6ns_8ns_13_3_MulnS_0_U(
     .clk( clk ),
     .ce( ce ),
     .a( din0 ),

@@ -23,12 +23,13 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module bram_thres (clk, din, we, re, addr, dout, 
-				   ch_comb, thr_out_comb, ch_hash_out_comb, off_set_out_comb);
+				   ch_comb, thr_out_comb, ch_hash_out_comb, off_set_out_comb, 
+				   ch_in, ch_gp_out1, ch_gp_out2);
 
 parameter BITWIDTH = 32 ;
 parameter CH_WIDTH = 32 ;
-parameter BANK_NUM =  5 ;
-parameter DEPTH    = 256;
+parameter BANK_NUM =  5 ;  
+parameter DEPTH    = 256;  // Number of channel
 
 input        clk ;
 input        we  ;
@@ -37,6 +38,10 @@ input [15:0] addr;
 input [BITWIDTH-1:0] din ;
 reg [BITWIDTH-1:0] dout_buf;
 output [BITWIDTH-1:0] dout;
+
+input      [11:0] ch_in;
+output reg [BITWIDTH-1:0]  ch_gp_out1;
+output reg [BITWIDTH-1:0]  ch_gp_out2;
 
 input  [59:0] ch_comb;
 output [BITWIDTH*BANK_NUM-1:0] thr_out_comb;
@@ -62,7 +67,8 @@ reg signed [BITWIDTH-1:0] thr_mem[0:DEPTH-1];                      // base addre
 reg signed [BITWIDTH-1:0] ch_hash[0:DEPTH-1];                     // base address 256,  to 511
 (* ram_style = "block" *) 
 reg signed [BITWIDTH-1:0] off_set[0:DEPTH-1];                     // base address 512,  to 767
-
+(* ram_style = "block" *) 
+reg signed [BITWIDTH-1:0] ch_gpNo[0:DEPTH-1];                     // base address 768,  to 1023
 
 // read and write thr and ch_hash to internal BRAM
 always @(posedge clk) begin
@@ -78,6 +84,10 @@ always @(posedge clk) begin
         if (we) off_set[addr-2*DEPTH] <= din;
         if (re) dout_buf <= off_set[addr-2*DEPTH];
     end	
+	else if (addr>=3*DEPTH && addr<4*DEPTH) begin
+        if (we) ch_gpNo[addr-3*DEPTH] <= din;
+        if (re) dout_buf <= ch_gpNo[addr-3*DEPTH];
+    end    
 end
 
 
@@ -94,6 +104,11 @@ always @(posedge clk) begin
 	off_set_buf <= {off_set[ch_4], off_set[ch_3], off_set[ch_2], off_set[ch_1], off_set[ch_0]};
 end
 
+// ch_in => ch_gp_out: map ch number to space number  <=> in spiketag: tetrodes.belong_group(75) => 0
+always @(posedge clk) begin
+    ch_gp_out1 <= ch_gpNo[ch_in];
+    ch_gp_out2 <= ch_gpNo[ch_in];
+end
 
 // output ports 
 assign dout = dout_buf;

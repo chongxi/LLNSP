@@ -30,7 +30,9 @@ module spi_xike_pcie (
   input        MISO_C2_PORT    ,
   output       MOSI_C_PORT     ,
   output       SCLK_C_PORT     ,
-  output       CS_C_PORT
+  output       CS_C_PORT       ,
+  
+  output       SYNC_PULSE_PORT
 );
 
 // ------- XILLYBUS -------------------------------------------------------------------------------------------
@@ -577,7 +579,9 @@ module spi_xike_pcie (
   wire [159:0] threshold_comb  ;
   wire [159:0] ch_unigroup_comb;
   wire [159:0] off_set_comb    ;
-  
+(* mark_debug = "true" *)   wire [7:0] ch_gpNo1        ;
+(* mark_debug = "true" *)   wire [7:0] ch_gpNo2        ;
+
   bram_thres bram_thres (
     .clk             (bus_clk           ),
     .we              (user_w_thr_32_wren),
@@ -589,7 +593,12 @@ module spi_xike_pcie (
     .ch_comb         (mua_comb_ch       ), // FROM FIR
     .thr_out_comb    (threshold_comb    ),
     .ch_hash_out_comb(ch_unigroup_comb  ),
-    .off_set_out_comb(off_set_comb      )
+    .off_set_out_comb(off_set_comb      ),
+    
+    // ch to ch_gpNo
+    .ch_in           (muap_ch           ),
+    .ch_gp_out1      (ch_gpNo1          ),
+    .ch_gp_out2      (ch_gpNo2          )
   );
   
   wire frame_count_rst = !SPI_running;
@@ -627,7 +636,7 @@ module spi_xike_pcie (
   (* mark_debug = "true" *) wire [31:0] muap_data;
   (* mark_debug = "true" *) wire [31:0] muap_ch_hash;
   (* mark_debug = "true" *) wire [31:0] muap_frame_No;
-  
+
   spkDect i_spkDect (
     .clk          (bus_clk        ),
     .rst          (frame_count_rst),
@@ -661,6 +670,7 @@ module spi_xike_pcie (
     .frame_No_in      (muap_frame_No    ),
     .ch_in            (muap_ch          ),
     .ch_unigroup_in   (muap_ch_hash     ),
+    .ch_gpno_in       (ch_gpNo1         ),
     .valid_in         (muap_valid       ),
     .v_in             (muap_data        ),
     
@@ -671,6 +681,20 @@ module spi_xike_pcie (
   );
 
 
+// sync to behaviour box
+
+  wire [11:0] sec;
+  wire sync_pulse;
+  sync2bcs i_sync2bcs (
+    .clk       (bus_clk        ),
+    .rst       (!(user_r_mua_32_open && SPI_running)),
+    .frame_No  (FIFO_TIME_TO_XIKE                   ),
+    .sec       (sec            ),
+    .sync_pulse(sync_pulse     )
+  );
+  assign SYNC_PULSE_PORT = sync_pulse;
+
+// fifos to host 
   fifo_32x512 muap_to_host (
     .clk  (bus_clk                              ),
     .srst (!user_r_mua_32_open                  ),
@@ -709,5 +733,63 @@ module spi_xike_pcie (
   );
   
 //  user_r_spk_realtime_32_data
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////// experiment: spk_transform (pass) /////////////////////////////////
+// (* mark_debug = "true" *) 
+// input:
+wire p_scale_read = 1;//scale_V_ce0;
+wire p_shift_read = 1;//shift_V_ce0;
+wire p_pca_read   = 1;//pca_V_ce0;
+wire p_vq_read    = 1;//vq_V_ce0;
+
+wire [7 : 0 ] p_scale_addr;
+wire [7 : 0 ] p_shift_addr;
+wire [10 : 0] p_pca_addr;
+wire [11 : 0] p_vq_addr;
+
+// output:
+(* mark_debug = "true" *) wire scale_out_ap_vld;
+(* mark_debug = "true" *) wire shift_out_ap_vld;
+(* mark_debug = "true" *) wire pca_out_ap_vld;
+(* mark_debug = "true" *) wire vq_out_ap_vld;
+
+(* mark_debug = "true" *) wire [31:0] scale_out;
+(* mark_debug = "true" *) wire [31:0] shift_out;
+(* mark_debug = "true" *) wire [31:0] pca_out;
+(* mark_debug = "true" *) wire [31:0] vq_out;
+
+bram_xike_0 bram_xike_tf_and_vq (
+  .ap_clk          (bus_clk                    ), // input wire ap_clk
+  .ap_rst          (0                          ), // input wire ap_rst
+  
+  .p_doWrite       (user_w_template_32_wren    ), // input wire [0 : 0] p_doWrite
+  .din             (user_w_template_32_data    ), // input wire [31 : 0] din
+  .p_doRead        (user_r_template_32_rden    ), // input wire [0 : 0] p_doRead
+  .dout            (user_r_template_32_data    ), // output wire [31 : 0] dout
+  .dout_ap_vld     (user_r_template_32_data_vld), // output wire dout_ap_vld
+  .p_addr_V        (user_template_32_addr      ), // input wire [15 : 0] p_addr_V
+  
+  .p_scale_read    (p_scale_read               ), // input wire p_scale_read
+  .p_shift_read    (p_shift_read               ), // input wire p_shift_read
+  .p_pca_read      (p_pca_read                 ), // input wire p_pca_read
+  .p_vq_read       (p_vq_read                  ), // input wire p_vq_read
+  
+  .p_scale_addr_V  (p_scale_addr               ), // input wire [7 : 0 ] p_scale_addr_V
+  .p_shift_addr_V  (p_shift_addr               ), // input wire [7 : 0 ] p_shift_addr_V
+  .p_pca_addr_V    (p_pca_addr                 ), // input wire [15 : 0] p_pca_addr_V
+  .p_vq_addr_V     (p_vq_addr                  ), // input wire [15 : 0] p_vq_addr_V
+  
+  .scale_out_ap_vld(scale_out_ap_vld           ), // output wire
+  .shift_out_ap_vld(shift_out_ap_vld           ), // output wire
+  .pca_out_ap_vld  (pca_out_ap_vld             ), // output wire
+  .vq_out_ap_vld   (vq_out_ap_vld              ), // output wire
+
+  .scale_out       (scale_out                  ), // output wire [31 : 0] 
+  .shift_out       (shift_out                  ), // output wire [31 : 0] 
+  .pca_out         (pca_out                    ), // output wire [31 : 0] 
+  .vq_out          (vq_out                     )  // output wire [31 : 0] 
+);
 
 endmodule

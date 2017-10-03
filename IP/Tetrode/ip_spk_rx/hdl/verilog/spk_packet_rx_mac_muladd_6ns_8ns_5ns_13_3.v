@@ -7,12 +7,12 @@
 
 `timescale 1 ns / 1 ps
 
-module spk_packet_rx_mac_muladd_12ns_6ns_5ns_13_3_DSP48_0(
+(* use_dsp48 = "yes" *) module spk_packet_rx_mac_muladd_6ns_8ns_5ns_13_3_DSP48_0(
     input clk,
     input rst,
     input ce,
-    input  [12 - 1:0] in0,
-    input  [6 - 1:0] in1,
+    input  [6 - 1:0] in0,
+    input  [8 - 1:0] in1,
     input  [5 - 1:0] in2,
     output [13 - 1:0]  dout);
 
@@ -49,7 +49,7 @@ assign dout = p;
 endmodule
 
 `timescale 1 ns / 1 ps
-module spk_packet_rx_mac_muladd_12ns_6ns_5ns_13_3(
+module spk_packet_rx_mac_muladd_6ns_8ns_5ns_13_3(
     clk,
     reset,
     ce,
@@ -74,7 +74,7 @@ output[dout_WIDTH - 1:0] dout;
 
 
 
-spk_packet_rx_mac_muladd_12ns_6ns_5ns_13_3_DSP48_0 spk_packet_rx_mac_muladd_12ns_6ns_5ns_13_3_DSP48_0_U(
+spk_packet_rx_mac_muladd_6ns_8ns_5ns_13_3_DSP48_0 spk_packet_rx_mac_muladd_6ns_8ns_5ns_13_3_DSP48_0_U(
     .clk( clk ),
     .rst( reset ),
     .ce( ce ),

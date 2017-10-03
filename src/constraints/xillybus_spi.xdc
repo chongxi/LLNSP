@@ -50,6 +50,12 @@ set_property PACKAGE_PIN AD12 [get_ports SYSCLK_P]
 set_property PACKAGE_PIN AD11 [get_ports SYSCLK_N]
 set_property IOSTANDARD LVDS [get_ports SYSCLK_N]
 
+
+###############  SYNC PULSE #################################
+# KC705:H31/FMC_HPC_LA28_P --> XM105:J16/5
+set_property PACKAGE_PIN D16 [get_ports SYNC_PULSE_PORT]
+set_property IOSTANDARD LVCMOS25 [get_ports SYNC_PULSE_PORT]
+
 # isolated output from FPGA
 # set_property PACKAGE_PIN AK26 [get_ports sma_out_isol_H23]
 # set_property IOSTANDARD LVCMOS33 [get_ports sma_out_isol_H23]
@@ -180,12 +186,6 @@ set_property CONFIG_MODE BPI16 [current_design]
 
 # ------------------------------------------------------------------------------------------------
 
-
-
-
-
-
-
 create_debug_core u_ila_0 ila
 set_property ALL_PROBE_SAME_MU true [get_debug_cores u_ila_0]
 set_property ALL_PROBE_SAME_MU_CNT 1 [get_debug_cores u_ila_0]
@@ -198,80 +198,80 @@ set_property C_TRIGOUT_EN false [get_debug_cores u_ila_0]
 set_property port_width 1 [get_debug_ports u_ila_0/clk]
 connect_debug_port u_ila_0/clk [get_nets [list xillybus_ins/pipe_clock/pipe_clock/pipe_userclk1_in]]
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe0]
-set_property port_width 8 [get_debug_ports u_ila_0/probe0]
-connect_debug_port u_ila_0/probe0 [get_nets [list {mua_comb_to_mua/spk_frame_counter/ch[0]} {mua_comb_to_mua/spk_frame_counter/ch[1]} {mua_comb_to_mua/spk_frame_counter/ch[2]} {mua_comb_to_mua/spk_frame_counter/ch[3]} {mua_comb_to_mua/spk_frame_counter/ch[4]} {mua_comb_to_mua/spk_frame_counter/ch[5]} {mua_comb_to_mua/spk_frame_counter/ch[6]} {mua_comb_to_mua/spk_frame_counter/ch[7]}]]
+set_property port_width 32 [get_debug_ports u_ila_0/probe0]
+connect_debug_port u_ila_0/probe0 [get_nets [list {muap_data[0]} {muap_data[1]} {muap_data[2]} {muap_data[3]} {muap_data[4]} {muap_data[5]} {muap_data[6]} {muap_data[7]} {muap_data[8]} {muap_data[9]} {muap_data[10]} {muap_data[11]} {muap_data[12]} {muap_data[13]} {muap_data[14]} {muap_data[15]} {muap_data[16]} {muap_data[17]} {muap_data[18]} {muap_data[19]} {muap_data[20]} {muap_data[21]} {muap_data[22]} {muap_data[23]} {muap_data[24]} {muap_data[25]} {muap_data[26]} {muap_data[27]} {muap_data[28]} {muap_data[29]} {muap_data[30]} {muap_data[31]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe1]
 set_property port_width 32 [get_debug_ports u_ila_0/probe1]
-connect_debug_port u_ila_0/probe1 [get_nets [list {user_r_mua_32_data[0]} {user_r_mua_32_data[1]} {user_r_mua_32_data[2]} {user_r_mua_32_data[3]} {user_r_mua_32_data[4]} {user_r_mua_32_data[5]} {user_r_mua_32_data[6]} {user_r_mua_32_data[7]} {user_r_mua_32_data[8]} {user_r_mua_32_data[9]} {user_r_mua_32_data[10]} {user_r_mua_32_data[11]} {user_r_mua_32_data[12]} {user_r_mua_32_data[13]} {user_r_mua_32_data[14]} {user_r_mua_32_data[15]} {user_r_mua_32_data[16]} {user_r_mua_32_data[17]} {user_r_mua_32_data[18]} {user_r_mua_32_data[19]} {user_r_mua_32_data[20]} {user_r_mua_32_data[21]} {user_r_mua_32_data[22]} {user_r_mua_32_data[23]} {user_r_mua_32_data[24]} {user_r_mua_32_data[25]} {user_r_mua_32_data[26]} {user_r_mua_32_data[27]} {user_r_mua_32_data[28]} {user_r_mua_32_data[29]} {user_r_mua_32_data[30]} {user_r_mua_32_data[31]}]]
+connect_debug_port u_ila_0/probe1 [get_nets [list {muap_ch_hash[0]} {muap_ch_hash[1]} {muap_ch_hash[2]} {muap_ch_hash[3]} {muap_ch_hash[4]} {muap_ch_hash[5]} {muap_ch_hash[6]} {muap_ch_hash[7]} {muap_ch_hash[8]} {muap_ch_hash[9]} {muap_ch_hash[10]} {muap_ch_hash[11]} {muap_ch_hash[12]} {muap_ch_hash[13]} {muap_ch_hash[14]} {muap_ch_hash[15]} {muap_ch_hash[16]} {muap_ch_hash[17]} {muap_ch_hash[18]} {muap_ch_hash[19]} {muap_ch_hash[20]} {muap_ch_hash[21]} {muap_ch_hash[22]} {muap_ch_hash[23]} {muap_ch_hash[24]} {muap_ch_hash[25]} {muap_ch_hash[26]} {muap_ch_hash[27]} {muap_ch_hash[28]} {muap_ch_hash[29]} {muap_ch_hash[30]} {muap_ch_hash[31]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe2]
-set_property port_width 32 [get_debug_ports u_ila_0/probe2]
-connect_debug_port u_ila_0/probe2 [get_nets [list {muap_frame_No[0]} {muap_frame_No[1]} {muap_frame_No[2]} {muap_frame_No[3]} {muap_frame_No[4]} {muap_frame_No[5]} {muap_frame_No[6]} {muap_frame_No[7]} {muap_frame_No[8]} {muap_frame_No[9]} {muap_frame_No[10]} {muap_frame_No[11]} {muap_frame_No[12]} {muap_frame_No[13]} {muap_frame_No[14]} {muap_frame_No[15]} {muap_frame_No[16]} {muap_frame_No[17]} {muap_frame_No[18]} {muap_frame_No[19]} {muap_frame_No[20]} {muap_frame_No[21]} {muap_frame_No[22]} {muap_frame_No[23]} {muap_frame_No[24]} {muap_frame_No[25]} {muap_frame_No[26]} {muap_frame_No[27]} {muap_frame_No[28]} {muap_frame_No[29]} {muap_frame_No[30]} {muap_frame_No[31]}]]
+set_property port_width 12 [get_debug_ports u_ila_0/probe2]
+connect_debug_port u_ila_0/probe2 [get_nets [list {muap_ch[0]} {muap_ch[1]} {muap_ch[2]} {muap_ch[3]} {muap_ch[4]} {muap_ch[5]} {muap_ch[6]} {muap_ch[7]} {muap_ch[8]} {muap_ch[9]} {muap_ch[10]} {muap_ch[11]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe3]
-set_property port_width 32 [get_debug_ports u_ila_0/probe3]
-connect_debug_port u_ila_0/probe3 [get_nets [list {muap_data[0]} {muap_data[1]} {muap_data[2]} {muap_data[3]} {muap_data[4]} {muap_data[5]} {muap_data[6]} {muap_data[7]} {muap_data[8]} {muap_data[9]} {muap_data[10]} {muap_data[11]} {muap_data[12]} {muap_data[13]} {muap_data[14]} {muap_data[15]} {muap_data[16]} {muap_data[17]} {muap_data[18]} {muap_data[19]} {muap_data[20]} {muap_data[21]} {muap_data[22]} {muap_data[23]} {muap_data[24]} {muap_data[25]} {muap_data[26]} {muap_data[27]} {muap_data[28]} {muap_data[29]} {muap_data[30]} {muap_data[31]}]]
+set_property port_width 8 [get_debug_ports u_ila_0/probe3]
+connect_debug_port u_ila_0/probe3 [get_nets [list {ch_gpNo2[0]} {ch_gpNo2[1]} {ch_gpNo2[2]} {ch_gpNo2[3]} {ch_gpNo2[4]} {ch_gpNo2[5]} {ch_gpNo2[6]} {ch_gpNo2[7]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe4]
-set_property port_width 32 [get_debug_ports u_ila_0/probe4]
-connect_debug_port u_ila_0/probe4 [get_nets [list {muap_ch_hash[0]} {muap_ch_hash[1]} {muap_ch_hash[2]} {muap_ch_hash[3]} {muap_ch_hash[4]} {muap_ch_hash[5]} {muap_ch_hash[6]} {muap_ch_hash[7]} {muap_ch_hash[8]} {muap_ch_hash[9]} {muap_ch_hash[10]} {muap_ch_hash[11]} {muap_ch_hash[12]} {muap_ch_hash[13]} {muap_ch_hash[14]} {muap_ch_hash[15]} {muap_ch_hash[16]} {muap_ch_hash[17]} {muap_ch_hash[18]} {muap_ch_hash[19]} {muap_ch_hash[20]} {muap_ch_hash[21]} {muap_ch_hash[22]} {muap_ch_hash[23]} {muap_ch_hash[24]} {muap_ch_hash[25]} {muap_ch_hash[26]} {muap_ch_hash[27]} {muap_ch_hash[28]} {muap_ch_hash[29]} {muap_ch_hash[30]} {muap_ch_hash[31]}]]
+set_property port_width 8 [get_debug_ports u_ila_0/probe4]
+connect_debug_port u_ila_0/probe4 [get_nets [list {ch_gpNo1[0]} {ch_gpNo1[1]} {ch_gpNo1[2]} {ch_gpNo1[3]} {ch_gpNo1[4]} {ch_gpNo1[5]} {ch_gpNo1[6]} {ch_gpNo1[7]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe5]
-set_property port_width 12 [get_debug_ports u_ila_0/probe5]
-connect_debug_port u_ila_0/probe5 [get_nets [list {muap_ch[0]} {muap_ch[1]} {muap_ch[2]} {muap_ch[3]} {muap_ch[4]} {muap_ch[5]} {muap_ch[6]} {muap_ch[7]} {muap_ch[8]} {muap_ch[9]} {muap_ch[10]} {muap_ch[11]}]]
+set_property port_width 8 [get_debug_ports u_ila_0/probe5]
+connect_debug_port u_ila_0/probe5 [get_nets [list {i_spkPack/channel[0]} {i_spkPack/channel[1]} {i_spkPack/channel[2]} {i_spkPack/channel[3]} {i_spkPack/channel[4]} {i_spkPack/channel[5]} {i_spkPack/channel[6]} {i_spkPack/channel[7]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe6]
 set_property port_width 32 [get_debug_ports u_ila_0/probe6]
-connect_debug_port u_ila_0/probe6 [get_nets [list {mua_frame_No[0]} {mua_frame_No[1]} {mua_frame_No[2]} {mua_frame_No[3]} {mua_frame_No[4]} {mua_frame_No[5]} {mua_frame_No[6]} {mua_frame_No[7]} {mua_frame_No[8]} {mua_frame_No[9]} {mua_frame_No[10]} {mua_frame_No[11]} {mua_frame_No[12]} {mua_frame_No[13]} {mua_frame_No[14]} {mua_frame_No[15]} {mua_frame_No[16]} {mua_frame_No[17]} {mua_frame_No[18]} {mua_frame_No[19]} {mua_frame_No[20]} {mua_frame_No[21]} {mua_frame_No[22]} {mua_frame_No[23]} {mua_frame_No[24]} {mua_frame_No[25]} {mua_frame_No[26]} {mua_frame_No[27]} {mua_frame_No[28]} {mua_frame_No[29]} {mua_frame_No[30]} {mua_frame_No[31]}]]
+connect_debug_port u_ila_0/probe6 [get_nets [list {i_spkPack/t_in[0]} {i_spkPack/t_in[1]} {i_spkPack/t_in[2]} {i_spkPack/t_in[3]} {i_spkPack/t_in[4]} {i_spkPack/t_in[5]} {i_spkPack/t_in[6]} {i_spkPack/t_in[7]} {i_spkPack/t_in[8]} {i_spkPack/t_in[9]} {i_spkPack/t_in[10]} {i_spkPack/t_in[11]} {i_spkPack/t_in[12]} {i_spkPack/t_in[13]} {i_spkPack/t_in[14]} {i_spkPack/t_in[15]} {i_spkPack/t_in[16]} {i_spkPack/t_in[17]} {i_spkPack/t_in[18]} {i_spkPack/t_in[19]} {i_spkPack/t_in[20]} {i_spkPack/t_in[21]} {i_spkPack/t_in[22]} {i_spkPack/t_in[23]} {i_spkPack/t_in[24]} {i_spkPack/t_in[25]} {i_spkPack/t_in[26]} {i_spkPack/t_in[27]} {i_spkPack/t_in[28]} {i_spkPack/t_in[29]} {i_spkPack/t_in[30]} {i_spkPack/t_in[31]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe7]
 set_property port_width 32 [get_debug_ports u_ila_0/probe7]
-connect_debug_port u_ila_0/probe7 [get_nets [list {mua_data[0]} {mua_data[1]} {mua_data[2]} {mua_data[3]} {mua_data[4]} {mua_data[5]} {mua_data[6]} {mua_data[7]} {mua_data[8]} {mua_data[9]} {mua_data[10]} {mua_data[11]} {mua_data[12]} {mua_data[13]} {mua_data[14]} {mua_data[15]} {mua_data[16]} {mua_data[17]} {mua_data[18]} {mua_data[19]} {mua_data[20]} {mua_data[21]} {mua_data[22]} {mua_data[23]} {mua_data[24]} {mua_data[25]} {mua_data[26]} {mua_data[27]} {mua_data[28]} {mua_data[29]} {mua_data[30]} {mua_data[31]}]]
+connect_debug_port u_ila_0/probe7 [get_nets [list {i_spkPack/spk_stream_ch_nn3[0]} {i_spkPack/spk_stream_ch_nn3[1]} {i_spkPack/spk_stream_ch_nn3[2]} {i_spkPack/spk_stream_ch_nn3[3]} {i_spkPack/spk_stream_ch_nn3[4]} {i_spkPack/spk_stream_ch_nn3[5]} {i_spkPack/spk_stream_ch_nn3[6]} {i_spkPack/spk_stream_ch_nn3[7]} {i_spkPack/spk_stream_ch_nn3[8]} {i_spkPack/spk_stream_ch_nn3[9]} {i_spkPack/spk_stream_ch_nn3[10]} {i_spkPack/spk_stream_ch_nn3[11]} {i_spkPack/spk_stream_ch_nn3[12]} {i_spkPack/spk_stream_ch_nn3[13]} {i_spkPack/spk_stream_ch_nn3[14]} {i_spkPack/spk_stream_ch_nn3[15]} {i_spkPack/spk_stream_ch_nn3[16]} {i_spkPack/spk_stream_ch_nn3[17]} {i_spkPack/spk_stream_ch_nn3[18]} {i_spkPack/spk_stream_ch_nn3[19]} {i_spkPack/spk_stream_ch_nn3[20]} {i_spkPack/spk_stream_ch_nn3[21]} {i_spkPack/spk_stream_ch_nn3[22]} {i_spkPack/spk_stream_ch_nn3[23]} {i_spkPack/spk_stream_ch_nn3[24]} {i_spkPack/spk_stream_ch_nn3[25]} {i_spkPack/spk_stream_ch_nn3[26]} {i_spkPack/spk_stream_ch_nn3[27]} {i_spkPack/spk_stream_ch_nn3[28]} {i_spkPack/spk_stream_ch_nn3[29]} {i_spkPack/spk_stream_ch_nn3[30]} {i_spkPack/spk_stream_ch_nn3[31]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe8]
 set_property port_width 32 [get_debug_ports u_ila_0/probe8]
-connect_debug_port u_ila_0/probe8 [get_nets [list {mua_ch_hash[0]} {mua_ch_hash[1]} {mua_ch_hash[2]} {mua_ch_hash[3]} {mua_ch_hash[4]} {mua_ch_hash[5]} {mua_ch_hash[6]} {mua_ch_hash[7]} {mua_ch_hash[8]} {mua_ch_hash[9]} {mua_ch_hash[10]} {mua_ch_hash[11]} {mua_ch_hash[12]} {mua_ch_hash[13]} {mua_ch_hash[14]} {mua_ch_hash[15]} {mua_ch_hash[16]} {mua_ch_hash[17]} {mua_ch_hash[18]} {mua_ch_hash[19]} {mua_ch_hash[20]} {mua_ch_hash[21]} {mua_ch_hash[22]} {mua_ch_hash[23]} {mua_ch_hash[24]} {mua_ch_hash[25]} {mua_ch_hash[26]} {mua_ch_hash[27]} {mua_ch_hash[28]} {mua_ch_hash[29]} {mua_ch_hash[30]} {mua_ch_hash[31]}]]
+connect_debug_port u_ila_0/probe8 [get_nets [list {i_spkPack/spk_stream_ch_nn2[0]} {i_spkPack/spk_stream_ch_nn2[1]} {i_spkPack/spk_stream_ch_nn2[2]} {i_spkPack/spk_stream_ch_nn2[3]} {i_spkPack/spk_stream_ch_nn2[4]} {i_spkPack/spk_stream_ch_nn2[5]} {i_spkPack/spk_stream_ch_nn2[6]} {i_spkPack/spk_stream_ch_nn2[7]} {i_spkPack/spk_stream_ch_nn2[8]} {i_spkPack/spk_stream_ch_nn2[9]} {i_spkPack/spk_stream_ch_nn2[10]} {i_spkPack/spk_stream_ch_nn2[11]} {i_spkPack/spk_stream_ch_nn2[12]} {i_spkPack/spk_stream_ch_nn2[13]} {i_spkPack/spk_stream_ch_nn2[14]} {i_spkPack/spk_stream_ch_nn2[15]} {i_spkPack/spk_stream_ch_nn2[16]} {i_spkPack/spk_stream_ch_nn2[17]} {i_spkPack/spk_stream_ch_nn2[18]} {i_spkPack/spk_stream_ch_nn2[19]} {i_spkPack/spk_stream_ch_nn2[20]} {i_spkPack/spk_stream_ch_nn2[21]} {i_spkPack/spk_stream_ch_nn2[22]} {i_spkPack/spk_stream_ch_nn2[23]} {i_spkPack/spk_stream_ch_nn2[24]} {i_spkPack/spk_stream_ch_nn2[25]} {i_spkPack/spk_stream_ch_nn2[26]} {i_spkPack/spk_stream_ch_nn2[27]} {i_spkPack/spk_stream_ch_nn2[28]} {i_spkPack/spk_stream_ch_nn2[29]} {i_spkPack/spk_stream_ch_nn2[30]} {i_spkPack/spk_stream_ch_nn2[31]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe9]
-set_property port_width 12 [get_debug_ports u_ila_0/probe9]
-connect_debug_port u_ila_0/probe9 [get_nets [list {mua_ch[0]} {mua_ch[1]} {mua_ch[2]} {mua_ch[3]} {mua_ch[4]} {mua_ch[5]} {mua_ch[6]} {mua_ch[7]} {mua_ch[8]} {mua_ch[9]} {mua_ch[10]} {mua_ch[11]}]]
+set_property port_width 32 [get_debug_ports u_ila_0/probe9]
+connect_debug_port u_ila_0/probe9 [get_nets [list {i_spkPack/spk_stream_ch_nn1[0]} {i_spkPack/spk_stream_ch_nn1[1]} {i_spkPack/spk_stream_ch_nn1[2]} {i_spkPack/spk_stream_ch_nn1[3]} {i_spkPack/spk_stream_ch_nn1[4]} {i_spkPack/spk_stream_ch_nn1[5]} {i_spkPack/spk_stream_ch_nn1[6]} {i_spkPack/spk_stream_ch_nn1[7]} {i_spkPack/spk_stream_ch_nn1[8]} {i_spkPack/spk_stream_ch_nn1[9]} {i_spkPack/spk_stream_ch_nn1[10]} {i_spkPack/spk_stream_ch_nn1[11]} {i_spkPack/spk_stream_ch_nn1[12]} {i_spkPack/spk_stream_ch_nn1[13]} {i_spkPack/spk_stream_ch_nn1[14]} {i_spkPack/spk_stream_ch_nn1[15]} {i_spkPack/spk_stream_ch_nn1[16]} {i_spkPack/spk_stream_ch_nn1[17]} {i_spkPack/spk_stream_ch_nn1[18]} {i_spkPack/spk_stream_ch_nn1[19]} {i_spkPack/spk_stream_ch_nn1[20]} {i_spkPack/spk_stream_ch_nn1[21]} {i_spkPack/spk_stream_ch_nn1[22]} {i_spkPack/spk_stream_ch_nn1[23]} {i_spkPack/spk_stream_ch_nn1[24]} {i_spkPack/spk_stream_ch_nn1[25]} {i_spkPack/spk_stream_ch_nn1[26]} {i_spkPack/spk_stream_ch_nn1[27]} {i_spkPack/spk_stream_ch_nn1[28]} {i_spkPack/spk_stream_ch_nn1[29]} {i_spkPack/spk_stream_ch_nn1[30]} {i_spkPack/spk_stream_ch_nn1[31]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe10]
-set_property port_width 1 [get_debug_ports u_ila_0/probe10]
-connect_debug_port u_ila_0/probe10 [get_nets [list i_spkDect/ap_done]]
+set_property port_width 32 [get_debug_ports u_ila_0/probe10]
+connect_debug_port u_ila_0/probe10 [get_nets [list {i_spkPack/spk_stream_ch_nn0[0]} {i_spkPack/spk_stream_ch_nn0[1]} {i_spkPack/spk_stream_ch_nn0[2]} {i_spkPack/spk_stream_ch_nn0[3]} {i_spkPack/spk_stream_ch_nn0[4]} {i_spkPack/spk_stream_ch_nn0[5]} {i_spkPack/spk_stream_ch_nn0[6]} {i_spkPack/spk_stream_ch_nn0[7]} {i_spkPack/spk_stream_ch_nn0[8]} {i_spkPack/spk_stream_ch_nn0[9]} {i_spkPack/spk_stream_ch_nn0[10]} {i_spkPack/spk_stream_ch_nn0[11]} {i_spkPack/spk_stream_ch_nn0[12]} {i_spkPack/spk_stream_ch_nn0[13]} {i_spkPack/spk_stream_ch_nn0[14]} {i_spkPack/spk_stream_ch_nn0[15]} {i_spkPack/spk_stream_ch_nn0[16]} {i_spkPack/spk_stream_ch_nn0[17]} {i_spkPack/spk_stream_ch_nn0[18]} {i_spkPack/spk_stream_ch_nn0[19]} {i_spkPack/spk_stream_ch_nn0[20]} {i_spkPack/spk_stream_ch_nn0[21]} {i_spkPack/spk_stream_ch_nn0[22]} {i_spkPack/spk_stream_ch_nn0[23]} {i_spkPack/spk_stream_ch_nn0[24]} {i_spkPack/spk_stream_ch_nn0[25]} {i_spkPack/spk_stream_ch_nn0[26]} {i_spkPack/spk_stream_ch_nn0[27]} {i_spkPack/spk_stream_ch_nn0[28]} {i_spkPack/spk_stream_ch_nn0[29]} {i_spkPack/spk_stream_ch_nn0[30]} {i_spkPack/spk_stream_ch_nn0[31]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe11]
-set_property port_width 1 [get_debug_ports u_ila_0/probe11]
-connect_debug_port u_ila_0/probe11 [get_nets [list i_spkDect/ap_idle]]
+set_property port_width 8 [get_debug_ports u_ila_0/probe11]
+connect_debug_port u_ila_0/probe11 [get_nets [list {i_spkPack/out_post_TUSER[0]} {i_spkPack/out_post_TUSER[1]} {i_spkPack/out_post_TUSER[2]} {i_spkPack/out_post_TUSER[3]} {i_spkPack/out_post_TUSER[4]} {i_spkPack/out_post_TUSER[5]} {i_spkPack/out_post_TUSER[6]} {i_spkPack/out_post_TUSER[7]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe12]
-set_property port_width 1 [get_debug_ports u_ila_0/probe12]
-connect_debug_port u_ila_0/probe12 [get_nets [list i_spkDect/ap_ready]]
+set_property port_width 16 [get_debug_ports u_ila_0/probe12]
+connect_debug_port u_ila_0/probe12 [get_nets [list {i_spkPack/out_post_TID[0]} {i_spkPack/out_post_TID[1]} {i_spkPack/out_post_TID[2]} {i_spkPack/out_post_TID[3]} {i_spkPack/out_post_TID[4]} {i_spkPack/out_post_TID[5]} {i_spkPack/out_post_TID[6]} {i_spkPack/out_post_TID[7]} {i_spkPack/out_post_TID[8]} {i_spkPack/out_post_TID[9]} {i_spkPack/out_post_TID[10]} {i_spkPack/out_post_TID[11]} {i_spkPack/out_post_TID[12]} {i_spkPack/out_post_TID[13]} {i_spkPack/out_post_TID[14]} {i_spkPack/out_post_TID[15]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe13]
-set_property port_width 1 [get_debug_ports u_ila_0/probe13]
-connect_debug_port u_ila_0/probe13 [get_nets [list i_spkDect/ap_rst_n]]
+set_property port_width 8 [get_debug_ports u_ila_0/probe13]
+connect_debug_port u_ila_0/probe13 [get_nets [list {i_spkPack/last_channel[0]} {i_spkPack/last_channel[1]} {i_spkPack/last_channel[2]} {i_spkPack/last_channel[3]} {i_spkPack/last_channel[4]} {i_spkPack/last_channel[5]} {i_spkPack/last_channel[6]} {i_spkPack/last_channel[7]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe14]
-set_property port_width 1 [get_debug_ports u_ila_0/probe14]
-connect_debug_port u_ila_0/probe14 [get_nets [list i_spkDect/mua_stream_V_data_V_empty]]
+set_property port_width 8 [get_debug_ports u_ila_0/probe14]
+connect_debug_port u_ila_0/probe14 [get_nets [list {i_spkPack/group_No[0]} {i_spkPack/group_No[1]} {i_spkPack/group_No[2]} {i_spkPack/group_No[3]} {i_spkPack/group_No[4]} {i_spkPack/group_No[5]} {i_spkPack/group_No[6]} {i_spkPack/group_No[7]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe15]
 set_property port_width 1 [get_debug_ports u_ila_0/probe15]
-connect_debug_port u_ila_0/probe15 [get_nets [list i_spkDect/mua_stream_V_data_V_read]]
+connect_debug_port u_ila_0/probe15 [get_nets [list muap_valid]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe16]
 set_property port_width 1 [get_debug_ports u_ila_0/probe16]
-connect_debug_port u_ila_0/probe16 [get_nets [list mua_valid]]
+connect_debug_port u_ila_0/probe16 [get_nets [list i_spkPack/out_post_TDEST]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe17]
 set_property port_width 1 [get_debug_ports u_ila_0/probe17]
-connect_debug_port u_ila_0/probe17 [get_nets [list muap_valid]]
+connect_debug_port u_ila_0/probe17 [get_nets [list i_spkPack/out_post_TLAST]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe18]
 set_property port_width 1 [get_debug_ports u_ila_0/probe18]
-connect_debug_port u_ila_0/probe18 [get_nets [list mua_comb_to_mua/spk_frame_counter/reset]]
+connect_debug_port u_ila_0/probe18 [get_nets [list i_spkPack/out_post_TVALID]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe19]
 set_property port_width 1 [get_debug_ports u_ila_0/probe19]
@@ -279,15 +279,23 @@ connect_debug_port u_ila_0/probe19 [get_nets [list SPI_running]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe20]
 set_property port_width 1 [get_debug_ports u_ila_0/probe20]
-connect_debug_port u_ila_0/probe20 [get_nets [list user_r_mua_32_eof]]
+connect_debug_port u_ila_0/probe20 [get_nets [list i_spkPack/spk_packet_tx_read]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe21]
 set_property port_width 1 [get_debug_ports u_ila_0/probe21]
-connect_debug_port u_ila_0/probe21 [get_nets [list user_r_mua_32_open]]
+connect_debug_port u_ila_0/probe21 [get_nets [list i_spkPack/spk_stream_pulse]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe22]
 set_property port_width 1 [get_debug_ports u_ila_0/probe22]
-connect_debug_port u_ila_0/probe22 [get_nets [list user_r_mua_32_rden]]
+connect_debug_port u_ila_0/probe22 [get_nets [list i_spkPack/spk_stream_TVALID]]
+create_debug_port u_ila_0 probe
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe23]
+set_property port_width 1 [get_debug_ports u_ila_0/probe23]
+connect_debug_port u_ila_0/probe23 [get_nets [list i_spkPack/spk_tx_wen]]
+create_debug_port u_ila_0 probe
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe24]
+set_property port_width 1 [get_debug_ports u_ila_0/probe24]
+connect_debug_port u_ila_0/probe24 [get_nets [list i_spkPack/valid_bufo]]
 set_property C_CLK_INPUT_FREQ_HZ 300000000 [get_debug_cores dbg_hub]
 set_property C_ENABLE_CLK_DIVIDER false [get_debug_cores dbg_hub]
 set_property C_USER_SCAN_CHAIN 1 [get_debug_cores dbg_hub]

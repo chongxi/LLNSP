@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="syncGen" xd:componentRef="syncGen" xd:initiationInterval="25000008" xd:clockPeriod="4.000000" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
+  <xd:arg xd:name="time_stream.sec" xd:originalName="time_stream" xd:direction="in" xd:interfaceRef="time_stream_V_sec_V" xd:busTypeRef="axis" xd:dataWidth="12"/>
+  <xd:arg xd:name="*(sync_pulse)" xd:originalName="sync_pulse" xd:direction="out" xd:interfaceRef="sync_pulse_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="1"/>
+  <xd:latencyEstimates xd:best-case="7" xd:worst-case="25000007" xd:average-case="12500007"/>
+  <xd:resourceEstimates xd:LUT="903" xd:FF="165" xd:BRAM="0" xd:DSP="0"/>
+</xd:acceleratorMap>
