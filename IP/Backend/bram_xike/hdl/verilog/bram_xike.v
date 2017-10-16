@@ -7,7 +7,7 @@
 
 `timescale 1 ns / 1 ps 
 
-(* CORE_GENERATION_INFO="bram_xike,hls_ip_2016_1,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xc7k325tffg900-2,HLS_INPUT_CLOCK=4.000000,HLS_INPUT_ARCH=pipeline,HLS_SYN_CLOCK=3.410000,HLS_SYN_LAT=1,HLS_SYN_TPT=1,HLS_SYN_MEM=20,HLS_SYN_DSP=0,HLS_SYN_FF=10,HLS_SYN_LUT=204}" *)
+(* CORE_GENERATION_INFO="bram_xike,hls_ip_2016_1,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xc7k325tffg900-2,HLS_INPUT_CLOCK=4.000000,HLS_INPUT_ARCH=pipeline,HLS_SYN_CLOCK=3.410000,HLS_SYN_LAT=1,HLS_SYN_TPT=1,HLS_SYN_MEM=20,HLS_SYN_DSP=0,HLS_SYN_FF=10,HLS_SYN_LUT=205}" *)
 
 module bram_xike (
         ap_clk,
@@ -43,10 +43,10 @@ parameter    ap_const_lv2_2 = 2'b10;
 parameter    ap_const_lv2_1 = 2'b1;
 parameter    ap_const_lv2_0 = 2'b00;
 parameter    ap_const_lv16_28 = 16'b101000;
-parameter    ap_const_lv16_A0 = 16'b10100000;
-parameter    ap_const_lv16_C80 = 16'b110010000000;
-parameter    ap_const_lv17_1F380 = 17'b11111001110000000;
-parameter    ap_const_lv17_1FF60 = 17'b11111111101100000;
+parameter    ap_const_lv16_C8 = 16'b11001000;
+parameter    ap_const_lv16_CA8 = 16'b110010101000;
+parameter    ap_const_lv17_1F358 = 17'b11111001101011000;
+parameter    ap_const_lv17_1FF38 = 17'b11111111100111000;
 parameter    ap_const_lv17_1FFD8 = 17'b11111111111011000;
 
 input   ap_clk;
@@ -88,10 +88,10 @@ reg   [5:0] scale_address1;
 reg    scale_ce1;
 reg    scale_we1;
 wire   [31:0] scale_q1;
-wire   [6:0] shift_address0;
+wire   [7:0] shift_address0;
 reg    shift_ce0;
 wire   [31:0] shift_q0;
-reg   [6:0] shift_address1;
+reg   [7:0] shift_address1;
 reg    shift_ce1;
 reg    shift_we1;
 wire   [31:0] shift_q1;
@@ -189,8 +189,8 @@ scale_U(
 
 bram_xike_shift #(
     .DataWidth( 32 ),
-    .AddressRange( 120 ),
-    .AddressWidth( 7 ))
+    .AddressRange( 160 ),
+    .AddressWidth( 8 ))
 shift_U(
     .clk(ap_clk),
     .reset(ap_rst),
@@ -551,15 +551,15 @@ assign pca_address0 = tmp_8_fu_357_p1;
 
 assign pca_out = pca_q0;
 
-assign r_V_1_fu_492_p2 = ($signed(lhs_V_1_cast_fu_488_p1) + $signed(ap_const_lv17_1FF60));
+assign r_V_1_fu_492_p2 = ($signed(lhs_V_1_cast_fu_488_p1) + $signed(ap_const_lv17_1FF38));
 
-assign r_V_2_fu_477_p2 = ($signed(lhs_V_2_cast_fu_473_p1) + $signed(ap_const_lv17_1F380));
+assign r_V_2_fu_477_p2 = ($signed(lhs_V_2_cast_fu_473_p1) + $signed(ap_const_lv17_1F358));
 
 assign r_V_3_fu_457_p2 = ($signed(lhs_V_3_cast_fu_453_p1) + $signed(ap_const_lv17_1FFD8));
 
-assign r_V_4_fu_442_p2 = ($signed(lhs_V_4_cast_fu_438_p1) + $signed(ap_const_lv17_1FF60));
+assign r_V_4_fu_442_p2 = ($signed(lhs_V_4_cast_fu_438_p1) + $signed(ap_const_lv17_1FF38));
 
-assign r_V_5_fu_427_p2 = ($signed(lhs_V_5_cast_fu_423_p1) + $signed(ap_const_lv17_1F380));
+assign r_V_5_fu_427_p2 = ($signed(lhs_V_5_cast_fu_423_p1) + $signed(ap_const_lv17_1F358));
 
 assign r_V_fu_507_p2 = ($signed(lhs_V_cast_fu_503_p1) + $signed(ap_const_lv17_1FFD8));
 
@@ -589,11 +589,11 @@ assign tmp_14_fu_433_p1 = $signed(r_V_5_fu_427_p2);
 
 assign tmp_1_fu_518_p1 = p_addr_V;
 
-assign tmp_2_fu_373_p2 = ((p_addr_V < ap_const_lv16_A0) ? 1'b1 : 1'b0);
+assign tmp_2_fu_373_p2 = ((p_addr_V < ap_const_lv16_C8) ? 1'b1 : 1'b0);
 
 assign tmp_3_fu_513_p1 = $signed(r_V_fu_507_p2);
 
-assign tmp_4_fu_379_p2 = ((p_addr_V < ap_const_lv16_C80) ? 1'b1 : 1'b0);
+assign tmp_4_fu_379_p2 = ((p_addr_V < ap_const_lv16_CA8) ? 1'b1 : 1'b0);
 
 assign tmp_5_fu_498_p1 = $signed(r_V_1_fu_492_p2);
 

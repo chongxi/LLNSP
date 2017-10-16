@@ -41,7 +41,7 @@ end;
 architecture behav of bram_xike is 
     attribute CORE_GENERATION_INFO : STRING;
     attribute CORE_GENERATION_INFO of behav : architecture is
-    "bram_xike,hls_ip_2016_1,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xc7k325tffg900-2,HLS_INPUT_CLOCK=4.000000,HLS_INPUT_ARCH=pipeline,HLS_SYN_CLOCK=3.410000,HLS_SYN_LAT=1,HLS_SYN_TPT=1,HLS_SYN_MEM=20,HLS_SYN_DSP=0,HLS_SYN_FF=10,HLS_SYN_LUT=204}";
+    "bram_xike,hls_ip_2016_1,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xc7k325tffg900-2,HLS_INPUT_CLOCK=4.000000,HLS_INPUT_ARCH=pipeline,HLS_SYN_CLOCK=3.410000,HLS_SYN_LAT=1,HLS_SYN_TPT=1,HLS_SYN_MEM=20,HLS_SYN_DSP=0,HLS_SYN_FF=10,HLS_SYN_LUT=205}";
     constant ap_const_logic_1 : STD_LOGIC := '1';
     constant ap_const_logic_0 : STD_LOGIC := '0';
     constant ap_ST_pp0_stg0_fsm_0 : STD_LOGIC_VECTOR (0 downto 0) := "1";
@@ -54,10 +54,10 @@ architecture behav of bram_xike is
     constant ap_const_lv2_1 : STD_LOGIC_VECTOR (1 downto 0) := "01";
     constant ap_const_lv2_0 : STD_LOGIC_VECTOR (1 downto 0) := "00";
     constant ap_const_lv16_28 : STD_LOGIC_VECTOR (15 downto 0) := "0000000000101000";
-    constant ap_const_lv16_A0 : STD_LOGIC_VECTOR (15 downto 0) := "0000000010100000";
-    constant ap_const_lv16_C80 : STD_LOGIC_VECTOR (15 downto 0) := "0000110010000000";
-    constant ap_const_lv17_1F380 : STD_LOGIC_VECTOR (16 downto 0) := "11111001110000000";
-    constant ap_const_lv17_1FF60 : STD_LOGIC_VECTOR (16 downto 0) := "11111111101100000";
+    constant ap_const_lv16_C8 : STD_LOGIC_VECTOR (15 downto 0) := "0000000011001000";
+    constant ap_const_lv16_CA8 : STD_LOGIC_VECTOR (15 downto 0) := "0000110010101000";
+    constant ap_const_lv17_1F358 : STD_LOGIC_VECTOR (16 downto 0) := "11111001101011000";
+    constant ap_const_lv17_1FF38 : STD_LOGIC_VECTOR (16 downto 0) := "11111111100111000";
     constant ap_const_lv17_1FFD8 : STD_LOGIC_VECTOR (16 downto 0) := "11111111111011000";
 
     signal scale_address0 : STD_LOGIC_VECTOR (5 downto 0);
@@ -67,10 +67,10 @@ architecture behav of bram_xike is
     signal scale_ce1 : STD_LOGIC;
     signal scale_we1 : STD_LOGIC;
     signal scale_q1 : STD_LOGIC_VECTOR (31 downto 0);
-    signal shift_address0 : STD_LOGIC_VECTOR (6 downto 0);
+    signal shift_address0 : STD_LOGIC_VECTOR (7 downto 0);
     signal shift_ce0 : STD_LOGIC;
     signal shift_q0 : STD_LOGIC_VECTOR (31 downto 0);
-    signal shift_address1 : STD_LOGIC_VECTOR (6 downto 0);
+    signal shift_address1 : STD_LOGIC_VECTOR (7 downto 0);
     signal shift_ce1 : STD_LOGIC;
     signal shift_we1 : STD_LOGIC;
     signal shift_q1 : STD_LOGIC_VECTOR (31 downto 0);
@@ -172,10 +172,10 @@ architecture behav of bram_xike is
     port (
         clk : IN STD_LOGIC;
         reset : IN STD_LOGIC;
-        address0 : IN STD_LOGIC_VECTOR (6 downto 0);
+        address0 : IN STD_LOGIC_VECTOR (7 downto 0);
         ce0 : IN STD_LOGIC;
         q0 : OUT STD_LOGIC_VECTOR (31 downto 0);
-        address1 : IN STD_LOGIC_VECTOR (6 downto 0);
+        address1 : IN STD_LOGIC_VECTOR (7 downto 0);
         ce1 : IN STD_LOGIC;
         we1 : IN STD_LOGIC;
         d1 : IN STD_LOGIC_VECTOR (31 downto 0);
@@ -243,8 +243,8 @@ begin
     shift_U : component bram_xike_shift
     generic map (
         DataWidth => 32,
-        AddressRange => 120,
-        AddressWidth => 7)
+        AddressRange => 160,
+        AddressWidth => 8)
     port map (
         clk => ap_clk,
         reset => ap_rst,
@@ -499,11 +499,11 @@ begin
         end if; 
     end process;
 
-    r_V_1_fu_492_p2 <= std_logic_vector(unsigned(lhs_V_1_cast_fu_488_p1) + unsigned(ap_const_lv17_1FF60));
-    r_V_2_fu_477_p2 <= std_logic_vector(unsigned(lhs_V_2_cast_fu_473_p1) + unsigned(ap_const_lv17_1F380));
+    r_V_1_fu_492_p2 <= std_logic_vector(unsigned(lhs_V_1_cast_fu_488_p1) + unsigned(ap_const_lv17_1FF38));
+    r_V_2_fu_477_p2 <= std_logic_vector(unsigned(lhs_V_2_cast_fu_473_p1) + unsigned(ap_const_lv17_1F358));
     r_V_3_fu_457_p2 <= std_logic_vector(unsigned(lhs_V_3_cast_fu_453_p1) + unsigned(ap_const_lv17_1FFD8));
-    r_V_4_fu_442_p2 <= std_logic_vector(unsigned(lhs_V_4_cast_fu_438_p1) + unsigned(ap_const_lv17_1FF60));
-    r_V_5_fu_427_p2 <= std_logic_vector(unsigned(lhs_V_5_cast_fu_423_p1) + unsigned(ap_const_lv17_1F380));
+    r_V_4_fu_442_p2 <= std_logic_vector(unsigned(lhs_V_4_cast_fu_438_p1) + unsigned(ap_const_lv17_1FF38));
+    r_V_5_fu_427_p2 <= std_logic_vector(unsigned(lhs_V_5_cast_fu_423_p1) + unsigned(ap_const_lv17_1F358));
     r_V_fu_507_p2 <= std_logic_vector(unsigned(lhs_V_cast_fu_503_p1) + unsigned(ap_const_lv17_1FFD8));
     scale_address0 <= tmp_6_fu_347_p1(6 - 1 downto 0);
 
@@ -566,20 +566,20 @@ begin
     sel_tmp1_fu_393_p2 <= (tmp_s_fu_367_p2 xor ap_const_lv1_1);
     sel_tmp2_fu_399_p2 <= (tmp_2_fu_373_p2 and sel_tmp1_fu_393_p2);
     sel_tmp_fu_405_p1 <= std_logic_vector(resize(unsigned(sel_tmp2_fu_399_p2),2));
-    shift_address0 <= tmp_7_fu_352_p1(7 - 1 downto 0);
+    shift_address0 <= tmp_7_fu_352_p1(8 - 1 downto 0);
 
     shift_address1_assign_proc : process(p_doWrite_read_read_fu_170_p2, tmp_12_fu_463_p1, tmp_3_fu_513_p1, ap_sig_136, ap_sig_370)
     begin
         if (ap_sig_370) then
             if (not((p_doWrite_read_read_fu_170_p2 = ap_const_lv1_0))) then 
-                shift_address1 <= tmp_3_fu_513_p1(7 - 1 downto 0);
+                shift_address1 <= tmp_3_fu_513_p1(8 - 1 downto 0);
             elsif (ap_sig_136) then 
-                shift_address1 <= tmp_12_fu_463_p1(7 - 1 downto 0);
+                shift_address1 <= tmp_12_fu_463_p1(8 - 1 downto 0);
             else 
-                shift_address1 <= "XXXXXXX";
+                shift_address1 <= "XXXXXXXX";
             end if;
         else 
-            shift_address1 <= "XXXXXXX";
+            shift_address1 <= "XXXXXXXX";
         end if; 
     end process;
 
@@ -634,10 +634,10 @@ begin
         tmp_14_fu_433_p1 <= std_logic_vector(resize(signed(r_V_5_fu_427_p2),64));
 
     tmp_1_fu_518_p1 <= std_logic_vector(resize(unsigned(p_addr_V),64));
-    tmp_2_fu_373_p2 <= "1" when (unsigned(p_addr_V) < unsigned(ap_const_lv16_A0)) else "0";
+    tmp_2_fu_373_p2 <= "1" when (unsigned(p_addr_V) < unsigned(ap_const_lv16_C8)) else "0";
         tmp_3_fu_513_p1 <= std_logic_vector(resize(signed(r_V_fu_507_p2),64));
 
-    tmp_4_fu_379_p2 <= "1" when (unsigned(p_addr_V) < unsigned(ap_const_lv16_C80)) else "0";
+    tmp_4_fu_379_p2 <= "1" when (unsigned(p_addr_V) < unsigned(ap_const_lv16_CA8)) else "0";
         tmp_5_fu_498_p1 <= std_logic_vector(resize(signed(r_V_1_fu_492_p2),64));
 
     tmp_6_fu_347_p1 <= std_logic_vector(resize(unsigned(p_scale_addr_V),64));

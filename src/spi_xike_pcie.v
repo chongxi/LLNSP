@@ -130,22 +130,31 @@ module spi_xike_pcie (
     .user_r_neural_data_32_open         (user_r_neural_data_32_open         ),
     
     
-    // Ports related to /dev/xillybus_spk_realtime_32
+    // Ports related to /dev/xillybus_spk_wav_32
     // FPGA to CPU signals:
-    .user_r_spk_realtime_32_rden        (user_r_spk_realtime_32_rden        ),
-    .user_r_spk_realtime_32_empty       (user_r_spk_realtime_32_empty       ),
-    .user_r_spk_realtime_32_data        (user_r_spk_realtime_32_data        ),
-    .user_r_spk_realtime_32_eof         (user_r_spk_realtime_32_eof         ),
-    .user_r_spk_realtime_32_open        (user_r_spk_realtime_32_open        ),
+    .user_r_spk_wav_32_rden             (user_r_spk_wav_32_rden             ),
+    .user_r_spk_wav_32_empty            (user_r_spk_wav_32_empty            ),
+    .user_r_spk_wav_32_data             (user_r_spk_wav_32_data             ),
+    .user_r_spk_wav_32_eof              (user_r_spk_wav_32_eof              ),
+    .user_r_spk_wav_32_open             (user_r_spk_wav_32_open             ),
     
     
-    // Ports related to /dev/xillybus_spk_sort_32
+    // Ports related to /dev/xillybus_spk_info_32
     // FPGA to CPU signals:
-    .user_r_spk_sort_32_rden            (user_r_spk_sort_32_rden            ),
-    .user_r_spk_sort_32_empty           (user_r_spk_sort_32_empty           ),
-    .user_r_spk_sort_32_data            (user_r_spk_sort_32_data            ),
-    .user_r_spk_sort_32_eof             (user_r_spk_sort_32_eof             ),
-    .user_r_spk_sort_32_open            (user_r_spk_sort_32_open            ),
+    .user_r_spk_info_32_rden            (user_r_spk_info_32_rden            ),
+    .user_r_spk_info_32_empty           (user_r_spk_info_32_empty           ),
+    .user_r_spk_info_32_data            (user_r_spk_info_32_data            ),
+    .user_r_spk_info_32_eof             (user_r_spk_info_32_eof             ),
+    .user_r_spk_info_32_open            (user_r_spk_info_32_open            ),
+    
+    
+    // Ports related to /dev/xillybus_fet_clf_32
+    // FPGA to CPU signals:
+    .user_r_fet_clf_32_rden             (user_r_fet_clf_32_rden             ),
+    .user_r_fet_clf_32_empty            (user_r_fet_clf_32_empty            ),
+    .user_r_fet_clf_32_data             (user_r_fet_clf_32_data             ),
+    .user_r_fet_clf_32_eof              (user_r_fet_clf_32_eof              ),
+    .user_r_fet_clf_32_open             (user_r_fet_clf_32_open             ),
     
     
     // Ports related to /dev/xillybus_status_regs_16
@@ -293,19 +302,26 @@ module spi_xike_pcie (
 (* mark_debug = "true" *)    wire        user_r_mua_32_eof  ;
 (* mark_debug = "true" *)    wire        user_r_mua_32_open ;
 
-  // Wires related to /dev/xillybus_spk_realtime_32
-  wire        user_r_spk_realtime_32_rden ;
-  wire        user_r_spk_realtime_32_empty;
-  wire [31:0] user_r_spk_realtime_32_data ;
-  wire        user_r_spk_realtime_32_eof  ;
-  wire        user_r_spk_realtime_32_open ;
+  // Wires related to /dev/xillybus_spk_wav_32
+  wire        user_r_spk_wav_32_rden ;
+  wire        user_r_spk_wav_32_empty;
+  wire [31:0] user_r_spk_wav_32_data ;
+  wire        user_r_spk_wav_32_eof  ;
+  wire        user_r_spk_wav_32_open ;
 
-  // Wires related to /dev/xillybus_spk_sort_32
-  wire        user_r_spk_sort_32_rden ;
-  wire        user_r_spk_sort_32_empty;
-  wire [31:0] user_r_spk_sort_32_data ;
-  wire        user_r_spk_sort_32_eof  ;
-  wire        user_r_spk_sort_32_open ;
+  // Wires related to /dev/xillybus_spk_info_32
+  wire        user_r_spk_info_32_rden ;
+  wire        user_r_spk_info_32_empty;
+  wire [31:0] user_r_spk_info_32_data ;
+  wire        user_r_spk_info_32_eof  ;
+  wire        user_r_spk_info_32_open ;
+
+  // Wires related to /dev/xillybus_fet_clf_32
+  wire        user_r_fet_clf_32_rden ;
+  wire        user_r_fet_clf_32_empty;
+  wire [31:0] user_r_fet_clf_32_data ;
+  wire        user_r_fet_clf_32_eof  ;
+  wire        user_r_fet_clf_32_open ;
 
   // Wires related to /dev/xillybus_template_32
   wire        user_r_template_32_rden     ;
@@ -499,11 +515,12 @@ module spi_xike_pcie (
 
 // Xike
   wire xike_reset = reset;
-  wire spkDet_en;
-  wire spkClf_en;
+//  wire spkDet_en;
+//  wire spkClf_en;
   assign user_r_mua_32_eof          = XIKE_ENABLE;   // flag to stop RAM FIFO
-  assign user_r_spk_sort_32_eof     = XIKE_ENABLE;
-  assign user_r_spk_realtime_32_eof = XIKE_ENABLE;
+  assign user_r_spk_info_32_eof     = XIKE_ENABLE;
+  assign user_r_spk_wav_32_eof      = XIKE_ENABLE;
+//  assign user_r_fet_clf_32_eof      = XIKE_ENABLE;
 
   mem_reg_16 mem_reg_16 (
     .clk   (bus_clk           ),
@@ -554,7 +571,6 @@ module spi_xike_pcie (
     .raw_comb_data        (raw_comb_data             ),
     .raw_comb_ch          (raw_comb_ch               )
   );
-
 
   wire         mua_comb_valid;
   wire [159:0] mua_comb_data;
@@ -680,9 +696,7 @@ module spi_xike_pcie (
     .spk_stream_pulse (spk_stream_pulse )
   );
 
-
-// sync to behaviour box
-
+  // sync to behaviour box
   wire [11:0] sec;
   wire sync_pulse;
   sync2bcs i_sync2bcs (
@@ -694,7 +708,8 @@ module spi_xike_pcie (
   );
   assign SYNC_PULSE_PORT = sync_pulse;
 
-// fifos to host 
+  // muap: fifos to host 
+  // 32bits => 32bits
   fifo_32x512 muap_to_host (
     .clk  (bus_clk                              ),
     .srst (!user_r_mua_32_open                  ),
@@ -706,48 +721,49 @@ module spi_xike_pcie (
     .empty(user_r_mua_32_empty                  )
   );
 
-  wire spk_info_valid = muap_valid && muap_data[0] && !fifo_spk_sort_full;
+  wire spk_info_valid = muap_valid && muap_data[0] && !fifo_spk_info_full;
   wire [31:0] muap_ch_No = muap_ch;
   wire [63:0] spk_info_data  = {muap_frame_No, muap_ch_No};
 
+  // 64 bits => 32 bits
   fifo_64_to_32 spk_info_to_host (
-    .clk(bus_clk),      // input wire clk
-    .srst(!user_r_spk_sort_32_open),    // input wire srst
-    .din(spk_info_data),      // input wire [63 : 0] din
-    .wr_en(spk_info_valid ),  // input wire wr_en
-    .rd_en(user_r_spk_sort_32_rden),  // input wire rd_en
-    .dout(user_r_spk_sort_32_data),    // output wire [31 : 0] dout
-    .full(fifo_spk_sort_full),    // output wire full
-    .empty(user_r_spk_sort_32_empty)  // output wire empty
+    .clk  (bus_clk                 ), // input wire clk
+    .srst (!user_r_spk_info_32_open), // input wire srst
+    .din  (spk_info_data           ), // input wire [63 : 0] din
+    .wr_en(spk_info_valid          ), // input wire wr_en
+    .rd_en(user_r_spk_info_32_rden ), // input wire rd_en
+    .dout (user_r_spk_info_32_data ), // output wire [31 : 0] dout
+    .full (fifo_spk_info_full      ), // output wire full
+    .empty(user_r_spk_info_32_empty)  // output wire empty
   );
   
+  // 128 bits => 32 bits
   fifo_generator_spk spk_wav_to_host (
-    .clk(bus_clk),      // input wire clk
-    .srst(!user_r_spk_realtime_32_open),    // input wire srst
-    .din(spk_stream_TDATA),      // input wire [127 : 0] din
-    .wr_en(spk_stream_TVALID && !fifo_spk_realtime_full),  // input wire wr_en
-    .rd_en(user_r_spk_realtime_32_rden),  // input wire rd_en
-    .dout(user_r_spk_realtime_32_data),    // output wire [31 : 0] dout
-    .full(fifo_spk_realtime_full),    // output wire full
-    .empty(user_r_spk_realtime_32_empty)  // output wire empty
+    .clk  (bus_clk                                ), // input wire clk
+    .srst (!user_r_spk_wav_32_open                ), // input wire srst
+    .din  (spk_stream_TDATA                       ), // input wire [127 : 0] din
+    .wr_en(spk_stream_TVALID && !fifo_spk_wav_full), // input wire wr_en
+    .rd_en(user_r_spk_wav_32_rden                 ), // input wire rd_en
+    .dout (user_r_spk_wav_32_data                 ), // output wire [31 : 0] dout
+    .full (fifo_spk_wav_full                      ), // output wire full
+    .empty(user_r_spk_wav_32_empty                )  // output wire empty
   );
   
-//  user_r_spk_realtime_32_data
+//  user_r_spk_wav_32_data
 
-
-//////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////// experiment: spk_transform (pass) /////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////// experiment: spk_transform for 40 space each 4 channels (pass) /////////////////////////////////
 // (* mark_debug = "true" *) 
 // input:
-wire p_scale_read = 1;//scale_V_ce0;
-wire p_shift_read = 1;//shift_V_ce0;
-wire p_pca_read   = 1;//pca_V_ce0;
-wire p_vq_read    = 1;//vq_V_ce0;
+wire p_scale_read = scale_V_ce0;  //scale_V_ce0;
+wire p_shift_read = shift_V_ce0;  //shift_V_ce0;
+wire p_pca_read   = pca_V_ce0;    //pca_V_ce0;
+wire p_vq_read    = vq_V_ce0;     //vq_V_ce0;
 
-wire [7 : 0 ] p_scale_addr;
-wire [7 : 0 ] p_shift_addr;
-wire [10 : 0] p_pca_addr;
-wire [11 : 0] p_vq_addr;
+(* mark_debug = "true" *) wire [7 : 0 ] p_scale_addr;
+(* mark_debug = "true" *) wire [7 : 0 ] p_shift_addr;
+(* mark_debug = "true" *) wire [15 : 0] p_pca_addr;
+(* mark_debug = "true" *) wire [15 : 0] p_vq_addr;
 
 // output:
 (* mark_debug = "true" *) wire scale_out_ap_vld;
@@ -755,41 +771,163 @@ wire [11 : 0] p_vq_addr;
 (* mark_debug = "true" *) wire pca_out_ap_vld;
 (* mark_debug = "true" *) wire vq_out_ap_vld;
 
-(* mark_debug = "true" *) wire [31:0] scale_out;
-(* mark_debug = "true" *) wire [31:0] shift_out;
-(* mark_debug = "true" *) wire [31:0] pca_out;
-(* mark_debug = "true" *) wire [31:0] vq_out;
+wire [31:0] scale_out;
+wire [31:0] shift_out;
+wire [31:0] pca_out;
+wire [31:0] vq_out;
 
-bram_xike_0 bram_xike_tf_and_vq (
-  .ap_clk          (bus_clk                    ), // input wire ap_clk
-  .ap_rst          (0                          ), // input wire ap_rst
-  
-  .p_doWrite       (user_w_template_32_wren    ), // input wire [0 : 0] p_doWrite
-  .din             (user_w_template_32_data    ), // input wire [31 : 0] din
-  .p_doRead        (user_r_template_32_rden    ), // input wire [0 : 0] p_doRead
-  .dout            (user_r_template_32_data    ), // output wire [31 : 0] dout
-  .dout_ap_vld     (user_r_template_32_data_vld), // output wire dout_ap_vld
-  .p_addr_V        (user_template_32_addr      ), // input wire [15 : 0] p_addr_V
-  
-  .p_scale_read    (p_scale_read               ), // input wire p_scale_read
-  .p_shift_read    (p_shift_read               ), // input wire p_shift_read
-  .p_pca_read      (p_pca_read                 ), // input wire p_pca_read
-  .p_vq_read       (p_vq_read                  ), // input wire p_vq_read
-  
-  .p_scale_addr_V  (p_scale_addr               ), // input wire [7 : 0 ] p_scale_addr_V
-  .p_shift_addr_V  (p_shift_addr               ), // input wire [7 : 0 ] p_shift_addr_V
-  .p_pca_addr_V    (p_pca_addr                 ), // input wire [15 : 0] p_pca_addr_V
-  .p_vq_addr_V     (p_vq_addr                  ), // input wire [15 : 0] p_vq_addr_V
-  
-  .scale_out_ap_vld(scale_out_ap_vld           ), // output wire
-  .shift_out_ap_vld(shift_out_ap_vld           ), // output wire
-  .pca_out_ap_vld  (pca_out_ap_vld             ), // output wire
-  .vq_out_ap_vld   (vq_out_ap_vld              ), // output wire
+(* mark_debug = "true" *) wire [7:0] pca3 = pca_out[ 7:0 ];
+(* mark_debug = "true" *) wire [7:0] pca2 = pca_out[15:8 ];
+(* mark_debug = "true" *) wire [7:0] pca1 = pca_out[23:16];
+(* mark_debug = "true" *) wire [7:0] pca0 = pca_out[31:24];
 
-  .scale_out       (scale_out                  ), // output wire [31 : 0] 
-  .shift_out       (shift_out                  ), // output wire [31 : 0] 
-  .pca_out         (pca_out                    ), // output wire [31 : 0] 
-  .vq_out          (vq_out                     )  // output wire [31 : 0] 
+  bram_xike_0 bram_xike_tf_and_vq (
+    .ap_clk          (bus_clk                    ), // input wire ap_clk
+    .ap_rst          (0                          ), // input wire ap_rst
+    
+    .p_doWrite       (user_w_template_32_wren    ), // input wire [0 : 0] p_doWrite
+    .din             (user_w_template_32_data    ), // input wire [31 : 0] din
+    .p_doRead        (user_r_template_32_rden    ), // input wire [0 : 0] p_doRead
+    .dout            (user_r_template_32_data    ), // output wire [31 : 0] dout
+    .dout_ap_vld     (user_r_template_32_data_vld), // output wire dout_ap_vld
+    .p_addr_V        (user_template_32_addr      ), // input wire [15 : 0] p_addr_V
+    
+    .p_scale_read    (p_scale_read               ), // input wire p_scale_read
+    .p_shift_read    (p_shift_read               ), // input wire p_shift_read
+    .p_pca_read      (p_pca_read                 ), // input wire p_pca_read
+    .p_vq_read       (p_vq_read                  ), // input wire p_vq_read
+    
+    .p_scale_addr_V  (p_scale_addr               ), // input wire [7 : 0 ] p_scale_addr_V
+    .p_shift_addr_V  (p_shift_addr               ), // input wire [7 : 0 ] p_shift_addr_V
+    .p_pca_addr_V    (p_pca_addr                 ), // input wire [15 : 0] p_pca_addr_V
+    .p_vq_addr_V     (p_vq_addr                  ), // input wire [15 : 0] p_vq_addr_V
+    
+    .scale_out_ap_vld(scale_out_ap_vld           ), // output wire
+    .shift_out_ap_vld(shift_out_ap_vld           ), // output wire
+    .pca_out_ap_vld  (pca_out_ap_vld             ), // output wire
+    .vq_out_ap_vld   (vq_out_ap_vld              ), // output wire
+
+    .scale_out       (scale_out                  ), // output wire [31 : 0] 
+    .shift_out       (shift_out                  ), // output wire [31 : 0] 
+    .pca_out         (pca_out                    ), // output wire [31 : 0] 
+    .vq_out          (vq_out                     )  // output wire [31 : 0] 
+  );
+
+wire[127:0] spk_stream_to_transform; 
+wire spk_stream_fifo_read;
+wire spk_stream_fifo_empty;
+wire spk_stream_fifo_full; 
+
+// fifo to transformer `spk_wav_to_transformer` is 128=>128 bits, different from `spk_wav_to_host`
+  fifo_to_transformer spk_wav_to_transformer (
+    .clk    (bus_clk),      // input wire clk
+    .srst   (!user_r_spk_wav_32_open),    // input wire srst
+    .din    (spk_stream_TDATA),      // input wire [127 : 0] din
+    .wr_en  (spk_stream_TVALID && !spk_stream_fifo_full),  // input wire wr_en
+    .rd_en  (spk_stream_fifo_read),  // input wire rd_en
+    .dout   (spk_stream_to_transform),    // output wire [127 : 0] dout
+    .full   (spk_stream_fifo_full),    // output wire full
+    .empty  (spk_stream_fifo_empty)  // output wire empty
+  );
+
+// Transformer
+(* mark_debug = "true" *) wire pca_stream_V_V_TVALID; 
+(* mark_debug = "true" *) wire [31:0] pca_stream_V_V_TDATA; 
+(* mark_debug = "true" *) wire pca_final_V_V_TVALID;  
+(* mark_debug = "true" *) wire [31:0] pca_final_V_V_TDATA; 
+
+  spk_transform_0 spk_transformer (
+    .ap_clk               (bus_clk                ), // input wire ap_clk
+    .ap_rst_n             (1                      ), // input wire ap_rst_n
+    .ap_start             (1                      ), // input wire ap_start
+    .ap_done              (ap_done1               ), // output wire ap_done
+    .ap_idle              (ap_idle1               ), // output wire ap_idle
+    .ap_ready             (ap_ready1              ), // output wire ap_ready
+    
+    // fifo interface: read channel and spike waveform from fifo
+    .spk_V_dout           (spk_stream_to_transform), // input wire [127 : 0] spk_V_dout
+    .spk_V_empty_n        (!spk_stream_fifo_empty ), // input wire spk_V_empty_n
+    .spk_V_read           (spk_stream_fifo_read   ), // output wire spk_V_read
+    
+    // bram interface: read from `bram_xike_tf_and_vq`
+    
+    .scale_V_ce0          (scale_V_ce0            ), // output wire scale_V_ce0
+    .scale_V_address0     (p_scale_addr           ), // output wire [5 : 0] scale_V_address0
+    .scale_V_q0           (scale_out              ), // input wire [31 : 0] scale_V_q0
+    
+    .shift_V_ce0          (shift_V_ce0            ), // output wire shift_V_ce0
+    .shift_V_address0     (p_shift_addr           ), // output wire [6 : 0] shift_V_address0
+    .shift_V_q0           (shift_out              ), // input wire [31 : 0] shift_V_q0
+    
+    .pca_V_ce0            (pca_V_ce0              ), // output wire pca_V_ce0
+    .pca_V_address0       (p_pca_addr             ), // output wire [11 : 0] pca_V_address0
+    .pca_V_q0             (pca_out                ), // input wire [31 : 0] pca_V_q0
+    
+    .pca_stream_V_V_TVALID(pca_stream_V_V_TVALID  ), // output wire pca_stream_V_V_TVALID
+    .pca_stream_V_V_TREADY(1                      ), // input wire pca_stream_V_V_TREADY
+    .pca_stream_V_V_TDATA (pca_stream_V_V_TDATA   ), // output wire [31 : 0] pca_stream_V_V_TDATA
+    
+    .pca_final_V_V_TVALID (pca_final_V_V_TVALID   ), // output wire pca_final_V_V_TVALID
+    .pca_final_V_V_TREADY (1                      ), // input wire pca_final_V_V_TREADY
+    .pca_final_V_V_TDATA  (pca_final_V_V_TDATA    )  // output wire [31 : 0] pca_final_V_V_TDATA
+  );
+
+  // 32bits => 32bits
+  fifo_32x512 fet_clf_to_host (
+    .clk  (bus_clk                                        ),
+    .srst (!user_r_fet_clf_32_open                        ),
+    .wr_en(pca_final_V_V_TVALID && !fifo_r_fet_clf_32_full), // AXI4 valid and ready
+    .din  (pca_final_V_V_TDATA                            ), // mua_data
+    .rd_en(user_r_fet_clf_32_rden                         ),
+    .dout (user_r_fet_clf_32_data                         ),
+    .full (fifo_r_fet_clf_32_full                         ),
+    .empty(user_r_fet_clf_32_empty                        )
+  );
+
+(* mark_debug = "true" *) wire [31:0] fet_to_clf;
+(* mark_debug = "true" *) wire fifo_fet_to_clf_read;
+
+  // fifo 32bits => 32bits
+  fifo_tf_to_clf fifo_fet_to_clf (
+    .clk  (bus_clk                                      ), // input wire clk
+    .srst (!user_r_fet_clf_32_open                      ), // input wire srst
+    .din  (pca_final_V_V_TDATA                          ), // input wire [31 : 0] din
+    .wr_en(pca_final_V_V_TVALID && !fifo_fet_to_clf_full), // input wire wr_en
+    .rd_en(fifo_fet_to_clf_read                         ), // input wire rd_en
+    .dout (fet_to_clf                                   ), // output wire [31 : 0] dout
+    .full (fifo_fet_to_clf_full                         ), // output wire full
+    .empty(fifo_fet_to_clf_empty                        )  // output wire empty
+  );
+
+(* mark_debug = "true" *) wire        distance_out_V_V_TVALID;
+(* mark_debug = "true" *) wire [31:0] distance_out_V_V_TDATA;
+(* mark_debug = "true" *) wire        nnid_out_V_V_TVALID;
+(* mark_debug = "true" *) wire [31:0] nnid_out_V_V_TDATA;
+
+spk_clf_0 classifier (
+  .ap_clk                 (bus_clk                ), // input wire ap_clk
+  .ap_rst_n               (1                      ), // input wire ap_rst_n
+  .ap_start               (1                      ), // input wire ap_start
+  .ap_done                (ap_done2               ), // output wire ap_done
+  .ap_idle                (ap_idle2               ), // output wire ap_idle
+  .ap_ready               (ap_ready2              ), // output wire ap_ready
+  
+  .data_V_dout            (fet_to_clf             ), // input wire [31 : 0] data_V_dout
+  .data_V_empty_n         (!fifo_fet_to_clf_empty ), // input wire data_V_empty_n
+  .data_V_read            (fifo_fet_to_clf_read   ), // output wire data_V_read
+  
+  .vq_V_ce0               (vq_V_ce0               ), // output wire vq_V_ce0
+  .vq_V_address0          (p_vq_addr              ), // output wire [11 : 0] vq_V_address0
+  .vq_V_q0                (vq_out                 ), // input wire [31 : 0] vq_V_q0
+  
+  .distance_out_V_V_TVALID(distance_out_V_V_TVALID), // output wire distance_out_V_V_TVALID
+  .distance_out_V_V_TREADY(1                      ), // input wire distance_out_V_V_TREADY
+  .distance_out_V_V_TDATA (distance_out_V_V_TDATA ), // output wire [31 : 0] distance_out_V_V_TDATA
+  
+  .nnid_out_V_V_TVALID    (nnid_out_V_V_TVALID    ), // output wire nnid_out_V_V_TVALID
+  .nnid_out_V_V_TREADY    (1                      ), // input wire nnid_out_V_V_TREADY
+  .nnid_out_V_V_TDATA     (nnid_out_V_V_TDATA     )  // output wire [31 : 0] nnid_out_V_V_TDATA
 );
+
 
 endmodule

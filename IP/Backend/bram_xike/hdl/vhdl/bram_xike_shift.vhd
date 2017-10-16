@@ -14,8 +14,8 @@ entity bram_xike_shift_ram is
     generic(
             mem_type    : string := "block"; 
             dwidth     : integer := 32; 
-            awidth     : integer := 7; 
-            mem_size    : integer := 120
+            awidth     : integer := 8; 
+            mem_size    : integer := 160
     ); 
     port (
           addr0     : in std_logic_vector(awidth-1 downto 0); 
@@ -102,8 +102,8 @@ use IEEE.std_logic_1164.all;
 entity bram_xike_shift is
     generic (
         DataWidth : INTEGER := 32;
-        AddressRange : INTEGER := 120;
-        AddressWidth : INTEGER := 7);
+        AddressRange : INTEGER := 160;
+        AddressWidth : INTEGER := 8);
     port (
         reset : IN STD_LOGIC;
         clk : IN STD_LOGIC;

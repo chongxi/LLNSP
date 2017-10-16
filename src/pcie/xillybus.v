@@ -5,11 +5,10 @@ module xillybus(PCIE_TX_P, PCIE_TX_N, PCIE_RX_P, PCIE_RX_N, PCIE_REFCLK_P,
   user_w_write_32_wren, user_w_write_32_data, user_w_write_32_full,
   user_w_write_32_open, user_r_mua_32_rden, user_r_mua_32_data,
   user_r_mua_32_empty, user_r_mua_32_eof, user_r_mua_32_open,
-  user_r_spk_realtime_32_rden, user_r_spk_realtime_32_data,
-  user_r_spk_realtime_32_empty, user_r_spk_realtime_32_eof,
-  user_r_spk_realtime_32_open, user_r_spk_sort_32_rden,
-  user_r_spk_sort_32_data, user_r_spk_sort_32_empty, user_r_spk_sort_32_eof,
-  user_r_spk_sort_32_open, user_r_template_32_rden, user_r_template_32_data,
+  user_r_spk_wav_32_rden, user_r_spk_wav_32_data, user_r_spk_wav_32_empty,
+  user_r_spk_wav_32_eof, user_r_spk_wav_32_open, user_r_spk_info_32_rden,
+  user_r_spk_info_32_data, user_r_spk_info_32_empty, user_r_spk_info_32_eof,
+  user_r_spk_info_32_open, user_r_template_32_rden, user_r_template_32_data,
   user_r_template_32_empty, user_r_template_32_eof, user_r_template_32_open,
   user_w_template_32_wren, user_w_template_32_data, user_w_template_32_full,
   user_w_template_32_open, user_template_32_addr, user_template_32_addr_update,
@@ -40,7 +39,8 @@ module xillybus(PCIE_TX_P, PCIE_TX_N, PCIE_RX_P, PCIE_RX_N, PCIE_REFCLK_P,
   user_r_mem_16_data, user_r_mem_16_empty, user_r_mem_16_eof,
   user_r_mem_16_open, user_w_mem_16_wren, user_w_mem_16_data,
   user_w_mem_16_full, user_w_mem_16_open, user_mem_16_addr,
-  user_mem_16_addr_update);
+  user_mem_16_addr_update, user_r_fet_clf_32_rden, user_r_fet_clf_32_data,
+  user_r_fet_clf_32_empty, user_r_fet_clf_32_eof, user_r_fet_clf_32_open);
 
   input [7:0] PCIE_RX_P;
   input [7:0] PCIE_RX_N;
@@ -51,12 +51,12 @@ module xillybus(PCIE_TX_P, PCIE_TX_N, PCIE_RX_P, PCIE_RX_N, PCIE_REFCLK_P,
   input [31:0] user_r_mua_32_data;
   input  user_r_mua_32_empty;
   input  user_r_mua_32_eof;
-  input [31:0] user_r_spk_realtime_32_data;
-  input  user_r_spk_realtime_32_empty;
-  input  user_r_spk_realtime_32_eof;
-  input [31:0] user_r_spk_sort_32_data;
-  input  user_r_spk_sort_32_empty;
-  input  user_r_spk_sort_32_eof;
+  input [31:0] user_r_spk_wav_32_data;
+  input  user_r_spk_wav_32_empty;
+  input  user_r_spk_wav_32_eof;
+  input [31:0] user_r_spk_info_32_data;
+  input  user_r_spk_info_32_empty;
+  input  user_r_spk_info_32_eof;
   input [31:0] user_r_template_32_data;
   input  user_r_template_32_empty;
   input  user_r_template_32_eof;
@@ -82,6 +82,9 @@ module xillybus(PCIE_TX_P, PCIE_TX_N, PCIE_RX_P, PCIE_RX_N, PCIE_REFCLK_P,
   input  user_r_mem_16_empty;
   input  user_r_mem_16_eof;
   input  user_w_mem_16_full;
+  input [31:0] user_r_fet_clf_32_data;
+  input  user_r_fet_clf_32_empty;
+  input  user_r_fet_clf_32_eof;
   output [7:0] PCIE_TX_P;
   output [7:0] PCIE_TX_N;
   output  bus_clk;
@@ -92,10 +95,10 @@ module xillybus(PCIE_TX_P, PCIE_TX_N, PCIE_RX_P, PCIE_RX_N, PCIE_REFCLK_P,
   output  user_w_write_32_open;
   output  user_r_mua_32_rden;
   output  user_r_mua_32_open;
-  output  user_r_spk_realtime_32_rden;
-  output  user_r_spk_realtime_32_open;
-  output  user_r_spk_sort_32_rden;
-  output  user_r_spk_sort_32_open;
+  output  user_r_spk_wav_32_rden;
+  output  user_r_spk_wav_32_open;
+  output  user_r_spk_info_32_rden;
+  output  user_r_spk_info_32_open;
   output  user_r_template_32_rden;
   output  user_r_template_32_open;
   output  user_w_template_32_wren;
@@ -145,6 +148,8 @@ module xillybus(PCIE_TX_P, PCIE_TX_N, PCIE_RX_P, PCIE_RX_N, PCIE_REFCLK_P,
   output  user_w_mem_16_open;
   output [4:0] user_mem_16_addr;
   output  user_mem_16_addr_update;
+  output  user_r_fet_clf_32_rden;
+  output  user_r_fet_clf_32_open;
   wire  trn_reset_n;
   wire  trn_lnk_up_n;
   wire  s_axis_tx_tready;
@@ -418,6 +423,11 @@ module xillybus(PCIE_TX_P, PCIE_TX_N, PCIE_RX_P, PCIE_RX_N, PCIE_REFCLK_P,
     .user_w_mem_16_data_w(user_w_mem_16_data), .user_w_mem_16_full_w(user_w_mem_16_full),
     .user_w_mem_16_open_w(user_w_mem_16_open), .m_axis_rx_tuser_w(m_axis_rx_tuser),
     .user_mem_16_addr_w(user_mem_16_addr), .user_mem_16_addr_update_w(user_mem_16_addr_update),
+    .user_r_fet_clf_32_rden_w(user_r_fet_clf_32_rden),
+    .user_r_fet_clf_32_data_w(user_r_fet_clf_32_data),
+    .user_r_fet_clf_32_empty_w(user_r_fet_clf_32_empty),
+    .user_r_fet_clf_32_eof_w(user_r_fet_clf_32_eof),
+    .user_r_fet_clf_32_open_w(user_r_fet_clf_32_open),
     .cfg_interrupt_n_w(cfg_interrupt_n), .cfg_interrupt_rdy_n_w(cfg_interrupt_rdy_n),
     .cfg_bus_number_w(cfg_bus_number), .cfg_device_number_w(cfg_device_number),
     .cfg_function_number_w(cfg_function_number), .cfg_dcommand_w(cfg_dcommand),
@@ -430,16 +440,16 @@ module xillybus(PCIE_TX_P, PCIE_TX_N, PCIE_RX_P, PCIE_RX_N, PCIE_REFCLK_P,
     .user_w_write_32_open_w(user_w_write_32_open),
     .user_r_mua_32_rden_w(user_r_mua_32_rden), .user_r_mua_32_data_w(user_r_mua_32_data),
     .user_r_mua_32_empty_w(user_r_mua_32_empty), .user_r_mua_32_eof_w(user_r_mua_32_eof),
-    .user_r_mua_32_open_w(user_r_mua_32_open), .user_r_spk_realtime_32_rden_w(user_r_spk_realtime_32_rden),
-    .user_r_spk_realtime_32_data_w(user_r_spk_realtime_32_data),
-    .user_r_spk_realtime_32_empty_w(user_r_spk_realtime_32_empty),
-    .user_r_spk_realtime_32_eof_w(user_r_spk_realtime_32_eof),
-    .user_r_spk_realtime_32_open_w(user_r_spk_realtime_32_open),
-    .user_r_spk_sort_32_rden_w(user_r_spk_sort_32_rden),
-    .user_r_spk_sort_32_data_w(user_r_spk_sort_32_data),
-    .user_r_spk_sort_32_empty_w(user_r_spk_sort_32_empty),
-    .user_r_spk_sort_32_eof_w(user_r_spk_sort_32_eof),
-    .user_r_spk_sort_32_open_w(user_r_spk_sort_32_open), .bus_clk_w(bus_clk),
+    .user_r_mua_32_open_w(user_r_mua_32_open), .user_r_spk_wav_32_rden_w(user_r_spk_wav_32_rden),
+    .user_r_spk_wav_32_data_w(user_r_spk_wav_32_data),
+    .user_r_spk_wav_32_empty_w(user_r_spk_wav_32_empty),
+    .user_r_spk_wav_32_eof_w(user_r_spk_wav_32_eof),
+    .user_r_spk_wav_32_open_w(user_r_spk_wav_32_open),
+    .user_r_spk_info_32_rden_w(user_r_spk_info_32_rden),
+    .user_r_spk_info_32_data_w(user_r_spk_info_32_data),
+    .user_r_spk_info_32_empty_w(user_r_spk_info_32_empty),
+    .user_r_spk_info_32_eof_w(user_r_spk_info_32_eof),
+    .user_r_spk_info_32_open_w(user_r_spk_info_32_open), .bus_clk_w(bus_clk),
     .user_r_template_32_rden_w(user_r_template_32_rden),
     .user_r_template_32_data_w(user_r_template_32_data),
     .user_r_template_32_empty_w(user_r_template_32_empty),

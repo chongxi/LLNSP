@@ -26,8 +26,9 @@ Xike Part
 ```
 crw-rw-rw- 1 root root 241, 12 Mar  8 17:24 /dev/xillybus_mem_16
 crw-rw-rw- 1 root root 241,  1 Mar  8 17:24 /dev/xillybus_mua_32
-crw-rw-rw- 1 root root 241,  2 Mar  8 17:24 /dev/xillybus_spk_realtime_32
-crw-rw-rw- 1 root root 241,  3 Mar  8 17:24 /dev/xillybus_spk_sort_32
+crw-rw-rw- 1 root root 241,  2 Mar  8 17:24 /dev/xillybus_spk_info_32
+crw-rw-rw- 1 root root 241,  3 Mar  8 17:24 /dev/xillybus_spk_wav_32
+crw-rw-rw- 1 root root 241,  3 Mar  8 17:24 /dev/xillybus_fet_clf_32
 crw-rw-rw- 1 root root 241,  4 Mar  8 17:24 /dev/xillybus_template_32
 crw-rw-rw- 1 root root 241,  9 Mar  8 17:24 /dev/xillybus_thr_32
 crw-rw-rw- 1 root root 241,  0 Mar  8 17:24 /dev/xillybus_write_32
