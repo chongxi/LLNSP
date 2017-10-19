@@ -708,7 +708,7 @@
       <spirit:file>
         <spirit:name>hdl/vhdl/spk_clf.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_96a6d6ee</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_5e3c0950</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -793,7 +793,7 @@
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>latency</spirit:name>
-      <spirit:value spirit:id="PARAM_VALUE.latency" spirit:order="5">245</spirit:value>
+      <spirit:value spirit:id="PARAM_VALUE.latency" spirit:order="5">239</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>II</spirit:name>
@@ -810,8 +810,8 @@
       </xilinx:taxonomies>
       <xilinx:displayName>Spk_clf</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>1710161521</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2017-10-16T19:21:44Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>1710171545</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2017-10-17T19:46:00Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2016.1</xilinx:xilinxVersion>

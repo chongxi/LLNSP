@@ -819,7 +819,7 @@ wire spk_stream_fifo_empty;
 wire spk_stream_fifo_full; 
 
 // fifo to transformer `spk_wav_to_transformer` is 128=>128 bits, different from `spk_wav_to_host`
-  fifo_to_transformer spk_wav_to_transformer (
+  fifo_spk_to_tf spk_wav_to_transformer (
     .clk    (bus_clk),      // input wire clk
     .srst   (!user_r_spk_wav_32_open),    // input wire srst
     .din    (spk_stream_TDATA),      // input wire [127 : 0] din
@@ -872,18 +872,6 @@ wire spk_stream_fifo_full;
     .pca_final_V_V_TDATA  (pca_final_V_V_TDATA    )  // output wire [31 : 0] pca_final_V_V_TDATA
   );
 
-  // 32bits => 32bits
-  fifo_32x512 fet_clf_to_host (
-    .clk  (bus_clk                                        ),
-    .srst (!user_r_fet_clf_32_open                        ),
-    .wr_en(pca_final_V_V_TVALID && !fifo_r_fet_clf_32_full), // AXI4 valid and ready
-    .din  (pca_final_V_V_TDATA                            ), // mua_data
-    .rd_en(user_r_fet_clf_32_rden                         ),
-    .dout (user_r_fet_clf_32_data                         ),
-    .full (fifo_r_fet_clf_32_full                         ),
-    .empty(user_r_fet_clf_32_empty                        )
-  );
-
 (* mark_debug = "true" *) wire [31:0] fet_to_clf;
 (* mark_debug = "true" *) wire fifo_fet_to_clf_read;
 
@@ -903,6 +891,11 @@ wire spk_stream_fifo_full;
 (* mark_debug = "true" *) wire [31:0] distance_out_V_V_TDATA;
 (* mark_debug = "true" *) wire        nnid_out_V_V_TVALID;
 (* mark_debug = "true" *) wire [31:0] nnid_out_V_V_TDATA;
+
+(* mark_debug = "true" *) wire [7:0] vq3 = vq_out[ 7:0 ];
+(* mark_debug = "true" *) wire [7:0] vq2 = vq_out[15:8 ];
+(* mark_debug = "true" *) wire [7:0] vq1 = vq_out[23:16];
+(* mark_debug = "true" *) wire [7:0] vq0 = vq_out[31:24];
 
 spk_clf_0 classifier (
   .ap_clk                 (bus_clk                ), // input wire ap_clk
@@ -928,6 +921,18 @@ spk_clf_0 classifier (
   .nnid_out_V_V_TREADY    (1                      ), // input wire nnid_out_V_V_TREADY
   .nnid_out_V_V_TDATA     (nnid_out_V_V_TDATA     )  // output wire [31 : 0] nnid_out_V_V_TDATA
 );
+
+  // 32bits => 32bits
+  fifo_32x512 fet_clf_to_host (
+    .clk  (bus_clk                                        ),
+    .srst (!user_r_fet_clf_32_open                        ),
+    .wr_en(nnid_out_V_V_TVALID && !fifo_r_fet_clf_32_full ), // AXI4 valid and ready
+    .din  (nnid_out_V_V_TDATA                             ), // mua_data
+    .rd_en(user_r_fet_clf_32_rden                         ),
+    .dout (user_r_fet_clf_32_data                         ),
+    .full (fifo_r_fet_clf_32_full                         ),
+    .empty(user_r_fet_clf_32_empty                        )
+  );
 
 
 endmodule

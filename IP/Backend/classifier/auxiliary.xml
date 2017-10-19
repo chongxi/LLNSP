@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="spk_clf" xd:componentRef="spk_clf" xd:initiationInterval="246" xd:clockPeriod="4.000000" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
+<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="spk_clf" xd:componentRef="spk_clf" xd:initiationInterval="240" xd:clockPeriod="4.000000" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
   <xd:controlReg xd:name="control" xd:interfaceRef="ap_ctrl" xd:busTypeRef="acc_handshake" xd:type="acc_handshake"/>
   <xd:arg xd:name="data[]" xd:originalName="data" xd:direction="in" xd:interfaceRef="data_V" xd:busTypeRef="acc_fifo" xd:arraySize="6" xd:dataWidth="32"/>
   <xd:arg xd:name="distance_out" xd:originalName="distance_out" xd:direction="out" xd:interfaceRef="distance_out_V_V" xd:busTypeRef="axis" xd:dataWidth="32"/>
   <xd:arg xd:name="nnid_out" xd:originalName="nnid_out" xd:direction="out" xd:interfaceRef="nnid_out_V_V" xd:busTypeRef="axis" xd:dataWidth="32"/>
   <xd:arg xd:name="vq_V_q0" xd:originalName="vq_V_q0" xd:direction="in" xd:interfaceRef="vq_V_q0" xd:busTypeRef="ap_memory" xd:arraySize="4000" xd:dataWidth="32"/>
-  <xd:latencyEstimates xd:best-case="245" xd:worst-case="245" xd:average-case="245"/>
-  <xd:resourceEstimates xd:LUT="600" xd:FF="620" xd:BRAM="0" xd:DSP="18"/>
+  <xd:latencyEstimates xd:best-case="239" xd:worst-case="239" xd:average-case="239"/>
+  <xd:resourceEstimates xd:LUT="577" xd:FF="619" xd:BRAM="0" xd:DSP="18"/>
 </xd:acceleratorMap>

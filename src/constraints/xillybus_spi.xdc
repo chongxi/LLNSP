@@ -185,3 +185,86 @@ set_property IOSTANDARD LVCMOS33 [get_ports CS_C_PORT]
 set_property CONFIG_MODE BPI16 [current_design]
 
 # ------------------------------------------------------------------------------------------------
+
+create_debug_core u_ila_0 ila
+set_property ALL_PROBE_SAME_MU true [get_debug_cores u_ila_0]
+set_property ALL_PROBE_SAME_MU_CNT 1 [get_debug_cores u_ila_0]
+set_property C_ADV_TRIGGER false [get_debug_cores u_ila_0]
+set_property C_DATA_DEPTH 16384 [get_debug_cores u_ila_0]
+set_property C_EN_STRG_QUAL false [get_debug_cores u_ila_0]
+set_property C_INPUT_PIPE_STAGES 0 [get_debug_cores u_ila_0]
+set_property C_TRIGIN_EN false [get_debug_cores u_ila_0]
+set_property C_TRIGOUT_EN false [get_debug_cores u_ila_0]
+set_property port_width 1 [get_debug_ports u_ila_0/clk]
+connect_debug_port u_ila_0/clk [get_nets [list xillybus_ins/pipe_clock/pipe_clock/pipe_userclk1_in]]
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe0]
+set_property port_width 8 [get_debug_ports u_ila_0/probe0]
+connect_debug_port u_ila_0/probe0 [get_nets [list {vq3[0]} {vq3[1]} {vq3[2]} {vq3[3]} {vq3[4]} {vq3[5]} {vq3[6]} {vq3[7]}]]
+create_debug_port u_ila_0 probe
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe1]
+set_property port_width 8 [get_debug_ports u_ila_0/probe1]
+connect_debug_port u_ila_0/probe1 [get_nets [list {vq2[0]} {vq2[1]} {vq2[2]} {vq2[3]} {vq2[4]} {vq2[5]} {vq2[6]} {vq2[7]}]]
+create_debug_port u_ila_0 probe
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe2]
+set_property port_width 8 [get_debug_ports u_ila_0/probe2]
+connect_debug_port u_ila_0/probe2 [get_nets [list {vq1[0]} {vq1[1]} {vq1[2]} {vq1[3]} {vq1[4]} {vq1[5]} {vq1[6]} {vq1[7]}]]
+create_debug_port u_ila_0 probe
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe3]
+set_property port_width 8 [get_debug_ports u_ila_0/probe3]
+connect_debug_port u_ila_0/probe3 [get_nets [list {vq0[0]} {vq0[1]} {vq0[2]} {vq0[3]} {vq0[4]} {vq0[5]} {vq0[6]} {vq0[7]}]]
+create_debug_port u_ila_0 probe
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe4]
+set_property port_width 32 [get_debug_ports u_ila_0/probe4]
+connect_debug_port u_ila_0/probe4 [get_nets [list {pca_final_V_V_TDATA[0]} {pca_final_V_V_TDATA[1]} {pca_final_V_V_TDATA[2]} {pca_final_V_V_TDATA[3]} {pca_final_V_V_TDATA[4]} {pca_final_V_V_TDATA[5]} {pca_final_V_V_TDATA[6]} {pca_final_V_V_TDATA[7]} {pca_final_V_V_TDATA[8]} {pca_final_V_V_TDATA[9]} {pca_final_V_V_TDATA[10]} {pca_final_V_V_TDATA[11]} {pca_final_V_V_TDATA[12]} {pca_final_V_V_TDATA[13]} {pca_final_V_V_TDATA[14]} {pca_final_V_V_TDATA[15]} {pca_final_V_V_TDATA[16]} {pca_final_V_V_TDATA[17]} {pca_final_V_V_TDATA[18]} {pca_final_V_V_TDATA[19]} {pca_final_V_V_TDATA[20]} {pca_final_V_V_TDATA[21]} {pca_final_V_V_TDATA[22]} {pca_final_V_V_TDATA[23]} {pca_final_V_V_TDATA[24]} {pca_final_V_V_TDATA[25]} {pca_final_V_V_TDATA[26]} {pca_final_V_V_TDATA[27]} {pca_final_V_V_TDATA[28]} {pca_final_V_V_TDATA[29]} {pca_final_V_V_TDATA[30]} {pca_final_V_V_TDATA[31]}]]
+create_debug_port u_ila_0 probe
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe5]
+set_property port_width 16 [get_debug_ports u_ila_0/probe5]
+connect_debug_port u_ila_0/probe5 [get_nets [list {p_vq_addr[0]} {p_vq_addr[1]} {p_vq_addr[2]} {p_vq_addr[3]} {p_vq_addr[4]} {p_vq_addr[5]} {p_vq_addr[6]} {p_vq_addr[7]} {p_vq_addr[8]} {p_vq_addr[9]} {p_vq_addr[10]} {p_vq_addr[11]} {p_vq_addr[12]} {p_vq_addr[13]} {p_vq_addr[14]} {p_vq_addr[15]}]]
+create_debug_port u_ila_0 probe
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe6]
+set_property port_width 32 [get_debug_ports u_ila_0/probe6]
+connect_debug_port u_ila_0/probe6 [get_nets [list {nnid_out_V_V_TDATA[0]} {nnid_out_V_V_TDATA[1]} {nnid_out_V_V_TDATA[2]} {nnid_out_V_V_TDATA[3]} {nnid_out_V_V_TDATA[4]} {nnid_out_V_V_TDATA[5]} {nnid_out_V_V_TDATA[6]} {nnid_out_V_V_TDATA[7]} {nnid_out_V_V_TDATA[8]} {nnid_out_V_V_TDATA[9]} {nnid_out_V_V_TDATA[10]} {nnid_out_V_V_TDATA[11]} {nnid_out_V_V_TDATA[12]} {nnid_out_V_V_TDATA[13]} {nnid_out_V_V_TDATA[14]} {nnid_out_V_V_TDATA[15]} {nnid_out_V_V_TDATA[16]} {nnid_out_V_V_TDATA[17]} {nnid_out_V_V_TDATA[18]} {nnid_out_V_V_TDATA[19]} {nnid_out_V_V_TDATA[20]} {nnid_out_V_V_TDATA[21]} {nnid_out_V_V_TDATA[22]} {nnid_out_V_V_TDATA[23]} {nnid_out_V_V_TDATA[24]} {nnid_out_V_V_TDATA[25]} {nnid_out_V_V_TDATA[26]} {nnid_out_V_V_TDATA[27]} {nnid_out_V_V_TDATA[28]} {nnid_out_V_V_TDATA[29]} {nnid_out_V_V_TDATA[30]} {nnid_out_V_V_TDATA[31]}]]
+create_debug_port u_ila_0 probe
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe7]
+set_property port_width 32 [get_debug_ports u_ila_0/probe7]
+connect_debug_port u_ila_0/probe7 [get_nets [list {fet_to_clf[0]} {fet_to_clf[1]} {fet_to_clf[2]} {fet_to_clf[3]} {fet_to_clf[4]} {fet_to_clf[5]} {fet_to_clf[6]} {fet_to_clf[7]} {fet_to_clf[8]} {fet_to_clf[9]} {fet_to_clf[10]} {fet_to_clf[11]} {fet_to_clf[12]} {fet_to_clf[13]} {fet_to_clf[14]} {fet_to_clf[15]} {fet_to_clf[16]} {fet_to_clf[17]} {fet_to_clf[18]} {fet_to_clf[19]} {fet_to_clf[20]} {fet_to_clf[21]} {fet_to_clf[22]} {fet_to_clf[23]} {fet_to_clf[24]} {fet_to_clf[25]} {fet_to_clf[26]} {fet_to_clf[27]} {fet_to_clf[28]} {fet_to_clf[29]} {fet_to_clf[30]} {fet_to_clf[31]}]]
+create_debug_port u_ila_0 probe
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe8]
+set_property port_width 32 [get_debug_ports u_ila_0/probe8]
+connect_debug_port u_ila_0/probe8 [get_nets [list {distance_out_V_V_TDATA[0]} {distance_out_V_V_TDATA[1]} {distance_out_V_V_TDATA[2]} {distance_out_V_V_TDATA[3]} {distance_out_V_V_TDATA[4]} {distance_out_V_V_TDATA[5]} {distance_out_V_V_TDATA[6]} {distance_out_V_V_TDATA[7]} {distance_out_V_V_TDATA[8]} {distance_out_V_V_TDATA[9]} {distance_out_V_V_TDATA[10]} {distance_out_V_V_TDATA[11]} {distance_out_V_V_TDATA[12]} {distance_out_V_V_TDATA[13]} {distance_out_V_V_TDATA[14]} {distance_out_V_V_TDATA[15]} {distance_out_V_V_TDATA[16]} {distance_out_V_V_TDATA[17]} {distance_out_V_V_TDATA[18]} {distance_out_V_V_TDATA[19]} {distance_out_V_V_TDATA[20]} {distance_out_V_V_TDATA[21]} {distance_out_V_V_TDATA[22]} {distance_out_V_V_TDATA[23]} {distance_out_V_V_TDATA[24]} {distance_out_V_V_TDATA[25]} {distance_out_V_V_TDATA[26]} {distance_out_V_V_TDATA[27]} {distance_out_V_V_TDATA[28]} {distance_out_V_V_TDATA[29]} {distance_out_V_V_TDATA[30]} {distance_out_V_V_TDATA[31]}]]
+create_debug_port u_ila_0 probe
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe9]
+set_property port_width 1 [get_debug_ports u_ila_0/probe9]
+connect_debug_port u_ila_0/probe9 [get_nets [list distance_out_V_V_TVALID]]
+create_debug_port u_ila_0 probe
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe10]
+set_property port_width 1 [get_debug_ports u_ila_0/probe10]
+connect_debug_port u_ila_0/probe10 [get_nets [list fifo_fet_to_clf_read]]
+create_debug_port u_ila_0 probe
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe11]
+set_property port_width 1 [get_debug_ports u_ila_0/probe11]
+connect_debug_port u_ila_0/probe11 [get_nets [list nnid_out_V_V_TVALID]]
+create_debug_port u_ila_0 probe
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe12]
+set_property port_width 1 [get_debug_ports u_ila_0/probe12]
+connect_debug_port u_ila_0/probe12 [get_nets [list pca_final_V_V_TVALID]]
+create_debug_port u_ila_0 probe
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe13]
+set_property port_width 1 [get_debug_ports u_ila_0/probe13]
+connect_debug_port u_ila_0/probe13 [get_nets [list SPI_running]]
+create_debug_port u_ila_0 probe
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe14]
+set_property port_width 1 [get_debug_ports u_ila_0/probe14]
+connect_debug_port u_ila_0/probe14 [get_nets [list i_spkPack/spk_stream_pulse]]
+create_debug_port u_ila_0 probe
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe15]
+set_property port_width 1 [get_debug_ports u_ila_0/probe15]
+connect_debug_port u_ila_0/probe15 [get_nets [list i_spkPack/spk_stream_TVALID]]
+create_debug_port u_ila_0 probe
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe16]
+set_property port_width 1 [get_debug_ports u_ila_0/probe16]
+connect_debug_port u_ila_0/probe16 [get_nets [list vq_out_ap_vld]]
+set_property C_CLK_INPUT_FREQ_HZ 300000000 [get_debug_cores dbg_hub]
+set_property C_ENABLE_CLK_DIVIDER false [get_debug_cores dbg_hub]
+set_property C_USER_SCAN_CHAIN 1 [get_debug_cores dbg_hub]
+connect_debug_port dbg_hub/clk [get_nets u_ila_0_pipe_userclk1_in]
