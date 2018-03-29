@@ -39,27 +39,27 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module mem_reg_16 (
-    input             clk   ,
-    input      [15:0] din   ,
-    input             we    ,
-    input             re    ,
-    input      [ 4:0] addr  ,
-    output reg [15:0] dout  ,
-    output            spkDet_en,
-    output            spkClf_en
+    input             clk     ,
+    input      [15:0] din     ,
+    input             we      ,
+    input             re      ,
+    input      [ 4:0] addr    ,
+    output reg [15:0] dout    ,
+    
+    output reg        sync_en ,
+    input             sync_in
 );
 
 (* ram_style = "distributed" *)
 reg [15:0] mem_reg_16[0:31];
 
 always @(posedge clk) begin
-    if (we)
+    if (we) 
         mem_reg_16[addr] <= din;
     if (re)
         dout <= mem_reg_16[addr];
+    sync_en <= mem_reg_16[0][0];
 end
 
-assign spkDet_en = mem_reg_16[0][0];
-assign spkClf_en = mem_reg_16[1][0];
 
 endmodule // mem_cmd

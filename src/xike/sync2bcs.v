@@ -22,7 +22,7 @@
 
 module sync2bcs (
   input         clk       ,
-  input         rst       ,  // !(user_r_mua_32_open && SPI_running)
+  input         rst       ,  // !SPI_running
   input  [31:0] frame_No  ,  // FIFO_TIME_TO_XIKE 
   output [11:0] sec       ,
   output        sync_pulse

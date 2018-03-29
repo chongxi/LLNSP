@@ -515,22 +515,21 @@ module spi_xike_pcie (
 
 // Xike
   wire xike_reset = reset;
-//  wire spkDet_en;
-//  wire spkClf_en;
+
   assign user_r_mua_32_eof          = XIKE_ENABLE;   // flag to stop RAM FIFO
   assign user_r_spk_info_32_eof     = XIKE_ENABLE;
   assign user_r_spk_wav_32_eof      = XIKE_ENABLE;
 //  assign user_r_fet_clf_32_eof      = XIKE_ENABLE;
 
   mem_reg_16 mem_reg_16 (
-    .clk   (bus_clk           ),
-    .din   (user_w_mem_16_data),
-    .we    (user_w_mem_16_wren),
-    .re    (user_r_mem_16_rden),
-    .addr  (user_mem_16_addr  ),
-    .dout  (user_r_mem_16_data),
-    .spkDet_en(spkDet_en      ),
-    .spkClf_en(spkClf_en      )
+    .clk      (bus_clk           ),
+    .din      (user_w_mem_16_data),
+    .we       (user_w_mem_16_wren),
+    .re       (user_r_mem_16_rden),
+    .addr     (user_mem_16_addr  ),
+    .dout     (user_r_mem_16_data),
+    .sync_en  (sync_en           ),
+    .sync_in  (sync_pulse        )
   );
 
   wire [31:0] SPI_TO_XIKE_BUNDLE = {FIFO_CHNO_TO_XIKE, 1'b0, FIFO_DATA_TO_XIKE}; // 1'b for signed int17 data
@@ -696,18 +695,20 @@ module spi_xike_pcie (
     .spk_stream_pulse (spk_stream_pulse )
   );
 
-  // sync to behaviour box
+  // sync to VR stream
+  // write_mem_16(0,1) and SPI_running to trigger sync_pulse
   wire [11:0] sec;
   wire sync_pulse;
   sync2bcs i_sync2bcs (
-    .clk       (bus_clk        ),
-    .rst       (!(user_r_mua_32_open && SPI_running)),
-    .frame_No  (FIFO_TIME_TO_XIKE                   ),
-    .sec       (sec            ),
-    .sync_pulse(sync_pulse     )
+    .clk       (bus_clk           ),
+    .rst       (!SPI_running      ),
+    .frame_No  (FIFO_TIME_TO_XIKE ),
+    .sec       (sec               ),
+    .sync_pulse(sync_pulse        )
   );
-  assign SYNC_PULSE_PORT = sync_pulse;
+  assign SYNC_PULSE_PORT = sync_pulse; // && sync_en;
 
+  
   // muap: fifos to host 
   // 32bits => 32bits
   fifo_32x512 muap_to_host (
