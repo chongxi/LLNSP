@@ -514,7 +514,7 @@ module spi_xike_pcie (
   assign OVERFLOW_LED = fifo_overflow;
 
 // Xike
-  wire xike_reset = reset;
+  wire xike_reset = !user_r_mua_32_open;
 
   assign user_r_mua_32_eof          = XIKE_ENABLE;   // flag to stop RAM FIFO
   assign user_r_spk_info_32_eof     = XIKE_ENABLE;
@@ -562,9 +562,9 @@ module spi_xike_pcie (
   raw_comb_5_streams i_raw_comb_5_streams (
     .spi_clk              (spi_clk                   ),
     .bus_clk              (bus_clk                   ),
-    .xike_reset           (xike_reset                ),
-    .FIFO_STREAMNO_TO_XIKE(FIFO_STREAMNO_TO_XIKE[4:0]),  // 5 streams
-    .SPI_TO_XIKE_BUNDLE   (SPI_TO_XIKE_BUNDLE        ),  // {chNo,1'b0,data}
+    .reset                (xike_reset                ),
+    .FIFO_STREAMNO_TO_XIKE(FIFO_STREAMNO_TO_XIKE[4:0]), // 5 streams
+    .SPI_TO_XIKE_BUNDLE   (SPI_TO_XIKE_BUNDLE        ), // {chNo,1'b0,data}
     .raw_comb_ready       (raw_comb_ready            ),
     .raw_comb_valid       (raw_comb_valid            ),
     .raw_comb_data        (raw_comb_data             ),
@@ -575,17 +575,46 @@ module spi_xike_pcie (
   wire [159:0] mua_comb_data;
   wire [59 :0] mua_comb_ch;
 
-  fir_compiler_0 fir_band_pass (
-    .aresetn           (!xike_reset ), // input wire aresetn
-    .aclk              (bus_clk     ), // input wire aclk
-    .s_axis_data_tvalid(raw_comb_valid), // input wire s_axis_data_tvalid
-    .s_axis_data_tready(raw_comb_ready), // output wire s_axis_data_tready
-    .s_axis_data_tdata (raw_comb_data ), // input wire [79 : 0] s_axis_data_tdata
-    .s_axis_data_tuser (raw_comb_ch   ),    // input wire [59 : 0] s_axis_data_tuser
-    .m_axis_data_tvalid(mua_comb_valid   ), // output wire m_axis_data_tvalid
-    .m_axis_data_tdata (mua_comb_data    ),  // output wire [159 : 0] m_axis_data_tdata
-    .m_axis_data_tuser (mua_comb_ch)    // output wire [59 : 0] m_axis_data_tdata
-    );
+ fir_compiler_0 fir_band_pass (
+   .aresetn           (!xike_reset ), // input wire aresetn
+   .aclk              (bus_clk     ), // input wire aclk
+   .s_axis_data_tvalid(raw_comb_valid), // input wire s_axis_data_tvalid
+   .s_axis_data_tready(raw_comb_ready), // output wire s_axis_data_tready
+   .s_axis_data_tdata (raw_comb_data ), // input wire [79 : 0] s_axis_data_tdata
+   .s_axis_data_tuser (raw_comb_ch   ),    // input wire [59 : 0] s_axis_data_tuser
+   .m_axis_data_tvalid(mua_comb_valid   ), // output wire m_axis_data_tvalid
+   .m_axis_data_tdata (mua_comb_data    ),  // output wire [159 : 0] m_axis_data_tdata
+   .m_axis_data_tuser (mua_comb_ch)    // output wire [59 : 0] m_axis_data_tdata
+   );
+
+///////// Debug for bypass fir filter /////
+// reg         _mua_comb_valid;
+// reg         _raw_comb_ready;
+// reg [59: 0] _mua_comb_ch;
+// reg [159:0] _mua_comb_data;
+
+// always @(posedge bus_clk) begin : bypass_fir_filter
+//     _mua_comb_valid <= raw_comb_valid;
+//     _raw_comb_ready <= 1;
+//     _mua_comb_ch <= raw_comb_ch;
+//     // _mua_comb_data[31:0]    <= raw_comb_data[15] ? {16'b1 ,raw_comb_data[15: 0]} : {16'b0 ,raw_comb_data[15: 0]};
+//     // _mua_comb_data[63:32]   <= raw_comb_data[31] ? {16'b1 ,raw_comb_data[31:16]} : {16'b0 ,raw_comb_data[31:16]};
+//     // _mua_comb_data[95:64]   <= raw_comb_data[47] ? {16'b1 ,raw_comb_data[47:32]} : {16'b0 ,raw_comb_data[47:32]};
+//     // _mua_comb_data[127:96]  <= raw_comb_data[63] ? {16'b1 ,raw_comb_data[63:48]} : {16'b0 ,raw_comb_data[63:48]};
+//     // _mua_comb_data[159:128] <= raw_comb_data[79] ? {16'b1 ,raw_comb_data[79:64]} : {16'b0 ,raw_comb_data[79:64]};
+//     _mua_comb_data[31:0]    <= {16'b0 ,raw_comb_data[15: 0]};
+//     _mua_comb_data[63:32]   <= {16'b0 ,raw_comb_data[31:16]};
+//     _mua_comb_data[95:64]   <= {16'b0 ,raw_comb_data[47:32]};
+//     _mua_comb_data[127:96]  <= {16'b0 ,raw_comb_data[63:48]};
+//     _mua_comb_data[159:128] <= {16'b0 ,raw_comb_data[79:64]};    
+// end
+
+// assign mua_comb_valid = _mua_comb_valid;
+// assign raw_comb_ready = _raw_comb_ready;
+// assign mua_comb_ch = _mua_comb_ch;
+// assign mua_comb_data = _mua_comb_data;
+///////// Debug for bypass fir filter /////  
+  
 
 // Threshold generator based on ...
 // Block-RAM that contains the threshold of each channel
@@ -714,8 +743,8 @@ module spi_xike_pcie (
   fifo_32x512 muap_to_host (
     .clk  (bus_clk                              ),
     .srst (!user_r_mua_32_open                  ),
-    .wr_en(muap_valid && !fifo_mua_full         ), // AXI4 valid and ready
-    .din  (muap_data                            ), // mua_data
+    .wr_en(mua_valid && !fifo_mua_full         ), // AXI4 valid and ready
+    .din  (mua_data                            ), // mua_data
     .rd_en(user_r_mua_32_rden                   ),
     .dout (user_r_mua_32_data                   ),
     .full (fifo_mua_full                        ),

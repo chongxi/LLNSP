@@ -969,7 +969,7 @@ module spi_intan_interface_4_bank (
                               if(channel_MISO <= 32 && channel_MISO > 0) begin
                                 FIFO_DATA_TO_XIKE     <= data_stream_1;
                                 FIFO_DATA_TO_XIKE_WEN <= 1'b1;
-				                CHANNEL_TO_XIKE       <= channel_MISO - 1 + 32 * 0;
+                                CHANNEL_TO_XIKE       <= channel_MISO - 1 + 32 * 0;
                                 STREAM_TO_XIKE        <= 16'b0000000000000001;
                               end
                           end
