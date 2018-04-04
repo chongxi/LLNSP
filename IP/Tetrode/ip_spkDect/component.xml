@@ -803,8 +803,8 @@
       </xilinx:taxonomies>
       <xilinx:displayName>Spk_dect</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>1708172203</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2017-08-18T02:04:11Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>1804040639</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2018-04-04T10:39:28Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2016.1</xilinx:xilinxVersion>

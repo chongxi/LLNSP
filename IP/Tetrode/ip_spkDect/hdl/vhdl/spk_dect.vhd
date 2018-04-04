@@ -110,6 +110,7 @@ architecture behav of spk_dect is
     constant ap_const_lv3_1 : STD_LOGIC_VECTOR (2 downto 0) := "001";
     constant ap_const_lv3_4 : STD_LOGIC_VECTOR (2 downto 0) := "100";
     constant ap_const_lv32_FB1E0000 : STD_LOGIC_VECTOR (31 downto 0) := "11111011000111100000000000000000";
+    constant ap_const_lv32_1E : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000011110";
     constant ap_const_lv64_0 : STD_LOGIC_VECTOR (63 downto 0) := "0000000000000000000000000000000000000000000000000000000000000000";
     constant ap_const_lv64_5 : STD_LOGIC_VECTOR (63 downto 0) := "0000000000000000000000000000000000000000000000000000000000000101";
     constant ap_const_lv64_1 : STD_LOGIC_VECTOR (63 downto 0) := "0000000000000000000000000000000000000000000000000000000000000001";
@@ -1942,7 +1943,7 @@ begin
     tmp8_fu_941_p2 <= (tmp7_fu_936_p2 and not_3_fu_909_p2);
     tmp9_fu_947_p2 <= (tmp8_fu_941_p2 and tmp6_fu_930_p2);
     tmp_10_fu_781_p2 <= "1" when (signed(buf_2d_V_load_reg_1222) < signed(ap_const_lv32_FB1E0000)) else "0";
-    tmp_11_fu_786_p2 <= "1" when (signed(reg_468) < signed(ap_const_lv32_A)) else "0";
+    tmp_11_fu_786_p2 <= "1" when (signed(reg_468) < signed(ap_const_lv32_1E)) else "0";
     tmp_14_1_cast_fu_737_p1 <= std_logic_vector(resize(unsigned(p_Repl2_1_reg_1083),9));
     tmp_14_1_fu_732_p1 <= std_logic_vector(resize(unsigned(p_Repl2_1_reg_1083),64));
     tmp_14_2_cast_fu_755_p1 <= std_logic_vector(resize(unsigned(p_Repl2_2_reg_1089),9));

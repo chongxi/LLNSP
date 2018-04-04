@@ -99,6 +99,7 @@ parameter    ap_const_lv4_0 = 4'b0000;
 parameter    ap_const_lv3_1 = 3'b1;
 parameter    ap_const_lv3_4 = 3'b100;
 parameter    ap_const_lv32_FB1E0000 = 32'b11111011000111100000000000000000;
+parameter    ap_const_lv32_1E = 32'b11110;
 parameter    ap_const_lv64_0 = 64'b0000000000000000000000000000000000000000000000000000000000000000;
 parameter    ap_const_lv64_5 = 64'b101;
 parameter    ap_const_lv64_1 = 64'b1;
@@ -1650,7 +1651,7 @@ assign tmp9_fu_947_p2 = (tmp8_fu_941_p2 & tmp6_fu_930_p2);
 
 assign tmp_10_fu_781_p2 = (($signed(buf_2d_V_load_reg_1222) < $signed(32'b11111011000111100000000000000000)) ? 1'b1 : 1'b0);
 
-assign tmp_11_fu_786_p2 = (($signed(reg_468) < $signed(32'b1010)) ? 1'b1 : 1'b0);
+assign tmp_11_fu_786_p2 = (($signed(reg_468) < $signed(32'b11110)) ? 1'b1 : 1'b0);
 
 assign tmp_14_1_cast_fu_737_p1 = p_Repl2_1_reg_1083;
 
