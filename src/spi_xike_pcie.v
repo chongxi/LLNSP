@@ -730,7 +730,7 @@ module spi_xike_pcie (
   wire sync_pulse;
   sync2bcs i_sync2bcs (
     .clk       (bus_clk           ),
-    .rst       (!SPI_running      ),
+    .rst       (frame_count_rst   ),
     .frame_No  (FIFO_TIME_TO_XIKE ),
     .sec       (sec               ),
     .sync_pulse(sync_pulse        )
