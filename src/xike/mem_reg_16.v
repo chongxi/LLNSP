@@ -52,13 +52,15 @@ module mem_reg_16 (
 
 (* ram_style = "distributed" *)
 reg [15:0] mem_reg_16[0:31];
+reg sync_en_buf;
 
 always @(posedge clk) begin
     if (we) 
         mem_reg_16[addr] <= din;
     if (re)
         dout <= mem_reg_16[addr];
-    sync_en <= mem_reg_16[0][0];
+    sync_en_buf <= mem_reg_16[0][0];
+    sync_en     <= sync_en_buf;
 end
 
 

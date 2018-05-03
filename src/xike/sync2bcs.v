@@ -50,6 +50,7 @@ end
 (* mark_debug = "true" *) reg [11:0] sec = {12{1'b0}};   // time in seconds
 (* mark_debug = "true" *) reg sec_vld = 0;               // time in seconds (vld signal)
 
+
 always @(posedge clk or posedge rst) begin
   if (rst) begin
     cnt <= 0;
@@ -67,6 +68,15 @@ always @(posedge clk or posedge rst) begin
         sec_vld <= 0;
       end
   end
+end
+
+
+// Trigger by SPI_running 0->1: generate pulse at SPI_running
+always @(posedge clk or negedge rst) begin
+    if(~rst) begin
+        sec_vld <= 1;
+        sec <= 0;
+    end
 end
 
 

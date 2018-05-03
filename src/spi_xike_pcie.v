@@ -485,7 +485,9 @@ module spi_xike_pcie (
     .FIFO_DATA_TO_XIKE             (FIFO_DATA_TO_XIKE             ),
     .FIFO_DATA_TO_XIKE_WEN         (FIFO_DATA_TO_XIKE_WEN         ),
     .STREAM_TO_XIKE                (FIFO_STREAMNO_TO_XIKE         ),
-    .CHANNEL_TO_XIKE               (FIFO_CHNO_TO_XIKE             )
+    .CHANNEL_TO_XIKE               (FIFO_CHNO_TO_XIKE             ),
+    
+    .sync_pulse                    (sync_pulse                    )
   );
 
 // spi_xillybus_interface ------------------------------------------------------------------------------------------------------
@@ -515,11 +517,14 @@ module spi_xike_pcie (
 
 // Xike
   wire xike_reset = !user_r_mua_32_open;
-
+  (* mark_debug = "true" *) wire sync_en;
+  (* mark_debug = "true" *) wire XIKE_ENABLE;
+  
   assign user_r_mua_32_eof          = XIKE_ENABLE;   // flag to stop RAM FIFO
   assign user_r_spk_info_32_eof     = XIKE_ENABLE;
   assign user_r_spk_wav_32_eof      = XIKE_ENABLE;
 //  assign user_r_fet_clf_32_eof      = XIKE_ENABLE;
+
 
   mem_reg_16 mem_reg_16 (
     .clk      (bus_clk           ),

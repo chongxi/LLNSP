@@ -59,7 +59,10 @@ module spi_intan_interface_4_bank (
   output reg [15:0] FIFO_DATA_TO_XIKE             ,
   output reg        FIFO_DATA_TO_XIKE_WEN         ,
   output reg [15:0] STREAM_TO_XIKE                ,
-  output reg [9:0 ] CHANNEL_TO_XIKE
+  output reg [9:0 ] CHANNEL_TO_XIKE               ,
+  
+  // Sync
+  input sync_pulse
 );
 
 
@@ -455,7 +458,7 @@ module spi_intan_interface_4_bank (
   //Bogus signals
   wire [15:0] TTL_in    ;
   wire [15:0] TTL_out   ;
-  assign TTL_in            = 16'b0;
+  assign TTL_in[15]        = sync_pulse;
   assign TTL_out           = 16'b0;
   assign data_stream_ADC_1 = 16'b0;
   assign data_stream_ADC_2 = 16'b0;
