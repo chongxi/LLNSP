@@ -27,11 +27,16 @@ input rst,
 input [7:0] O,
 input [3:0] D,
 input [6:0] M,
-input start_sig,
+input start_sig,    // PLL_prog_trigger
 output ready,
 output locked,
 output clk_out
     );
+    
+    // fout = fin/(O*D)*M
+    parameter OO=25;
+    parameter DD=4;
+    parameter MM=42;
     
     wire        clkfbout;
     wire        clkfbout_buf;
@@ -317,14 +322,15 @@ output clk_out
             end
         endcase
     end
-
+    
+// 200*42/(4*25) = 84.00MHz
 PLLE2_ADV
   #(.BANDWIDTH            ("OPTIMIZED"),
     .COMPENSATION         ("ZHOLD"),
-    .DIVCLK_DIVIDE        (4),
-    .CLKFBOUT_MULT        (42),
+    .DIVCLK_DIVIDE        (DD),
+    .CLKFBOUT_MULT        (MM),
     .CLKFBOUT_PHASE       (0.000),
-    .CLKOUT0_DIVIDE       (25),
+    .CLKOUT0_DIVIDE       (OO),
     .CLKOUT0_PHASE        (0.000),
     .CLKOUT0_DUTY_CYCLE   (0.500),
     .CLKIN1_PERIOD        (5.0))
@@ -361,7 +367,6 @@ PLLE2_ADV
         .O(clk_in_buf),
         .I(clk_in)
     );
-  //assign clk_in_buf = clk_in;
     
     BUFG clkfb_buf (
         .O(clkfbout_buf),

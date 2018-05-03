@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="spk_packet_tx" xd:componentRef="spk_packet_tx" xd:initiationInterval="13" xd:clockPeriod="4.000000" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
+  <xd:arg xd:name="mua_stream.data" xd:originalName="mua_stream" xd:direction="in" xd:interfaceRef="mua_stream_V_data_V" xd:busTypeRef="acc_fifo" xd:dataWidth="192"/>
+  <xd:arg xd:name="out_pre.user" xd:originalName="out_pre" xd:direction="out" xd:interfaceRef="out_pre" xd:busTypeRef="axis" xd:dataWidth="8"/>
+  <xd:arg xd:name="out_pre.id" xd:originalName="out_pre" xd:direction="out" xd:interfaceRef="out_pre" xd:busTypeRef="axis" xd:dataWidth="16"/>
+  <xd:arg xd:name="out_pre.last" xd:originalName="out_pre" xd:direction="out" xd:interfaceRef="out_pre" xd:busTypeRef="axis" xd:dataWidth="1"/>
+  <xd:arg xd:name="out_pre.data" xd:originalName="out_pre" xd:direction="out" xd:interfaceRef="out_pre" xd:busTypeRef="axis" xd:dataWidth="128"/>
+  <xd:arg xd:name="out_pre.dest" xd:originalName="out_pre" xd:direction="out" xd:interfaceRef="out_pre" xd:busTypeRef="axis" xd:dataWidth="1"/>
+  <xd:arg xd:name="out_post.user" xd:originalName="out_post" xd:direction="out" xd:interfaceRef="out_post" xd:busTypeRef="axis" xd:dataWidth="8"/>
+  <xd:arg xd:name="out_post.id" xd:originalName="out_post" xd:direction="out" xd:interfaceRef="out_post" xd:busTypeRef="axis" xd:dataWidth="16"/>
+  <xd:arg xd:name="out_post.last" xd:originalName="out_post" xd:direction="out" xd:interfaceRef="out_post" xd:busTypeRef="axis" xd:dataWidth="1"/>
+  <xd:arg xd:name="out_post.data" xd:originalName="out_post" xd:direction="out" xd:interfaceRef="out_post" xd:busTypeRef="axis" xd:dataWidth="128"/>
+  <xd:arg xd:name="out_post.dest" xd:originalName="out_post" xd:direction="out" xd:interfaceRef="out_post" xd:busTypeRef="axis" xd:dataWidth="1"/>
+  <xd:arg xd:name="time_stamp" xd:originalName="time_stamp" xd:direction="out" xd:interfaceRef="time_stamp_V" xd:busTypeRef="axis" xd:dataWidth="32"/>
+  <xd:latencyEstimates xd:best-case="7" xd:worst-case="12" xd:average-case="10"/>
+  <xd:resourceEstimates xd:LUT="475" xd:FF="1087" xd:BRAM="64" xd:DSP="0"/>
+</xd:acceleratorMap>
