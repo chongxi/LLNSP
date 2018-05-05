@@ -525,7 +525,6 @@ module spi_xike_pcie (
   assign user_r_spk_wav_32_eof      = XIKE_ENABLE;
 //  assign user_r_fet_clf_32_eof      = XIKE_ENABLE;
 
-
   mem_reg_16 mem_reg_16 (
     .clk      (bus_clk           ),
     .din      (user_w_mem_16_data),
@@ -533,7 +532,10 @@ module spi_xike_pcie (
     .re       (user_r_mem_16_rden),
     .addr     (user_mem_16_addr  ),
     .dout     (user_r_mem_16_data),
-    .sync_en  (sync_en           ),
+    
+    .SPI_on   (SPI_running       ),
+    .mua_open (user_r_mua_32_open),
+    .mua_eof  (user_r_mua_32_eof ),
     .sync_in  (sync_pulse        )
   );
 
