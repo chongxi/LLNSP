@@ -630,8 +630,8 @@ module spi_xike_pcie (
   wire [159:0] threshold_comb  ;
   wire [159:0] ch_unigroup_comb;
   wire [159:0] off_set_comb    ;
-(* mark_debug = "true" *)   wire [7:0] ch_gpNo1        ;
-(* mark_debug = "true" *)   wire [7:0] ch_gpNo2        ;
+(* mark_debug = "true" *)   wire [7:0] ch_grpNo        ;
+(* mark_debug = "true" *)   wire [7:0] ch_ref_out      ;
 
   bram_thres bram_thres (
     .clk             (bus_clk           ),
@@ -648,8 +648,8 @@ module spi_xike_pcie (
     
     // ch to ch_gpNo
     .ch_in           (muap_ch           ),
-    .ch_gp_out1      (ch_gpNo1          ),
-    .ch_gp_out2      (ch_gpNo2          )
+    .ch_grp_out      (ch_grpNo          ),
+    .ch_ref_out      (ch_ref_out        )
   );
   
   wire frame_count_rst = !SPI_running;
@@ -721,7 +721,7 @@ module spi_xike_pcie (
     .frame_No_in      (muap_frame_No    ),
     .ch_in            (muap_ch          ),
     .ch_unigroup_in   (muap_ch_hash     ),
-    .ch_gpno_in       (ch_gpNo1         ),
+    .ch_gpno_in       (ch_grpNo         ),
     .valid_in         (muap_valid       ),
     .v_in             (muap_data        ),
     

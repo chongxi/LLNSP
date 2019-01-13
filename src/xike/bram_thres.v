@@ -24,7 +24,7 @@
 
 module bram_thres (clk, din, we, re, addr, dout, 
 				   ch_comb, thr_out_comb, ch_hash_out_comb, off_set_out_comb, 
-				   ch_in, ch_gp_out1, ch_gp_out2);
+				   ch_in, ch_grp_out, ch_ref_out);
 
 parameter BITWIDTH = 32 ;
 parameter CH_WIDTH = 32 ;
@@ -40,15 +40,16 @@ reg [BITWIDTH-1:0] dout_buf;
 output [BITWIDTH-1:0] dout;
 
 input      [11:0] ch_in;
-output reg [BITWIDTH-1:0]  ch_gp_out1;
-output reg [BITWIDTH-1:0]  ch_gp_out2;
+output reg [BITWIDTH-1:0]  ch_grp_out;
+output reg [BITWIDTH-1:0]  ch_ref_out;
 
 input  [59:0] ch_comb;
 output [BITWIDTH*BANK_NUM-1:0] thr_out_comb;
 output [BITWIDTH*BANK_NUM-1:0] ch_hash_out_comb;
 output [BITWIDTH*BANK_NUM-1:0] off_set_out_comb;
+// output [BITWIDTH*BANK_NUM-1:0] ch_ref_out_comb;
 
-// These are 5 channels at this moment given by ch_comb
+// These are 5 channels at this moment given by ch_comb  (5 chips)
 (* mark_debug = "true" *) wire [11:0] ch_0 = ch_comb[11:0 ];
 (* mark_debug = "true" *) wire [11:0] ch_1 = ch_comb[23:12];
 (* mark_debug = "true" *) wire [11:0] ch_2 = ch_comb[35:24];
@@ -59,18 +60,21 @@ output [BITWIDTH*BANK_NUM-1:0] off_set_out_comb;
 reg [BITWIDTH*BANK_NUM-1:0] thr_out_buf;
 reg [BITWIDTH*BANK_NUM-1:0] ch_hash_buf;
 reg [BITWIDTH*BANK_NUM-1:0] off_set_buf;
+// reg [BITWIDTH*BANK_NUM-1:0] ch_ref_buf;
 
 // Internal block memory
 (* ram_style = "block" *) 
-reg signed [BITWIDTH-1:0] thr_mem[0:DEPTH-1];                      // base address 0,    to 255
+reg signed [BITWIDTH-1:0] thr_mem[0:DEPTH-1];                     // base address 0,    to 255
 (* ram_style = "block" *) 
 reg signed [BITWIDTH-1:0] ch_hash[0:DEPTH-1];                     // base address 256,  to 511
 (* ram_style = "block" *) 
 reg signed [BITWIDTH-1:0] off_set[0:DEPTH-1];                     // base address 512,  to 767
 (* ram_style = "block" *) 
 reg signed [BITWIDTH-1:0] ch_gpNo[0:DEPTH-1];                     // base address 768,  to 1023
+(* ram_style = "block" *) 
+reg signed [BITWIDTH-1:0]  ch_ref[0:DEPTH-1];                     // base address 1024,  to 1279
 
-// read and write thr and ch_hash to internal BRAM
+// read and write thr and ch_hash, off_set, group_no, ch_ref to internal BRAM
 always @(posedge clk) begin
 	if (addr<DEPTH) begin
 	    if (we) thr_mem[addr] <= din;
@@ -88,6 +92,10 @@ always @(posedge clk) begin
         if (we) ch_gpNo[addr-3*DEPTH] <= din;
         if (re) dout_buf <= ch_gpNo[addr-3*DEPTH];
     end    
+    else if (addr>=4*DEPTH && addr<5*DEPTH) begin
+        if (we) ch_ref[addr-4*DEPTH] <= din;
+        if (re) dout_buf <= ch_ref[addr-4*DEPTH];
+    end    
 end
 
 
@@ -104,10 +112,16 @@ always @(posedge clk) begin
 	off_set_buf <= {off_set[ch_4], off_set[ch_3], off_set[ch_2], off_set[ch_1], off_set[ch_0]};
 end
 
-// ch_in => ch_gp_out: map ch number to space number  <=> in spiketag: tetrodes.belong_group(75) => 0
+// always @(posedge clk) begin
+//     ch_ref_buf <= {ch_ref[ch_4], ch_ref[ch_3], ch_ref[ch_2], ch_ref[ch_1], ch_ref[ch_0]};
+// end
+
+
+// ch_in => ch_grp_out: map ch number to group number  <=> in spiketag: fpga.ch_grpNo[ch_in] 
+// ch_in => ch_ref_out: map ch number to referecen channel number  <=> in spiketag: fpga.ch_ref[ch_in]
 always @(posedge clk) begin
-    ch_gp_out1 <= ch_gpNo[ch_in];
-    ch_gp_out2 <= ch_gpNo[ch_in];
+    ch_grp_out <= ch_gpNo[ch_in];
+    ch_ref_out <= ch_ref[ch_in];
 end
 
 // output ports 
@@ -115,5 +129,6 @@ assign dout = dout_buf;
 assign thr_out_comb     = thr_out_buf;
 assign ch_hash_out_comb = ch_hash_buf;
 assign off_set_out_comb = off_set_buf;
+// assign ch_ref_out_comb  = ch_ref_buf;
 
 endmodule
