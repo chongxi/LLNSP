@@ -752,8 +752,8 @@ module spi_xike_pcie (
   fifo_32x512 muap_to_host (
     .clk  (bus_clk                              ),
     .srst (!user_r_mua_32_open                  ),
-    .wr_en(mua_valid && !fifo_mua_full         ), // AXI4 valid and ready
-    .din  (mua_data                            ), // mua_data
+    .wr_en(muap_valid && !fifo_mua_full         ), // AXI4 valid and ready
+    .din  (muap_data                            ), // mua_data
     .rd_en(user_r_mua_32_rden                   ),
     .dout (user_r_mua_32_data                   ),
     .full (fifo_mua_full                        ),
