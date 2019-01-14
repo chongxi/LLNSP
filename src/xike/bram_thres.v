@@ -24,7 +24,8 @@
 
 module bram_thres (clk, din, we, re, addr, dout, 
 				   ch_comb, thr_out_comb, ch_hash_out_comb, off_set_out_comb, 
-				   ch_in, ch_grp_out, ch_ref_out);
+				   ch_in1, ch_ref_out, 
+                   ch_in2, ch_grp_out);
 
 parameter BITWIDTH = 32 ;
 parameter CH_WIDTH = 32 ;
@@ -39,9 +40,10 @@ input [BITWIDTH-1:0] din ;
 reg [BITWIDTH-1:0] dout_buf;
 output [BITWIDTH-1:0] dout;
 
-input      [11:0] ch_in;
-output reg [BITWIDTH-1:0]  ch_grp_out;
+input      [11:0] ch_in1;
+input      [11:0] ch_in2;
 output reg [BITWIDTH-1:0]  ch_ref_out;
+output reg [BITWIDTH-1:0]  ch_grp_out;
 
 input  [59:0] ch_comb;
 output [BITWIDTH*BANK_NUM-1:0] thr_out_comb;
@@ -120,8 +122,8 @@ end
 // ch_in => ch_grp_out: map ch number to group number  <=> in spiketag: fpga.ch_grpNo[ch_in] 
 // ch_in => ch_ref_out: map ch number to referecen channel number  <=> in spiketag: fpga.ch_ref[ch_in]
 always @(posedge clk) begin
-    ch_grp_out <= ch_gpNo[ch_in];
-    ch_ref_out <= ch_ref[ch_in];
+    ch_ref_out <= ch_ref[ch_in1];
+    ch_grp_out <= ch_gpNo[ch_in2];
 end
 
 // output ports 
