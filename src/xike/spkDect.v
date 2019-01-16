@@ -4,7 +4,6 @@ module spkDect (
   // input
   input         mua_valid    ,
   input  [31:0] frameNo_in   ,
-  input  [11:0] ch_ref_in    ,
   input  [11:0] chNo_in      ,
   input  [31:0] ch_hash_in   ,
   input  [31:0] thr_data     ,
@@ -28,7 +27,6 @@ reg [31:0] _mua_data_buf  ;
 reg mua_stream_valid;
 reg [31:0] frameNo_in_buf;
 reg [11:0] chNo_in_buf   ; // ch_ref_in, chNo_in are both 12bits, 2*12+8=32 bits, so there is a 8'b0
-reg [11:0] ch_ref_in_buf ;
 reg [31:0] ch_hash_in_buf;
 reg [31:0] thr_data_buf  ;
 reg [31:0] mua_data_buf  ;
@@ -41,7 +39,6 @@ always @(posedge clk)
     _ch_hash_in_buf   <= ch_hash_in;
     _thr_data_buf     <= thr_data  ;
     _mua_data_buf     <= mua_data  ;
-    ch_ref_in_buf     <= ch_ref_in ;
   end
 
 always @(posedge clk)
@@ -54,7 +51,7 @@ always @(posedge clk)
     mua_data_buf     <= _mua_data_buf    ;
   end
 
-assign mua_stream_V_data_V_din = {frameNo_in_buf, 8'b0, ch_ref_in_buf, chNo_in_buf ,ch_hash_in_buf, thr_data_buf, mua_data_buf};
+assign mua_stream_V_data_V_din = {frameNo_in_buf, 8'b0, 12'b0, chNo_in_buf ,ch_hash_in_buf, thr_data_buf, mua_data_buf};
 
 wire [159:0] mua_stream_V_data_V_dout   ; // fifo => spk_dect 
 

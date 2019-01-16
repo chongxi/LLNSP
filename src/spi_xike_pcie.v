@@ -666,7 +666,7 @@ module spi_xike_pcie (
     .bus_clk          (bus_clk          ), // Clock
     .xike_reset       (xike_reset       ), // Reset
     .frame_count_rst  (frame_count_rst  ),
-  
+    // input 
     .mua_comb_valid   (mua_comb_valid   ),
     .mua_comb_ch      (mua_comb_ch      ),
     .mua_comb_data    (mua_comb_data    ),
@@ -674,7 +674,7 @@ module spi_xike_pcie (
     .threshold_comb   (threshold_comb   ),
     .off_set_comb     (off_set_comb     ),
     .fifo_mua_full    (fifo_mua_full    ),
-    
+    // output
     .mua_valid        (mua_valid       ),
     .mua_ch           (mua_ch          ),
     .mua_data         (mua_data        ),
@@ -683,13 +683,14 @@ module spi_xike_pcie (
     .mua_frame_No     (mua_frame_No    )
   );
 
-  (* mark_debug = "true" *) wire        muap_valid;
-  (* mark_debug = "true" *) wire [11:0] muap_ch;
-  (* mark_debug = "true" *) wire [31:0] muap_data;
-  (* mark_debug = "true" *) wire [31:0] muap_ch_hash;
-  (* mark_debug = "true" *) wire [31:0] muap_frame_No;
-
-  spkDect i_spkDect (
+  (* mark_debug = "true" *)  wire        muar_valid;
+  (* mark_debug = "true" *)  wire [31:0] muar_frame_No;
+  (* mark_debug = "true" *)  wire [11:0] muar_ch;
+  (* mark_debug = "true" *)  wire [31:0] muar_data;
+  (* mark_debug = "true" *)  wire [31:0] muar_ch_hash;
+  (* mark_debug = "true" *)  wire [31:0] muar_thr;
+  
+  ref_substract i_ref_substract (
     .clk          (bus_clk        ),
     .rst          (frame_count_rst),
     // input
@@ -697,9 +698,34 @@ module spi_xike_pcie (
     .frameNo_in   (mua_frame_No   ),
     .ch_ref_in    (ch_ref         ),
     .chNo_in      (mua_ch         ),
+    .mua_data     (mua_data       ),
     .ch_hash_in   (mua_ch_hash    ),
     .thr_data     (thr_data       ),
-    .mua_data     (mua_data       ),
+    // output
+    .muar_valid   (muar_valid     ),
+    .muar_frame_No(muar_frame_No  ),
+    .muar_ch      (muar_ch        ),
+    .muar_ch_hash (muar_ch_hash   ),
+    .muar_thr     (muar_thr       ),
+    .muar_data    (muar_data      )
+  );
+
+  (* mark_debug = "true" *) wire        muap_valid;
+  (* mark_debug = "true" *) wire [31:0] muap_frame_No;
+  (* mark_debug = "true" *) wire [11:0] muap_ch;
+  (* mark_debug = "true" *) wire [31:0] muap_data;
+  (* mark_debug = "true" *) wire [31:0] muap_ch_hash;
+
+  spkDect i_spkDect (
+    .clk          (bus_clk        ),
+    .rst          (frame_count_rst),
+    // input
+    .mua_valid    (muar_valid      ),
+    .frameNo_in   (muar_frame_No   ),
+    .chNo_in      (muar_ch         ),
+    .ch_hash_in   (muar_ch_hash    ),
+    .thr_data     (muar_thr        ),
+    .mua_data     (muar_data       ),
     // output
     .muap_valid   (muap_valid     ),
     .muap_frame_No(muap_frame_No  ),
