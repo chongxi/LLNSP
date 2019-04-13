@@ -772,18 +772,30 @@ module spi_xike_pcie (
   );
   assign SYNC_PULSE_PORT = sync_pulse; // && sync_en;
 
-  
-  // muap: fifos to host 
+  (* mark_debug = "true" *) wire        muao_valid;
+  (* mark_debug = "true" *) wire [31:0] muao_data ;
+  (* mark_debug = "true" *) wire        muao_reset = frame_count_rst || user_r_mua_32_eof;
+
+  mua_reorder i_mua_reorder (
+    .clk       (bus_clk   ),
+    .rst       (muao_reset),
+    .muar_valid(muar_valid),
+    .muar_data (muar_data ),
+    .muao_valid(muao_valid),
+    .muao_data (muao_data )
+  );
+ 
+  // muao: fifos to host 
   // 32bits => 32bits
-  fifo_32x512 muap_to_host (
-    .clk  (bus_clk                              ),
-    .srst (!user_r_mua_32_open                  ),
-    .wr_en(muap_valid && !fifo_mua_full         ), // AXI4 valid and ready
-    .din  (muap_data                            ), // mua_data
-    .rd_en(user_r_mua_32_rden                   ),
-    .dout (user_r_mua_32_data                   ),
-    .full (fifo_mua_full                        ),
-    .empty(user_r_mua_32_empty                  )
+  fifo_32x512 muao_to_host (
+    .clk  (bus_clk                     ),
+    .srst (!user_r_mua_32_open         ),
+    .wr_en(muao_valid && !fifo_mua_full), // AXI4 valid and ready
+    .din  (muao_data                   ), // mua_data
+    .rd_en(user_r_mua_32_rden          ),
+    .dout (user_r_mua_32_data          ),
+    .full (fifo_mua_full               ),
+    .empty(user_r_mua_32_empty         )
   );
 
   wire spk_info_valid = muap_valid && muap_data[0] && !fifo_spk_info_full;

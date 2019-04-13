@@ -759,10 +759,6 @@
         <spirit:userFileType>USED_IN_out_of_context</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/spk_packet_tx_p_busy_A_V_ram.dat</spirit:name>
-        <spirit:userFileType>mif</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
         <spirit:name>hdl/verilog/spk_packet_tx_cnt_A_V.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
@@ -780,10 +776,6 @@
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/verilog/spk_packet_tx_state_A.v</spirit:name>
-        <spirit:fileType>verilogSource</spirit:fileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>hdl/verilog/spk_packet_tx_p_busy_A_V.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
@@ -798,10 +790,6 @@
     <spirit:fileSet>
       <spirit:name>xilinx_verilogbehavioralsimulation_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>hdl/verilog/spk_packet_tx_p_busy_A_V_ram.dat</spirit:name>
-        <spirit:userFileType>mif</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
         <spirit:name>hdl/verilog/spk_packet_tx_cnt_A_V.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
@@ -822,11 +810,6 @@
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/verilog/spk_packet_tx_state_A.v</spirit:name>
-        <spirit:fileType>verilogSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>hdl/verilog/spk_packet_tx_p_busy_A_V.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
@@ -861,11 +844,7 @@
       <spirit:file>
         <spirit:name>hdl/vhdl/spk_packet_tx_cnt_A_V.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>hdl/vhdl/spk_packet_tx_p_busy_A_V.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_68350a75</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_b78979a8</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -887,11 +866,6 @@
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/vhdl/spk_packet_tx_cnt_A_V.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>hdl/vhdl/spk_packet_tx_p_busy_A_V.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
@@ -955,7 +929,7 @@
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>latency</spirit:name>
-      <spirit:value spirit:id="PARAM_VALUE.latency" spirit:order="5">7</spirit:value>
+      <spirit:value spirit:id="PARAM_VALUE.latency" spirit:order="5">4</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>II</spirit:name>
@@ -972,8 +946,8 @@
       </xilinx:taxonomies>
       <xilinx:displayName>Spk_packet_tx</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>1710021809</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2017-10-02T22:09:34Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>1901111054</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2019-01-11T15:55:04Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2016.1</xilinx:xilinxVersion>

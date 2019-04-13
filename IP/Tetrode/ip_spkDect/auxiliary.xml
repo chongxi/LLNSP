@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="spk_dect" xd:componentRef="spk_dect" xd:initiationInterval="22" xd:clockPeriod="4.000000" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
+<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="spk_dect" xd:componentRef="spk_dect" xd:initiationInterval="21" xd:clockPeriod="4.000000" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
   <xd:controlReg xd:name="control" xd:interfaceRef="ap_ctrl" xd:busTypeRef="acc_handshake" xd:type="acc_handshake"/>
   <xd:arg xd:name="mua_stream.data" xd:originalName="mua_stream" xd:direction="in" xd:interfaceRef="mua_stream_V_data_V" xd:busTypeRef="acc_fifo" xd:arraySize="8" xd:dataWidth="160"/>
   <xd:arg xd:name="muap_stream.user" xd:originalName="muap_stream" xd:direction="out" xd:interfaceRef="muap_stream" xd:busTypeRef="axis" xd:dataWidth="32"/>
   <xd:arg xd:name="muap_stream.id" xd:originalName="muap_stream" xd:direction="out" xd:interfaceRef="muap_stream" xd:busTypeRef="axis" xd:dataWidth="8"/>
   <xd:arg xd:name="muap_stream.data" xd:originalName="muap_stream" xd:direction="out" xd:interfaceRef="muap_stream" xd:busTypeRef="axis" xd:dataWidth="32"/>
   <xd:arg xd:name="muap_stream.dest" xd:originalName="muap_stream" xd:direction="out" xd:interfaceRef="muap_stream" xd:busTypeRef="axis" xd:dataWidth="32"/>
-  <xd:latencyEstimates xd:best-case="13" xd:worst-case="21" xd:average-case="18"/>
-  <xd:resourceEstimates xd:LUT="543" xd:FF="895" xd:BRAM="5" xd:DSP="0"/>
+  <xd:latencyEstimates xd:best-case="17" xd:worst-case="20" xd:average-case="19"/>
+  <xd:resourceEstimates xd:LUT="345" xd:FF="672" xd:BRAM="2" xd:DSP="0"/>
 </xd:acceleratorMap>

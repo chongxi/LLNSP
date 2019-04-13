@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="mua_reorder" xd:componentRef="mua_reorder" xd:initiationInterval="201" xd:clockPeriod="4.000000" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
+  <xd:arg xd:name="muar_stream.data" xd:originalName="muar_stream" xd:direction="in" xd:interfaceRef="muar_stream_V_data_V" xd:busTypeRef="acc_fifo" xd:dataWidth="32"/>
+  <xd:arg xd:name="muao_stream.data" xd:originalName="muao_stream" xd:direction="out" xd:interfaceRef="muao_stream_V_data_V" xd:busTypeRef="axis" xd:dataWidth="32"/>
+  <xd:latencyEstimates xd:best-case="39" xd:worst-case="200" xd:average-case="120"/>
+  <xd:resourceEstimates xd:LUT="577" xd:FF="444" xd:BRAM="1" xd:DSP="0"/>
+</xd:acceleratorMap>
