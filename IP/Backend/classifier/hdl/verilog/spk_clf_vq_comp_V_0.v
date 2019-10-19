@@ -9,8 +9,8 @@
 module spk_clf_vq_comp_V_0_ram (addr0, ce0, d0, we0, q0,  clk);
 
 parameter DWIDTH = 8;
-parameter AWIDTH = 7;
-parameter MEM_SIZE = 100;
+parameter AWIDTH = 9;
+parameter MEM_SIZE = 500;
 
 input[AWIDTH-1:0] addr0;
 input ce0;
@@ -19,7 +19,7 @@ input we0;
 output reg[DWIDTH-1:0] q0;
 input clk;
 
-(* ram_style = "distributed" *)reg [DWIDTH-1:0] ram[MEM_SIZE-1:0];
+(* ram_style = "block" *)reg [DWIDTH-1:0] ram[MEM_SIZE-1:0];
 
 initial begin
     $readmemh("./spk_clf_vq_comp_V_0_ram.dat", ram);
@@ -56,8 +56,8 @@ module spk_clf_vq_comp_V_0(
     q0);
 
 parameter DataWidth = 32'd8;
-parameter AddressRange = 32'd100;
-parameter AddressWidth = 32'd7;
+parameter AddressRange = 32'd500;
+parameter AddressWidth = 32'd9;
 input reset;
 input clk;
 input[AddressWidth - 1:0] address0;

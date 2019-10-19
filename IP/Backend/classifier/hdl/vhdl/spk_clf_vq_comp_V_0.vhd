@@ -12,10 +12,10 @@ use ieee.std_logic_unsigned.all;
 
 entity spk_clf_vq_comp_V_0_ram is 
     generic(
-            mem_type    : string := "distributed"; 
+            mem_type    : string := "block"; 
             dwidth     : integer := 8; 
-            awidth     : integer := 7; 
-            mem_size    : integer := 100
+            awidth     : integer := 9; 
+            mem_size    : integer := 500
     ); 
     port (
           addr0     : in std_logic_vector(awidth-1 downto 0); 
@@ -35,7 +35,7 @@ type mem_array is array (0 to mem_size-1) of std_logic_vector (dwidth-1 downto 0
 shared variable ram : mem_array := (others=>(others=>'0'));
 
 attribute syn_ramstyle : string; 
-attribute syn_ramstyle of ram : variable is "select_ram";
+attribute syn_ramstyle of ram : variable is "block_ram";
 attribute ram_style : string;
 attribute ram_style of ram : variable is mem_type;
 attribute EQUIVALENT_REGISTER_REMOVAL : string;
@@ -77,8 +77,8 @@ use IEEE.std_logic_1164.all;
 entity spk_clf_vq_comp_V_0 is
     generic (
         DataWidth : INTEGER := 8;
-        AddressRange : INTEGER := 100;
-        AddressWidth : INTEGER := 7);
+        AddressRange : INTEGER := 500;
+        AddressWidth : INTEGER := 9);
     port (
         reset : IN STD_LOGIC;
         clk : IN STD_LOGIC;

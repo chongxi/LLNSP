@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="rt_feedback" xd:componentRef="rt_feedback" xd:initiationInterval="250018" xd:clockPeriod="4.000000" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
+  <xd:controlReg xd:name="control" xd:interfaceRef="ap_ctrl" xd:busTypeRef="acc_handshake" xd:type="acc_handshake"/>
+  <xd:arg xd:name="fet_packet_spk_id[]" xd:originalName="fet_packet_spk_id" xd:direction="in" xd:interfaceRef="fet_packet_spk_id_V" xd:busTypeRef="acc_fifo" xd:arraySize="7" xd:dataWidth="32"/>
+  <xd:arg xd:name="spk_id_out" xd:originalName="spk_id_out" xd:direction="out" xd:interfaceRef="spk_id_out_V_V" xd:busTypeRef="axis" xd:dataWidth="32"/>
+  <xd:latencyEstimates xd:best-case="17" xd:worst-case="250017" xd:average-case="125017"/>
+  <xd:resourceEstimates xd:LUT="108" xd:FF="68" xd:BRAM="0" xd:DSP="0"/>
+</xd:acceleratorMap>

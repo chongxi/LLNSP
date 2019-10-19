@@ -56,16 +56,16 @@ module mem_reg_16 (
 reg [15:0] mem_reg_16[0:31];
 
 always @(posedge clk) begin
-//    if (we) 
-//        mem_reg_16[addr] <= din;
+    if (we) 
+        mem_reg_16[addr] <= din;
     if (re)
         dout <= mem_reg_16[addr];
-    else begin
-        mem_reg_16[0] <= mua_open;
-        mem_reg_16[1] <= SPI_on;
-        mem_reg_16[2] <= sync_in;
-        mem_reg_16[3] <= mua_eof;
-    end
+//    else begin
+//        mem_reg_16[0] <= mua_open;
+//        mem_reg_16[1] <= SPI_on;
+//        mem_reg_16[2] <= sync_in;
+//        mem_reg_16[3] <= mua_eof;
+//    end
 end
 
 

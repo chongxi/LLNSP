@@ -8,15 +8,15 @@
 
 `timescale 1 ns / 1 ps
 
-module spk_clf_mul_32s_8ns_32_5_MulnS_0(clk, ce, a, b, p);
+module spk_clf_mul_32s_10ns_32_5_MulnS_0(clk, ce, a, b, p);
 input clk;
 input ce;
 input[32 - 1 : 0] a; // synthesis attribute keep a "true"
-input[8 - 1 : 0] b; // synthesis attribute keep b "true"
+input[10 - 1 : 0] b; // synthesis attribute keep b "true"
 output[32 - 1 : 0] p;
 
 reg signed [32 - 1 : 0] a_reg0;
-reg [8 - 1 : 0] b_reg0;
+reg [10 - 1 : 0] b_reg0;
 wire signed [32 - 1 : 0] tmp_product;
 reg signed [32 - 1 : 0] buff0;
 reg signed [32 - 1 : 0] buff1;
@@ -36,7 +36,7 @@ end
 endmodule
 
 `timescale 1 ns / 1 ps
-module spk_clf_mul_32s_8ns_32_5(
+module spk_clf_mul_32s_10ns_32_5(
     clk,
     reset,
     ce,
@@ -58,7 +58,7 @@ output[dout_WIDTH - 1:0] dout;
 
 
 
-spk_clf_mul_32s_8ns_32_5_MulnS_0 spk_clf_mul_32s_8ns_32_5_MulnS_0_U(
+spk_clf_mul_32s_10ns_32_5_MulnS_0 spk_clf_mul_32s_10ns_32_5_MulnS_0_U(
     .clk( clk ),
     .ce( ce ),
     .a( din0 ),

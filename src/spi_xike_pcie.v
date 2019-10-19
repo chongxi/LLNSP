@@ -32,7 +32,8 @@ module spi_xike_pcie (
   output       SCLK_C_PORT     ,
   output       CS_C_PORT       ,
   
-  output       SYNC_PULSE_PORT
+  output       SYNC_PULSE_PORT ,
+  output       SPIKE_TIME_PORT 
 );
 
 // ------- XILLYBUS -------------------------------------------------------------------------------------------
@@ -836,22 +837,26 @@ wire p_scale_read = scale_V_ce0;  //scale_V_ce0;
 wire p_shift_read = shift_V_ce0;  //shift_V_ce0;
 wire p_pca_read   = pca_V_ce0;    //pca_V_ce0;
 wire p_vq_read    = vq_V_ce0;     //vq_V_ce0;
+wire p_label_read = label_V_ce0;  //label_V_ce0;
 
 (* mark_debug = "true" *) wire [7 : 0 ] p_scale_addr;
 (* mark_debug = "true" *) wire [7 : 0 ] p_shift_addr;
 (* mark_debug = "true" *) wire [15 : 0] p_pca_addr;
 (* mark_debug = "true" *) wire [15 : 0] p_vq_addr;
+(* mark_debug = "true" *) wire [15 : 0] p_label_addr;
 
 // output:
 (* mark_debug = "true" *) wire scale_out_ap_vld;
 (* mark_debug = "true" *) wire shift_out_ap_vld;
 (* mark_debug = "true" *) wire pca_out_ap_vld;
 (* mark_debug = "true" *) wire vq_out_ap_vld;
+(* mark_debug = "true" *) wire label_out_ap_vld;
 
 wire [31:0] scale_out;
 wire [31:0] shift_out;
 wire [31:0] pca_out;
 wire [31:0] vq_out;
+wire [31:0] label_out;
 
 (* mark_debug = "true" *) wire [7:0] pca3 = pca_out[ 7:0 ];
 (* mark_debug = "true" *) wire [7:0] pca2 = pca_out[15:8 ];
@@ -873,21 +878,26 @@ wire [31:0] vq_out;
     .p_shift_read    (p_shift_read               ), // input wire p_shift_read
     .p_pca_read      (p_pca_read                 ), // input wire p_pca_read
     .p_vq_read       (p_vq_read                  ), // input wire p_vq_read
+    .p_label_read    (p_label_read               ), // input wire p_label_read
     
     .p_scale_addr_V  (p_scale_addr               ), // input wire [7 : 0 ] p_scale_addr_V
     .p_shift_addr_V  (p_shift_addr               ), // input wire [7 : 0 ] p_shift_addr_V
     .p_pca_addr_V    (p_pca_addr                 ), // input wire [15 : 0] p_pca_addr_V
     .p_vq_addr_V     (p_vq_addr                  ), // input wire [15 : 0] p_vq_addr_V
+    .p_label_addr_V  (p_label_addr               ), // input wire [15 : 0] p_label_addr_V
     
     .scale_out_ap_vld(scale_out_ap_vld           ), // output wire
     .shift_out_ap_vld(shift_out_ap_vld           ), // output wire
     .pca_out_ap_vld  (pca_out_ap_vld             ), // output wire
     .vq_out_ap_vld   (vq_out_ap_vld              ), // output wire
+    .label_out_ap_vld(label_out_ap_vld           ), // output wire label_out_ap_vld
 
     .scale_out       (scale_out                  ), // output wire [31 : 0] 
     .shift_out       (shift_out                  ), // output wire [31 : 0] 
     .pca_out         (pca_out                    ), // output wire [31 : 0] 
-    .vq_out          (vq_out                     )  // output wire [31 : 0] 
+    .vq_out          (vq_out                     ), // output wire [31 : 0] 
+    .label_out       (label_out                  )  // output wire [31 : 0] label_out
+    
   );
 
 wire[127:0] spk_stream_to_transform; 
@@ -974,6 +984,7 @@ wire spk_stream_fifo_full;
 (* mark_debug = "true" *) wire [7:0] vq1 = vq_out[23:16];
 (* mark_debug = "true" *) wire [7:0] vq0 = vq_out[31:24];
 
+
 spk_clf_0 classifier (
   .ap_clk                 (bus_clk                ), // input wire ap_clk
   .ap_rst_n               (1                      ), // input wire ap_rst_n
@@ -987,8 +998,12 @@ spk_clf_0 classifier (
   .data_V_read            (fifo_fet_to_clf_read   ), // output wire data_V_read
   
   .vq_V_ce0               (vq_V_ce0               ), // output wire vq_V_ce0
-  .vq_V_address0          (p_vq_addr              ), // output wire [11 : 0] vq_V_address0
+  .vq_V_address0          (p_vq_addr              ), // output wire [14 : 0] vq_V_address0
   .vq_V_q0                (vq_out                 ), // input wire [31 : 0] vq_V_q0
+
+  .label_V_ce0            (label_V_ce0            ), // output wire label_V_ce0
+  .label_V_address0       (p_label_addr           ), // output wire [14 : 0] label_V_address0
+  .label_V_q0             (label_out              ), // input wire [31 : 0] label_V_q0
   
   .distance_out_V_V_TVALID(distance_out_V_V_TVALID), // output wire distance_out_V_V_TVALID
   .distance_out_V_V_TREADY(1                      ), // input wire distance_out_V_V_TREADY
@@ -999,6 +1014,7 @@ spk_clf_0 classifier (
   .nnid_out_V_V_TDATA     (nnid_out_V_V_TDATA     )  // output wire [31 : 0] nnid_out_V_V_TDATA
 );
 
+  assign SPIKE_TIME_PORT = nnid_out_V_V_TVALID; // && sync_en;
   // 32bits => 32bits
   fifo_32x512 fet_clf_to_host (
     .clk  (bus_clk                                        ),

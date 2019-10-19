@@ -56,6 +56,11 @@ set_property IOSTANDARD LVDS [get_ports SYSCLK_N]
 set_property PACKAGE_PIN D16 [get_ports SYNC_PULSE_PORT]
 set_property IOSTANDARD LVCMOS25 [get_ports SYNC_PULSE_PORT]
 
+###############  TEST PULSE #################################
+# Latency Test
+# KC705:G30/FMC_HPC_LA29_P --> XM105:J16/9(+)10(GND)
+set_property PACKAGE_PIN C17 [get_ports SPIKE_TIME_PORT]
+set_property IOSTANDARD LVCMOS25 [get_ports SPIKE_TIME_PORT]
 # isolated output from FPGA
 # set_property PACKAGE_PIN AK26 [get_ports sma_out_isol_H23]
 # set_property IOSTANDARD LVCMOS33 [get_ports sma_out_isol_H23]
@@ -185,3 +190,4 @@ set_property IOSTANDARD LVCMOS33 [get_ports CS_C_PORT]
 set_property CONFIG_MODE BPI16 [current_design]
 
 # ------------------------------------------------------------------------------------------------
+

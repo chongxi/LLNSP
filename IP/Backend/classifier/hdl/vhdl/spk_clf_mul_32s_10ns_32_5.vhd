@@ -9,22 +9,22 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
-entity spk_clf_mul_32s_8ns_32_5_MulnS_0 is
+entity spk_clf_mul_32s_10ns_32_5_MulnS_0 is
 port (
     clk: in std_logic;
     ce: in std_logic;
     a: in std_logic_vector(32 - 1 downto 0);
-    b: in std_logic_vector(8 - 1 downto 0);
+    b: in std_logic_vector(10 - 1 downto 0);
     p: out std_logic_vector(32 - 1 downto 0));
 end entity;
 
-architecture behav of spk_clf_mul_32s_8ns_32_5_MulnS_0 is
+architecture behav of spk_clf_mul_32s_10ns_32_5_MulnS_0 is
     signal tmp_product : std_logic_vector(32 - 1 downto 0);
     signal a_i : std_logic_vector(32 - 1 downto 0);
-    signal b_i : std_logic_vector(8 - 1 downto 0);
+    signal b_i : std_logic_vector(10 - 1 downto 0);
     signal p_tmp : std_logic_vector(32 - 1 downto 0);
     signal a_reg0 : std_logic_vector(32 - 1 downto 0);
-    signal b_reg0 : std_logic_vector(8 - 1 downto 0);
+    signal b_reg0 : std_logic_vector(10 - 1 downto 0);
 
     attribute keep : string; 
     attribute keep of a_i : signal is "true";
@@ -58,7 +58,7 @@ end architecture;
 Library IEEE;
 use IEEE.std_logic_1164.all;
 
-entity spk_clf_mul_32s_8ns_32_5 is
+entity spk_clf_mul_32s_10ns_32_5 is
     generic (
         ID : INTEGER;
         NUM_STAGE : INTEGER;
@@ -74,8 +74,8 @@ entity spk_clf_mul_32s_8ns_32_5 is
         dout : OUT STD_LOGIC_VECTOR(dout_WIDTH - 1 DOWNTO 0));
 end entity;
 
-architecture arch of spk_clf_mul_32s_8ns_32_5 is
-    component spk_clf_mul_32s_8ns_32_5_MulnS_0 is
+architecture arch of spk_clf_mul_32s_10ns_32_5 is
+    component spk_clf_mul_32s_10ns_32_5_MulnS_0 is
         port (
             clk : IN STD_LOGIC;
             ce : IN STD_LOGIC;
@@ -87,7 +87,7 @@ architecture arch of spk_clf_mul_32s_8ns_32_5 is
 
 
 begin
-    spk_clf_mul_32s_8ns_32_5_MulnS_0_U :  component spk_clf_mul_32s_8ns_32_5_MulnS_0
+    spk_clf_mul_32s_10ns_32_5_MulnS_0_U :  component spk_clf_mul_32s_10ns_32_5_MulnS_0
     port map (
         clk => clk,
         ce => ce,

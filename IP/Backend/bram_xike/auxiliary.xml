@@ -17,6 +17,9 @@
   <xd:arg xd:name="_vq_read" xd:originalName="_vq_read" xd:direction="in" xd:interfaceRef="p_vq_read" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="1"/>
   <xd:arg xd:name="_vq_addr" xd:originalName="_vq_addr" xd:direction="in" xd:interfaceRef="p_vq_addr_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="16"/>
   <xd:arg xd:name="*(vq_out)" xd:originalName="vq_out" xd:direction="out" xd:interfaceRef="vq_out" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="32"/>
+  <xd:arg xd:name="_label_read" xd:originalName="_label_read" xd:direction="in" xd:interfaceRef="p_label_read" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="1"/>
+  <xd:arg xd:name="_label_addr" xd:originalName="_label_addr" xd:direction="in" xd:interfaceRef="p_label_addr_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="16"/>
+  <xd:arg xd:name="*(label_out)" xd:originalName="label_out" xd:direction="out" xd:interfaceRef="label_out" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="32"/>
   <xd:latencyEstimates xd:best-case="1" xd:worst-case="1" xd:average-case="1"/>
-  <xd:resourceEstimates xd:LUT="205" xd:FF="10" xd:BRAM="20" xd:DSP="0"/>
+  <xd:resourceEstimates xd:LUT="273" xd:FF="12" xd:BRAM="140" xd:DSP="0"/>
 </xd:acceleratorMap>
