@@ -521,10 +521,10 @@ module spi_xike_pcie (
   (* mark_debug = "true" *) wire sync_en;
   (* mark_debug = "true" *) wire XIKE_ENABLE;
   
-  assign user_r_mua_32_eof          = XIKE_ENABLE;   // flag to stop RAM FIFO
-  assign user_r_spk_info_32_eof     = XIKE_ENABLE;
-  assign user_r_spk_wav_32_eof      = XIKE_ENABLE;
-//  assign user_r_fet_clf_32_eof      = XIKE_ENABLE;
+  assign user_r_mua_32_eof      = XIKE_ENABLE;   // flag to stop RAM FIFO
+  assign user_r_spk_info_32_eof = XIKE_ENABLE;
+  assign user_r_spk_wav_32_eof  = XIKE_ENABLE;
+  // assign user_r_fet_clf_32_eof  = XIKE_ENABLE;
 
   mem_reg_16 mem_reg_16 (
     .clk      (bus_clk           ),
@@ -974,15 +974,15 @@ wire spk_stream_fifo_full;
     .empty(fifo_fet_to_clf_empty                        )  // output wire empty
   );
 
-(* mark_debug = "true" *) wire        distance_out_V_V_TVALID;
-(* mark_debug = "true" *) wire [31:0] distance_out_V_V_TDATA;
-(* mark_debug = "true" *) wire        nnid_out_V_V_TVALID;
-(* mark_debug = "true" *) wire [31:0] nnid_out_V_V_TDATA;
+wire        distance_out_V_V_TVALID;
+wire [31:0] distance_out_V_V_TDATA;
+wire        nnid_out_V_V_TVALID;
+wire [31:0] nnid_out_V_V_TDATA;
 
-(* mark_debug = "true" *) wire [7:0] vq3 = vq_out[ 7:0 ];
-(* mark_debug = "true" *) wire [7:0] vq2 = vq_out[15:8 ];
-(* mark_debug = "true" *) wire [7:0] vq1 = vq_out[23:16];
-(* mark_debug = "true" *) wire [7:0] vq0 = vq_out[31:24];
+wire [7:0] vq3 = vq_out[ 7:0 ];
+wire [7:0] vq2 = vq_out[15:8 ];
+wire [7:0] vq1 = vq_out[23:16];
+wire [7:0] vq0 = vq_out[31:24];
 
 
 spk_clf_0 classifier (
@@ -1014,7 +1014,7 @@ spk_clf_0 classifier (
   .nnid_out_V_V_TDATA     (nnid_out_V_V_TDATA     )  // output wire [31 : 0] nnid_out_V_V_TDATA
 );
 
-  assign SPIKE_TIME_PORT = nnid_out_V_V_TVALID; // && sync_en;
+
   // 32bits => 32bits
   fifo_32x512 fet_clf_to_host (
     .clk  (bus_clk                                        ),
@@ -1027,5 +1027,41 @@ spk_clf_0 classifier (
     .empty(user_r_fet_clf_32_empty                        )
   );
 
+
+// real-time feedback
+
+(* mark_debug = "true" *) wire        fet_packet_spk_id_V_read;
+(* mark_debug = "true" *) wire [31:0] fet_packet_spk_id_V_dout;
+(* mark_debug = "true" *) wire        spk_id_out_V_V_TVALID;
+(* mark_debug = "true" *) wire [31:0] spk_id_out_V_V_TDATA;
+
+// FWFT FIFO 32-bits to feed feature packet (spike id within) to the real-time feedback module (rtfb)
+fifo_tf_to_clf fifo_clf_to_rtfb (
+  .clk  (bus_clk                                      ), // input wire clk
+  .srst (!user_r_fet_clf_32_open                      ), // input wire srst
+  .din  (nnid_out_V_V_TDATA                           ), // input wire [31 : 0] din
+  .wr_en(nnid_out_V_V_TVALID && !fifo_clf_to_rtfb_full), // input wire wr_en
+  .rd_en(fet_packet_spk_id_V_read                     ), // input wire rd_en
+  .dout (fet_packet_spk_id_V_dout                     ), // output wire [31 : 0] dout
+  .full (fifo_clf_to_rtfb_full                        ), // output wire full
+  .empty(fet_packet_spk_id_V_empty                    )  // output wire empty
+);
+
+rt_feedback_0 rtfb (
+  .ap_clk                     (bus_clk                   ), // input wire ap_clk
+  .ap_rst_n                   (1                         ), // input wire ap_rst_n
+  .ap_start                   (1                         ), // input wire ap_start
+  .ap_done                    (ap_done3                  ), // output wire ap_done
+  .ap_idle                    (ap_idle3                  ), // output wire ap_idle
+  .ap_ready                   (ap_ready3                 ), // output wire ap_ready
+  .fet_packet_spk_id_V_dout   (fet_packet_spk_id_V_dout  ), // input wire [31 : 0] fet_packet_spk_id_V_dout
+  .fet_packet_spk_id_V_empty_n(!fet_packet_spk_id_V_empty), // input wire fet_packet_spk_id_V_empty_n
+  .fet_packet_spk_id_V_read   (fet_packet_spk_id_V_read  ), // output wire fet_packet_spk_id_V_read
+  .spk_id_out_V_V_TVALID      (spk_id_out_V_V_TVALID     ), // output wire spk_id_out_V_V_TVALID
+  .spk_id_out_V_V_TREADY      (1                         ), // input wire spk_id_out_V_V_TREADY
+  .spk_id_out_V_V_TDATA       (spk_id_out_V_V_TDATA      )  // output wire [31 : 0] spk_id_out_V_V_TDATA
+);
+
+  assign SPIKE_TIME_PORT = spk_id_out_V_V_TVALID; 
 
 endmodule

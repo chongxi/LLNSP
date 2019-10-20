@@ -477,7 +477,7 @@
       <spirit:file>
         <spirit:name>hdl/vhdl/rt_feedback.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_7d94a44d</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_d3588cd8</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -547,7 +547,7 @@
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>latency</spirit:name>
-      <spirit:value spirit:id="PARAM_VALUE.latency" spirit:order="5">17</spirit:value>
+      <spirit:value spirit:id="PARAM_VALUE.latency" spirit:order="5">23</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>II</spirit:name>
@@ -564,8 +564,8 @@
       </xilinx:taxonomies>
       <xilinx:displayName>Rt_feedback</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>1910172153</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2019-10-18T01:53:10Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>1910191838</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2019-10-19T22:38:21Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2016.1</xilinx:xilinxVersion>
