@@ -863,13 +863,33 @@ wire [31:0] label_out;
 (* mark_debug = "true" *) wire [7:0] pca1 = pca_out[23:16];
 (* mark_debug = "true" *) wire [7:0] pca0 = pca_out[31:24];
 
+// MODEL RAM
+
+  reg         doWrite_MODEL_RAM;
+  reg  [15:0] addr_in_MODEL_RAM;
+  reg  [31:0] data_in_MODEL_RAM;
+  wire        model_write_en   ;
+  wire [15:0] model_write_addr ;
+  wire [31:0] model_write_data ;
+
+  always @(posedge bus_clk)
+    begin : writing_buffer_for_timing // 1 buf for writing MODEL_RAM
+      doWrite_MODEL_RAM <= user_w_template_32_wren;
+      addr_in_MODEL_RAM <= user_template_32_addr;
+      data_in_MODEL_RAM <= user_w_template_32_data;
+    end
+
+  assign model_write_en   = doWrite_MODEL_RAM;
+  assign model_write_addr = addr_in_MODEL_RAM;
+  assign model_write_data = data_in_MODEL_RAM;
+
   bram_xike_0 MODEL_RAM (
     .ap_clk          (bus_clk                    ), // input wire ap_clk
     .ap_rst          (0                          ), // input wire ap_rst
     
-    .p_doWrite       (user_w_template_32_wren    ), // input wire [0 : 0] p_doWrite
-    .p_addr_in_V     (user_template_32_addr      ), // input wire [15: 0] p_addr_in_V (this improve timing)
-    .din             (user_w_template_32_data    ), // input wire [31 : 0] din
+    .p_doWrite       (model_write_en             ), // input wire [0 : 0] p_doWrite
+    .p_addr_in_V     (model_write_addr           ), // input wire [15: 0] p_addr_in_V (this improve timing)
+    .din             (model_write_data           ), // input wire [31 : 0] din
     .p_doRead        (user_r_template_32_rden    ), // input wire [0 : 0] p_doRead
     .dout            (user_r_template_32_data    ), // output wire [31 : 0] dout
     .dout_ap_vld     (user_r_template_32_data_vld), // output wire dout_ap_vld
@@ -891,14 +911,17 @@ wire [31:0] label_out;
     .shift_out_ap_vld(shift_out_ap_vld           ), // output wire vld
     .pca_out_ap_vld  (pca_out_ap_vld             ), // output wire vld
     .vq_out_ap_vld   (vq_out_ap_vld              ), // output wire vld
-    .label_out_ap_vld(label_out_ap_vld           ), // output wire vld 
-
+    .label_out_ap_vld(label_out_ap_vld           ), // output wire vld
+    
     .scale_out       (scale_out                  ), // output wire [31 : 0] scale_out
     .shift_out       (shift_out                  ), // output wire [31 : 0] shift_out
     .pca_out         (pca_out                    ), // output wire [31 : 0] pca_out
     .vq_out          (vq_out                     ), // output wire [31 : 0] vq_out
     .label_out       (label_out                  )  // output wire [31 : 0] label_out
   );
+
+
+// spike waveform transformer
 
 wire[127:0] spk_stream_to_transform; 
 wire spk_stream_fifo_read;
@@ -918,8 +941,6 @@ wire spk_stream_fifo_full;
   );
 
 // Transformer
-(* mark_debug = "true" *) wire pca_stream_V_V_TVALID; 
-(* mark_debug = "true" *) wire [31:0] pca_stream_V_V_TDATA; 
 (* mark_debug = "true" *) wire pca_final_V_V_TVALID;  
 (* mark_debug = "true" *) wire [31:0] pca_final_V_V_TDATA; 
 
@@ -937,7 +958,6 @@ wire spk_stream_fifo_full;
     .spk_V_read           (spk_stream_fifo_read   ), // output wire spk_V_read
     
     // bram interface: read from `bram_xike_tf_and_vq`
-    
     .scale_V_ce0          (scale_V_ce0            ), // output wire scale_V_ce0
     .scale_V_address0     (p_scale_addr           ), // output wire [5 : 0] scale_V_address0
     .scale_V_q0           (scale_out              ), // input wire [31 : 0] scale_V_q0
@@ -948,15 +968,10 @@ wire spk_stream_fifo_full;
     
     .pca_V_ce0            (pca_V_ce0              ), // output wire pca_V_ce0
     .pca_V_address0       (p_pca_addr             ), // output wire [11 : 0] pca_V_address0
-    .pca_V_q0             (pca_out                ), // input wire [31 : 0] pca_V_q0
-    
-    .pca_stream_V_V_TVALID(pca_stream_V_V_TVALID  ), // output wire pca_stream_V_V_TVALID
-    .pca_stream_V_V_TREADY(1                      ), // input wire pca_stream_V_V_TREADY
-    .pca_stream_V_V_TDATA (pca_stream_V_V_TDATA   ), // output wire [31 : 0] pca_stream_V_V_TDATA
-    
-    .pca_final_V_V_TVALID (pca_final_V_V_TVALID   ), // output wire pca_final_V_V_TVALID
-    .pca_final_V_V_TREADY (1                      ), // input wire pca_final_V_V_TREADY
-    .pca_final_V_V_TDATA  (pca_final_V_V_TDATA    )  // output wire [31 : 0] pca_final_V_V_TDATA
+    .pca_V_q0             (pca_out                ), // input wire [31 : 0] pca_V_q0 
+
+    .pca_final_V_V_TVALID (pca_final_V_V_TVALID   ),
+    .pca_final_V_V_TDATA  (pca_final_V_V_TDATA    )
   );
 
 (* mark_debug = "true" *) wire [31:0] fet_to_clf;

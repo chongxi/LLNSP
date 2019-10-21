@@ -1,6 +1,114 @@
 Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Sun Oct 20 22:07:52 2019
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_transform_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of spk_transform_0 (xilinx.com:hls:spk_transform:1.0) from (Rev. 1910202134) to (Rev. 1910202202)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Interface Information
+------------------------
+
+Detected external interface differences while upgrading 'spk_transform_0'.
+
+
+-Upgrade has removed interface 'shift_V_address1'
+
+-Upgrade has removed interface 'shift_V_q1'
+
+
+3. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'spk_transform_0'. These changes may impact your design.
+
+
+-Upgrade has removed port 'shift_V_address1'
+
+-Upgrade has removed port 'shift_V_ce1'
+
+-Upgrade has removed port 'shift_V_q1'
+
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Sun Oct 20 21:42:02 2019
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_transform_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of spk_transform_0 (xilinx.com:hls:spk_transform:1.0) from (Rev. 1909142049) to (Rev. 1910202134)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Interface Information
+------------------------
+
+Detected external interface differences while upgrading 'spk_transform_0'.
+
+
+-Upgrade has removed interface 'pca_final_V_V'
+
+-Upgrade has removed interface 'pca_stream_V_V'
+
+-Upgrade has added interface 'pca_final_V_V_TDATA' (xilinx.com:signal:data:1.0)
+
+-Upgrade has added interface 'shift_V_address1' (xilinx.com:signal:data:1.0)
+
+-Upgrade has added interface 'shift_V_q1' (xilinx.com:signal:data:1.0)
+
+
+3. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'spk_transform_0'. These changes may impact your design.
+
+
+-Upgrade has removed port 'pca_final_V_V_TREADY'
+
+-Upgrade has removed port 'pca_stream_V_V_TDATA'
+
+-Upgrade has removed port 'pca_stream_V_V_TREADY'
+
+-Upgrade has removed port 'pca_stream_V_V_TVALID'
+
+-Upgrade has added port 'shift_V_address1'
+
+-Upgrade has added port 'shift_V_ce1'
+
+-Upgrade has added port 'shift_V_q1'
+
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
 | Date         : Sun Oct 20 19:02:48 2019
 | Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
 | Command      : upgrade_ip

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="spk_transform" xd:componentRef="spk_transform" xd:initiationInterval="179" xd:clockPeriod="4.000000" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
+<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="spk_transform" xd:componentRef="spk_transform" xd:initiationInterval="350" xd:clockPeriod="4.000000" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
   <xd:controlReg xd:name="control" xd:interfaceRef="ap_ctrl" xd:busTypeRef="acc_handshake" xd:type="acc_handshake"/>
   <xd:arg xd:name="spk[]" xd:originalName="spk" xd:direction="in" xd:interfaceRef="spk_V" xd:busTypeRef="acc_fifo" xd:arraySize="20" xd:dataWidth="128"/>
-  <xd:arg xd:name="pca_stream" xd:originalName="pca_stream" xd:direction="out" xd:interfaceRef="pca_stream_V_V" xd:busTypeRef="axis" xd:dataWidth="32"/>
-  <xd:arg xd:name="pca_final" xd:originalName="pca_final" xd:direction="out" xd:interfaceRef="pca_final_V_V" xd:busTypeRef="axis" xd:dataWidth="32"/>
   <xd:arg xd:name="scale_V_q0" xd:originalName="scale_V_q0" xd:direction="in" xd:interfaceRef="scale_V_q0" xd:busTypeRef="ap_memory" xd:arraySize="40" xd:dataWidth="32"/>
   <xd:arg xd:name="shift_V_q0" xd:originalName="shift_V_q0" xd:direction="in" xd:interfaceRef="shift_V_q0" xd:busTypeRef="ap_memory" xd:arraySize="160" xd:dataWidth="32"/>
   <xd:arg xd:name="pca_V_q0" xd:originalName="pca_V_q0" xd:direction="in" xd:interfaceRef="pca_V_q0" xd:busTypeRef="ap_memory" xd:arraySize="3040" xd:dataWidth="32"/>
-  <xd:latencyEstimates xd:best-case="172" xd:worst-case="178" xd:average-case="175"/>
-  <xd:resourceEstimates xd:LUT="17715" xd:FF="20420" xd:BRAM="0" xd:DSP="10"/>
+  <xd:arg xd:name="pca_final_V_V_TDATA" xd:originalName="pca_final_V_V_TDATA" xd:direction="out" xd:interfaceRef="pca_final_V_V_TDATA" xd:busTypeRef="ap_memory" xd:arraySize="3040" xd:dataWidth="32"/>
+  <xd:latencyEstimates xd:best-case="341" xd:worst-case="349" xd:average-case="345"/>
+  <xd:resourceEstimates xd:LUT="4981" xd:FF="7587" xd:BRAM="0" xd:DSP="10"/>
 </xd:acceleratorMap>
