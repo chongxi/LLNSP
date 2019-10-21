@@ -863,11 +863,12 @@ wire [31:0] label_out;
 (* mark_debug = "true" *) wire [7:0] pca1 = pca_out[23:16];
 (* mark_debug = "true" *) wire [7:0] pca0 = pca_out[31:24];
 
-  bram_xike_0 bram_xike_tf_and_vq (
+  bram_xike_0 MODEL_RAM (
     .ap_clk          (bus_clk                    ), // input wire ap_clk
     .ap_rst          (0                          ), // input wire ap_rst
     
     .p_doWrite       (user_w_template_32_wren    ), // input wire [0 : 0] p_doWrite
+    .p_addr_in_V     (user_template_32_addr      ), // input wire [15: 0] p_addr_in_V (this improve timing)
     .din             (user_w_template_32_data    ), // input wire [31 : 0] din
     .p_doRead        (user_r_template_32_rden    ), // input wire [0 : 0] p_doRead
     .dout            (user_r_template_32_data    ), // output wire [31 : 0] dout
@@ -886,18 +887,17 @@ wire [31:0] label_out;
     .p_vq_addr_V     (p_vq_addr                  ), // input wire [15 : 0] p_vq_addr_V
     .p_label_addr_V  (p_label_addr               ), // input wire [15 : 0] p_label_addr_V
     
-    .scale_out_ap_vld(scale_out_ap_vld           ), // output wire
-    .shift_out_ap_vld(shift_out_ap_vld           ), // output wire
-    .pca_out_ap_vld  (pca_out_ap_vld             ), // output wire
-    .vq_out_ap_vld   (vq_out_ap_vld              ), // output wire
-    .label_out_ap_vld(label_out_ap_vld           ), // output wire label_out_ap_vld
+    .scale_out_ap_vld(scale_out_ap_vld           ), // output wire vld
+    .shift_out_ap_vld(shift_out_ap_vld           ), // output wire vld
+    .pca_out_ap_vld  (pca_out_ap_vld             ), // output wire vld
+    .vq_out_ap_vld   (vq_out_ap_vld              ), // output wire vld
+    .label_out_ap_vld(label_out_ap_vld           ), // output wire vld 
 
-    .scale_out       (scale_out                  ), // output wire [31 : 0] 
-    .shift_out       (shift_out                  ), // output wire [31 : 0] 
-    .pca_out         (pca_out                    ), // output wire [31 : 0] 
-    .vq_out          (vq_out                     ), // output wire [31 : 0] 
+    .scale_out       (scale_out                  ), // output wire [31 : 0] scale_out
+    .shift_out       (shift_out                  ), // output wire [31 : 0] shift_out
+    .pca_out         (pca_out                    ), // output wire [31 : 0] pca_out
+    .vq_out          (vq_out                     ), // output wire [31 : 0] vq_out
     .label_out       (label_out                  )  // output wire [31 : 0] label_out
-    
   );
 
 wire[127:0] spk_stream_to_transform; 

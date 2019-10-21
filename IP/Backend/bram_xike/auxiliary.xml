@@ -2,6 +2,7 @@
 <xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="bram_xike" xd:componentRef="bram_xike" xd:initiationInterval="1" xd:clockPeriod="4.000000" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
   <xd:arg xd:name="_doWrite" xd:originalName="_doWrite" xd:direction="in" xd:interfaceRef="p_doWrite" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="1"/>
   <xd:arg xd:name="din" xd:originalName="din" xd:direction="in" xd:interfaceRef="din" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="32"/>
+  <xd:arg xd:name="_addr_in" xd:originalName="_addr_in" xd:direction="in" xd:interfaceRef="p_addr_in_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="16"/>
   <xd:arg xd:name="_doRead" xd:originalName="_doRead" xd:direction="in" xd:interfaceRef="p_doRead" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="1"/>
   <xd:arg xd:name="*(dout)" xd:originalName="dout" xd:direction="out" xd:interfaceRef="dout" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="32"/>
   <xd:arg xd:name="_addr" xd:originalName="_addr" xd:direction="in" xd:interfaceRef="p_addr_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="16"/>
@@ -21,5 +22,5 @@
   <xd:arg xd:name="_label_addr" xd:originalName="_label_addr" xd:direction="in" xd:interfaceRef="p_label_addr_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="16"/>
   <xd:arg xd:name="*(label_out)" xd:originalName="label_out" xd:direction="out" xd:interfaceRef="label_out" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="32"/>
   <xd:latencyEstimates xd:best-case="1" xd:worst-case="1" xd:average-case="1"/>
-  <xd:resourceEstimates xd:LUT="273" xd:FF="12" xd:BRAM="140" xd:DSP="0"/>
+  <xd:resourceEstimates xd:LUT="318" xd:FF="12" xd:BRAM="140" xd:DSP="0"/>
 </xd:acceleratorMap>
