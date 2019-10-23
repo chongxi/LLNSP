@@ -49,7 +49,9 @@ module mem_reg_16 (
     input             SPI_on  ,
     input             mua_open,
     input             mua_eof ,
-    input             sync_in
+    input             sync_in ,
+
+    output reg [15:0] target_unit_id 
 );
 
 (* ram_style = "distributed" *)
@@ -60,12 +62,14 @@ always @(posedge clk) begin
         mem_reg_16[addr] <= din;
     if (re)
         dout <= mem_reg_16[addr];
-//    else begin
-//        mem_reg_16[0] <= mua_open;
-//        mem_reg_16[1] <= SPI_on;
-//        mem_reg_16[2] <= sync_in;
-//        mem_reg_16[3] <= mua_eof;
-//    end
+end
+
+always @(posedge clk) begin
+//    mem_reg_16[0] <= mua_open;
+//    mem_reg_16[1] <= SPI_on;
+//    mem_reg_16[2] <= sync_in;
+//    mem_reg_16[3] <= mua_eof;
+    target_unit_id <= mem_reg_16[8];
 end
 
 
