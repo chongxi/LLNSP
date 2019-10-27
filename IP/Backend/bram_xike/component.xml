@@ -1274,8 +1274,8 @@
       </xilinx:taxonomies>
       <xilinx:displayName>Bram_xike</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>1910201857</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2019-10-20T22:58:06Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>1910222101</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2019-10-23T01:01:45Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2016.1</xilinx:xilinxVersion>

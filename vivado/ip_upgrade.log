@@ -1,6 +1,132 @@
 Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Tue Oct 22 21:07:09 2019
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'rt_feedback_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of rt_feedback_0 (xilinx.com:hls:rt_feedback:1.0) from (Rev. 1910191838) to (Rev. 1910221807)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Interface Information
+------------------------
+
+Detected external interface differences while upgrading 'rt_feedback_0'.
+
+
+-Upgrade has removed interface 'ap_rst_n'
+
+-Upgrade has removed interface 'spk_id_out_V_V'
+
+-Upgrade has added interface 'ap_rst' (xilinx.com:signal:reset:1.0)
+
+-Upgrade has added interface 'stim_V' (xilinx.com:signal:data:1.0)
+
+-Upgrade has added interface 'target_unit_id_V' (xilinx.com:signal:data:1.0)
+
+
+3. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'rt_feedback_0'. These changes may impact your design.
+
+
+-Upgrade has removed port 'ap_rst_n'
+
+-Upgrade has removed port 'spk_id_out_V_V_TDATA'
+
+-Upgrade has removed port 'spk_id_out_V_V_TREADY'
+
+-Upgrade has removed port 'spk_id_out_V_V_TVALID'
+
+-Upgrade has added port 'ap_rst'
+
+-Upgrade has added port 'stim_V'
+
+-Upgrade has added port 'stim_V_ap_vld'
+
+-Upgrade has added port 'target_unit_id_V'
+
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Tue Oct 22 21:07:09 2019
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'bram_xike_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of bram_xike_0 (xilinx.com:hls:bram_xike:1.0) from (Rev. 1910212153) to (Rev. 1910222101)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Mon Oct 21 21:57:17 2019
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'bram_xike_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of bram_xike_0 (xilinx.com:hls:bram_xike:1.0) from (Rev. 1910211916) to (Rev. 1910212153)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
+| Date         : Mon Oct 21 19:21:42 2019
+| Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'bram_xike_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of bram_xike_0 (xilinx.com:hls:bram_xike:1.0) from (Rev. 1910201857) to (Rev. 1910211916)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (lin64) Build 1538259 Fri Apr  8 15:45:23 MDT 2016
 | Date         : Sun Oct 20 22:07:52 2019
 | Host         : laic-ws1 running 64-bit Ubuntu 16.04.2 LTS
 | Command      : upgrade_ip
