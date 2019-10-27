@@ -526,18 +526,21 @@ module spi_xike_pcie (
   assign user_r_spk_wav_32_eof  = XIKE_ENABLE;
   // assign user_r_fet_clf_32_eof  = XIKE_ENABLE;
 
+  wire [15:0] target_unit_id;
   mem_reg_16 mem_reg_16 (
-    .clk      (bus_clk           ),
-    .din      (user_w_mem_16_data),
-    .we       (user_w_mem_16_wren),
-    .re       (user_r_mem_16_rden),
-    .addr     (user_mem_16_addr  ),
-    .dout     (user_r_mem_16_data),
+    .clk           (bus_clk           ),
+    .din           (user_w_mem_16_data),
+    .we            (user_w_mem_16_wren),
+    .re            (user_r_mem_16_rden),
+    .addr          (user_mem_16_addr  ),
+    .dout          (user_r_mem_16_data),
     
-    .SPI_on   (SPI_running       ),
-    .mua_open (user_r_mua_32_open),
-    .mua_eof  (user_r_mua_32_eof ),
-    .sync_in  (sync_pulse        )
+    .SPI_on        (SPI_running       ),
+    .mua_open      (user_r_mua_32_open),
+    .mua_eof       (user_r_mua_32_eof ),
+    .sync_in       (sync_pulse        ),
+    
+    .target_unit_id(target_unit_id    )
   );
 
   wire [31:0] SPI_TO_XIKE_BUNDLE = {FIFO_CHNO_TO_XIKE, 1'b0, FIFO_DATA_TO_XIKE}; // 1'b for signed int17 data
@@ -1047,8 +1050,8 @@ spk_clf_0 classifier (
 
 (* mark_debug = "true" *) wire        fet_packet_spk_id_V_read;
 (* mark_debug = "true" *) wire [31:0] fet_packet_spk_id_V_dout;
-(* mark_debug = "true" *) wire        spk_id_out_V_V_TVALID;
-(* mark_debug = "true" *) wire [31:0] spk_id_out_V_V_TDATA;
+(* mark_debug = "true" *) wire        stim_ap_vld;
+(* mark_debug = "true" *) wire        stim;
 
 // FWFT FIFO 32-bits to feed feature packet (spike id within) to the real-time feedback module (rtfb)
 fifo_tf_to_clf fifo_clf_to_rtfb (
@@ -1064,19 +1067,19 @@ fifo_tf_to_clf fifo_clf_to_rtfb (
 
 rt_feedback_0 rtfb (
   .ap_clk                     (bus_clk                   ), // input wire ap_clk
-  .ap_rst_n                   (1                         ), // input wire ap_rst_n
+  .ap_rst                     (0                         ), // input wire ap_rst_n
   .ap_start                   (1                         ), // input wire ap_start
   .ap_done                    (ap_done3                  ), // output wire ap_done
   .ap_idle                    (ap_idle3                  ), // output wire ap_idle
   .ap_ready                   (ap_ready3                 ), // output wire ap_ready
+  .target_unit_id_V           (target_unit_id            ), // input wire [15 : 0] the TARGET NEURON ID!
   .fet_packet_spk_id_V_dout   (fet_packet_spk_id_V_dout  ), // input wire [31 : 0] fet_packet_spk_id_V_dout
   .fet_packet_spk_id_V_empty_n(!fet_packet_spk_id_V_empty), // input wire fet_packet_spk_id_V_empty_n
   .fet_packet_spk_id_V_read   (fet_packet_spk_id_V_read  ), // output wire fet_packet_spk_id_V_read
-  .spk_id_out_V_V_TVALID      (spk_id_out_V_V_TVALID     ), // output wire spk_id_out_V_V_TVALID
-  .spk_id_out_V_V_TREADY      (1                         ), // input wire spk_id_out_V_V_TREADY
-  .spk_id_out_V_V_TDATA       (spk_id_out_V_V_TDATA      )  // output wire [31 : 0] spk_id_out_V_V_TDATA
+  .stim_V_ap_vld              (stim_ap_vld               ),
+  .stim_V                     (stim                      )
 );
 
-  assign SPIKE_TIME_PORT = spk_id_out_V_V_TVALID; 
+  assign SPIKE_TIME_PORT = stim_ap_vld; 
 
 endmodule
