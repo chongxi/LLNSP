@@ -3,4 +3,5 @@
 ./IP/.Xil
 IP/.Xil/*.*
 vivado*.*
-._.DS_Store
+.DS_Store*
+.ip_upgrade.log
