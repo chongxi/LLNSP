@@ -13,26 +13,33 @@ vivado -source build-project.tcl
 - The `src/spi` folder contains SPI firmware with two interface module
 
 ### Device in the project
-SPI part
+SPI device files
 ```
-crw-rw-rw- 1 root root 241,  6 Mar  8 17:24 /dev/xillybus_auxcmd1_membank_16
-crw-rw-rw- 1 root root 241,  7 Mar  8 17:24 /dev/xillybus_auxcmd2_membank_16
-crw-rw-rw- 1 root root 241,  8 Mar  8 17:24 /dev/xillybus_auxcmd3_membank_16
-crw-rw-rw- 1 root root 241,  5 Mar  8 17:24 /dev/xillybus_control_regs_16
-crw-rw-rw- 1 root root 241, 10 Mar  8 17:24 /dev/xillybus_status_regs_16
-crw-rw-rw- 1 root root 241, 11 Mar  8 17:24 /dev/xillybus_neural_data_32
+crwxr--r-- 1 chongxi chongxi 234,  6 Nov 18 18:31 /dev/xillybus_auxcmd1_membank_16
+crwxr--r-- 1 chongxi chongxi 234,  7 Nov 18 18:31 /dev/xillybus_auxcmd2_membank_16
+crwxr--r-- 1 chongxi chongxi 234,  8 Nov 18 18:31 /dev/xillybus_auxcmd3_membank_16
+crwxr--r-- 1 chongxi chongxi 234,  5 Nov 18 18:31 /dev/xillybus_control_regs_16
+crwxr--r-- 1 chongxi chongxi 234, 10 Nov 18 18:31 /dev/xillybus_status_regs_16
+crwxr--r-- 1 chongxi chongxi 234, 11 Nov 18 18:31 /dev/xillybus_neural_data_32
 ```
-Xike Part
+
+PC-NSP communication device files
 ```
-crw-rw-rw- 1 root root 241, 12 Mar  8 17:24 /dev/xillybus_mem_16
-crw-rw-rw- 1 root root 241,  1 Mar  8 17:24 /dev/xillybus_mua_32
-crw-rw-rw- 1 root root 241,  2 Mar  8 17:24 /dev/xillybus_spk_info_32
-crw-rw-rw- 1 root root 241,  3 Mar  8 17:24 /dev/xillybus_spk_wav_32
-crw-rw-rw- 1 root root 241,  3 Mar  8 17:24 /dev/xillybus_fet_clf_32
-crw-rw-rw- 1 root root 241,  4 Mar  8 17:24 /dev/xillybus_template_32
-crw-rw-rw- 1 root root 241,  9 Mar  8 17:24 /dev/xillybus_thr_32
-crw-rw-rw- 1 root root 241,  0 Mar  8 17:24 /dev/xillybus_write_32
+crwxr--r-- 1 chongxi chongxi 234,  0 Nov 18 18:31 /dev/xillybus_write_32
+crwxr--r-- 1 chongxi chongxi 234, 12 Nov 18 18:31 /dev/xillybus_mem_16
+crwxr--r-- 1 chongxi chongxi 234,  1 Nov 18 18:31 /dev/xillybus_mua_32
+crwxr--r-- 1 chongxi chongxi 234,  4 Nov 18 18:31 /dev/xillybus_template_32
+crwxr--r-- 1 chongxi chongxi 234,  9 Nov 18 18:31 /dev/xillybus_thr_32
 ```
+
+NSP real-time processing device files
+```
+crwxr--r-- 1 chongxi chongxi 234,  3 Nov 18 18:31 /dev/xillybus_spk_info_32
+crwxr--r-- 1 chongxi chongxi 234,  2 Nov 18 18:31 /dev/xillybus_spk_wav_32
+crwxr--r-- 1 chongxi chongxi 234, 13 Nov 18 18:31 /dev/xillybus_fet_clf_32
+```
+
+
 -------------------
 
 ### Signal flow
