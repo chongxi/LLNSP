@@ -49,7 +49,7 @@ upgrade_ip [get_ips]
 
 #This is specific for xillybus. It uses a file from the pcie IP example. Instead of copying it, which can generate errors between versions, we just generate the example
 generate_target example [get_ips $pcie_vivado]
-file copy -force "[file normalize "$proj_dir/${proj_name}.srcs/sources_1/ip/$pcie_vivado/example_design/support/${pcie_vivado}_pipe_clock.v"]" "[file normalize "$sources_dir/pcie"]"
+# file copy -force "[file normalize "$proj_dir/${proj_name}.srcs/sources_1/ip/$pcie_vivado/example_design/support/${pcie_vivado}_pipe_clock.v"]" "[file normalize "$sources_dir/pcie"]"
 
 add_files -fileset $obj $sources_dir
 
@@ -79,14 +79,14 @@ set_property "unit_under_test" "UUT" $obj
 
 # Create 'synth_1' run (if not found)
 if {[string equal [get_runs synth_1] ""]} {
-  create_run -name synth_1 -part $thepart -flow {Vivado Synthesis 2014} -strategy "Vivado Synthesis Defaults" -constrset constrs_1
+  create_run -name synth_1 -part $thepart -flow {Vivado Synthesis 2021} -strategy "Vivado Synthesis Defaults" -constrset constrs_1
 }
 set obj [get_runs synth_1]
 set_property "part" $thepart $obj
 
 # Create 'impl_1' run (if not found)
 if {[string equal [get_runs impl_1] ""]} {
-  create_run -name impl_1 -part $thepart -flow {Vivado Implementation 2014} -strategy "Vivado Implementation Defaults" -constrset constrs_1 -parent_run synth_1
+  create_run -name impl_1 -part $thepart -flow {Vivado Implementation 2021} -strategy "Vivado Implementation Defaults" -constrset constrs_1 -parent_run synth_1
 }
 set obj [get_runs impl_1]
 set_property "part" $thepart $obj
