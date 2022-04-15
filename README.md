@@ -51,6 +51,7 @@ two interfaces module are located in `src/spi` folder
 ```
 
 -------------------
+### User-defined memory
 
 `/dev/xillybus_mem_16` is a user-defined free 16-bits RAM block. FPGA designer can build advance functions based on the content in this memory. 
 
