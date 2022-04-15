@@ -52,5 +52,7 @@ two interfaces module are located in `src/spi` folder
 
 -------------------
 
-To be continued...
+`/dev/xillybus_mem_16` are free 16-bits RAM block that are free to use. 
+
+Use `spiketag.fpga.memory_api.read_mem_16(i)` and `spiketag.fpga.memory_api.wrte_mem_16(i, v)` to read and write into `i`th memory slot, each slot can hold a 16-bits number. 
 
