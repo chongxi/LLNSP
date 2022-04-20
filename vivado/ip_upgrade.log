@@ -1,0 +1,317 @@
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (lin64) Build 3367213 Tue Oct 19 02:47:39 MDT 2021
+| Date         : Mon Apr 18 21:28:12 2022
+| Host         : laic-ws1 running 64-bit Ubuntu 20.04.3 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_clf_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_clf_0 (xilinx.com:hls:spk_clf:1.0) from (Rev. 2112466380) to (Rev. 2112467662)
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (lin64) Build 3367213 Tue Oct 19 02:47:39 MDT 2021
+| Date         : Mon Apr 18 00:11:07 2022
+| Host         : laic-ws1 running 64-bit Ubuntu 20.04.3 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_clf_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_clf_0 (xilinx.com:hls:spk_clf:1.0) from (Rev. 2112466303) to (Rev. 2112466380)
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (lin64) Build 3367213 Tue Oct 19 02:47:39 MDT 2021
+| Date         : Mon Apr 18 00:10:59 2022
+| Host         : laic-ws1 running 64-bit Ubuntu 20.04.3 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_transform_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_transform_1 (xilinx.com:hls:spk_transform:1.0) from (Rev. 2112466122) to (Rev. 2112466380)
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (lin64) Build 3367213 Tue Oct 19 02:47:39 MDT 2021
+| Date         : Sun Apr 17 22:48:21 2022
+| Host         : laic-ws1 running 64-bit Ubuntu 20.04.3 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_clf_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_clf_0 (xilinx.com:hls:spk_clf:1.0) from (Rev. 2112466252) to (Rev. 2112466303)
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (lin64) Build 3367213 Tue Oct 19 02:47:39 MDT 2021
+| Date         : Sun Apr 17 22:12:51 2022
+| Host         : laic-ws1 running 64-bit Ubuntu 20.04.3 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'fifo_tf_to_clf'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of fifo_tf_to_clf from xilinx.com:ip:fifo_generator:13.1 to xilinx.com:ip:fifo_generator:13.2 (Rev. 6)
+
+2. Upgrade messages
+-------------------
+
+WARNING: upgrade cannot get value of option ARCHITECTURE : there is no project option called ARCHITECTURE
+WARNING: there are only case-insensitive matches Reset_Pin for parameter RESET_PIN
+WARNING: there are only case-insensitive matches Reset_Pin for parameter RESET_PIN
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (lin64) Build 3367213 Tue Oct 19 02:47:39 MDT 2021
+| Date         : Sun Apr 17 19:50:34 2022
+| Host         : laic-ws1 running 64-bit Ubuntu 20.04.3 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_transform_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_transform_1 (xilinx.com:hls:spk_transform:1.0) from (Rev. 2112465974) to (Rev. 2112466122)
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (lin64) Build 3367213 Tue Oct 19 02:47:39 MDT 2021
+| Date         : Sun Apr 17 17:26:04 2022
+| Host         : laic-ws1 running 64-bit Ubuntu 20.04.3 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_transform_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_transform_1 (xilinx.com:hls:spk_transform:1.0) from (Rev. 2112465877) to (Rev. 2112465974)
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (lin64) Build 3367213 Tue Oct 19 02:47:39 MDT 2021
+| Date         : Sun Apr 17 15:45:25 2022
+| Host         : laic-ws1 running 64-bit Ubuntu 20.04.3 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_transform_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_transform_1 (xilinx.com:hls:spk_transform:1.0) from (Rev. 2112464972) to (Rev. 2112465877)
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (lin64) Build 3367213 Tue Oct 19 02:47:39 MDT 2021
+| Date         : Sun Apr 17 01:10:18 2022
+| Host         : laic-ws1 running 64-bit Ubuntu 20.04.3 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_transform_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_transform_1 (xilinx.com:hls:spk_transform:1.0) from (Rev. 2112464827) to (Rev. 2112464972)
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (lin64) Build 3367213 Tue Oct 19 02:47:39 MDT 2021
+| Date         : Sat Apr 16 22:17:54 2022
+| Host         : laic-ws1 running 64-bit Ubuntu 20.04.3 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_transform_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_transform_1 (xilinx.com:hls:spk_transform:1.0) from (Rev. 2112464623) to (Rev. 2112464827)
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (lin64) Build 3367213 Tue Oct 19 02:47:39 MDT 2021
+| Date         : Sat Apr 16 18:52:21 2022
+| Host         : laic-ws1 running 64-bit Ubuntu 20.04.3 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_transform_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_transform_1 (xilinx.com:hls:spk_transform:1.0) from (Rev. 2112464500) to (Rev. 2112464623)
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (lin64) Build 3367213 Tue Oct 19 02:47:39 MDT 2021
+| Date         : Sat Apr 16 16:48:23 2022
+| Host         : laic-ws1 running 64-bit Ubuntu 20.04.3 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_transform_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_transform_1 (xilinx.com:hls:spk_transform:1.0) from (Rev. 2112464371) to (Rev. 2112464500)
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (lin64) Build 3367213 Tue Oct 19 02:47:39 MDT 2021
+| Date         : Sat Apr 16 14:46:50 2022
+| Host         : laic-ws1 running 64-bit Ubuntu 20.04.3 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_transform_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_transform_1 (xilinx.com:hls:spk_transform:1.0) from (Rev. 2112464122) to (Rev. 2112464371)
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (lin64) Build 3367213 Tue Oct 19 02:47:39 MDT 2021
+| Date         : Sat Apr 16 10:44:04 2022
+| Host         : laic-ws1 running 64-bit Ubuntu 20.04.3 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_transform_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_transform_1 (xilinx.com:hls:spk_transform:1.0) from (Rev. 2112462794) to (Rev. 2112464122)
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (lin64) Build 3367213 Tue Oct 19 02:47:39 MDT 2021
+| Date         : Fri Apr 15 12:25:28 2022
+| Host         : laic-ws1 running 64-bit Ubuntu 20.04.3 LTS
+| Command      : upgrade_ip
+| Device       : xc7k325tffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'spk_transform_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of spk_transform_1 (xilinx.com:hls:spk_transform:1.0) from (Rev. 2112462643) to (Rev. 2112462794)
+

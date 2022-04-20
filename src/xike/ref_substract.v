@@ -11,12 +11,12 @@ module ref_substract (
     input  [31:0] thr_data     ,
 
     // output
-    output        muar_valid   ,
-    output [31:0] muar_frame_No,  // t
-    output [11:0] muar_ch      ,  // ch
-    output [31:0] muar_data    ,  // muar
-    output [31:0] muar_ch_hash ,  // ch_hash
-    output [31:0] muar_thr        // thr
+    output reg       muar_valid   ,
+    output reg [31:0] muar_frame_No,  // t
+    output reg [11:0] muar_ch      ,  // ch
+    output reg [31:0] muar_data    ,  // muar
+    output reg [31:0] muar_ch_hash ,  // ch_hash
+    output reg [31:0] muar_thr        // thr
 );
 
   reg _mua_stream_valid;
@@ -92,11 +92,15 @@ module ref_substract (
   wire muar_stream_V_data_V_TREADY = 1;
   wire         muar_stream_V_data_V_TVALID;
   wire [159:0] muar_stream_V_data_V_TDATA;
-  assign muar_valid = muar_stream_V_data_V_TVALID;
-  assign muar_frame_No = muar_stream_V_data_V_TDATA[159:128];
-  assign muar_ch = muar_stream_V_data_V_TDATA[107:96];
-  assign muar_ch_hash = muar_stream_V_data_V_TDATA[95:64];
-  assign muar_thr = muar_stream_V_data_V_TDATA[63:32];
-  assign muar_data = muar_stream_V_data_V_TDATA[31:0];
+
+
+  always @(posedge clk) begin
+      muar_valid <= muar_stream_V_data_V_TVALID;
+      muar_frame_No <= muar_stream_V_data_V_TDATA[159:128];
+      muar_ch <= muar_stream_V_data_V_TDATA[107:96];
+      muar_ch_hash <= muar_stream_V_data_V_TDATA[95:64];
+      muar_thr <= muar_stream_V_data_V_TDATA[63:32];
+      muar_data <= muar_stream_V_data_V_TDATA[31:0];
+  end
 
 endmodule

@@ -56,21 +56,54 @@ module mem_reg_16 (
 
 (* ram_style = "distributed" *)
 reg [15:0] mem_reg_16[0:31];
+reg sync_buf;
+reg SPI_buf;
 
 always @(posedge clk) begin
     if (we) 
-        mem_reg_16[addr] <= din;
+        begin
+            case (addr)
+                5'h02: mem_reg_16[addr] <= din;
+                5'h03: mem_reg_16[addr] <= din;
+                5'h04: mem_reg_16[addr] <= din;
+                5'h05: mem_reg_16[addr] <= din;
+                5'h06: mem_reg_16[addr] <= din;
+                5'h07: mem_reg_16[addr] <= din;
+                5'h08: mem_reg_16[addr] <= din;
+                5'h08: mem_reg_16[addr] <= din;
+                5'h0a: mem_reg_16[addr] <= din;
+                5'h0b: mem_reg_16[addr] <= din;
+                5'h0c: mem_reg_16[addr] <= din;
+                5'h0d: mem_reg_16[addr] <= din;
+                5'h0e: mem_reg_16[addr] <= din;
+                5'h0f: mem_reg_16[addr] <= din;
+                5'h10: mem_reg_16[addr] <= din;
+                5'h11: mem_reg_16[addr] <= din;
+                5'h12: mem_reg_16[addr] <= din;
+                5'h13: mem_reg_16[addr] <= din;
+                5'h14: mem_reg_16[addr] <= din;
+                5'h15: mem_reg_16[addr] <= din;
+                5'h16: mem_reg_16[addr] <= din;
+                5'h17: mem_reg_16[addr] <= din;
+                5'h18: mem_reg_16[addr] <= din;
+                5'h19: mem_reg_16[addr] <= din;
+                5'h1a: mem_reg_16[addr] <= din;
+                5'h1b: mem_reg_16[addr] <= din;
+                5'h1c: mem_reg_16[addr] <= din;
+                5'h1d: mem_reg_16[addr] <= din;
+                5'h1e: mem_reg_16[addr] <= din;
+                5'h1f: mem_reg_16[addr] <= din;
+            endcase
+        end
+        
     if (re)
         dout <= mem_reg_16[addr];
-end
 
-always @(posedge clk) begin
-//    mem_reg_16[0] <= mua_open;
-//    mem_reg_16[1] <= SPI_on;
-//    mem_reg_16[2] <= sync_in;
-//    mem_reg_16[3] <= mua_eof;
+    SPI_buf <= SPI_on;
+    sync_buf <= sync_in;
+    mem_reg_16[0][0] <= SPI_buf;
+    mem_reg_16[0][1] <= sync_buf;
     target_unit_id <= mem_reg_16[8];
 end
-
 
 endmodule // mem_cmd

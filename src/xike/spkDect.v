@@ -9,11 +9,11 @@ module spkDect (
   input  [31:0] thr_data     ,
   input  [31:0] mua_data     ,
   // output
-  output        muap_valid   ,
-  output [31:0] muap_frame_No, // t
-  output [11:0] muap_ch      , // ch
-  output [31:0] muap_ch_hash , // ch_hash
-  output [31:0] muap_data      // muap
+  output reg       muap_valid   ,
+  output reg [31:0] muap_frame_No, // t
+  output reg [11:0] muap_ch      , // ch
+  output reg [31:0] muap_ch_hash , // ch_hash
+  output reg [31:0] muap_data      // muap
 );
 
 wire [159:0] mua_stream_V_data_V_din;     // => fifo
@@ -109,10 +109,12 @@ spk_dect_0 spk_dect (
   .muap_stream_TDATA(muap_stream_TDATA)                      // output wire [31 : 0] muap_stream_TDATA
 );
 
-assign muap_valid = muap_stream_TVALID;
-assign muap_frame_No    = muap_stream_TUSER ;
-assign muap_ch       = muap_stream_TID   ;
-assign muap_ch_hash    = muap_stream_TDEST ;
-assign muap_data  = muap_stream_TDATA ;
+  always @(posedge clk) begin
+    muap_valid <= muap_stream_TVALID;
+    muap_frame_No    <= muap_stream_TUSER ;
+    muap_ch       <= muap_stream_TID   ;
+    muap_ch_hash    <= muap_stream_TDEST ;
+    muap_data  <= muap_stream_TDATA ;
+  end
 
 endmodule

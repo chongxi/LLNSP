@@ -1,4 +1,4 @@
-module mua_reorder (
+module mua_reorder_ti (
     input         clk           , // Clock
     input         rst           , // Asynchronous reset active low
     // input
@@ -26,7 +26,7 @@ module mua_reorder (
         .empty(fifo_muar_input_empty              )
     );
 
-    mua_reorder_0 i_mua_reorder_0 (
+    mua_reorder_1 i_mua_reorder_1 (
         .ap_clk                      (clk                      ),
         .ap_rst_n                    (ap_rst_n                 ),
         .muar_stream_V_data_V_dout   (muar_stream_V_data_V_dout),

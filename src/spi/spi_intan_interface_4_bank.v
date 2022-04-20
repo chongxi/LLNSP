@@ -458,7 +458,7 @@ module spi_intan_interface_4_bank (
   //Bogus signals
   wire [15:0] TTL_in    ;
   wire [15:0] TTL_out   ;
-  assign TTL_in[15]        = sync_pulse;
+//  assign TTL_in[15]        = sync_pulse;
   assign TTL_out           = 16'b0;
   assign data_stream_ADC_1 = 16'b0;
   assign data_stream_ADC_2 = 16'b0;
