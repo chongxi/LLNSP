@@ -1,3 +1,6 @@
+# Low-latency neural signal processor
+Paper: https://www.biorxiv.org/content/10.1101/2023.09.14.557854v1.full.pdf
+
 ### Create the project from tcl 
 
 ```
